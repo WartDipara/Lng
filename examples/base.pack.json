@@ -1,0 +1,979 @@
+{
+  "schemaVersion": 1,
+  "packId": "example:base",
+  "packVersion": 1,
+  "createdAt": "2026-11-15T00:00:00Z",
+  "requires": [],
+  "sources": [
+    {
+      "id": "example:author",
+      "revision": 1,
+      "title": "Original format examples (fictional)",
+      "url": "https://example.invalid/engdictionary",
+      "license": "CC0-1.0",
+      "usage": "original",
+      "retrievedAt": "2026-11-15T00:00:00Z"
+    }
+  ],
+  "vocabulary": [
+    {
+      "id": "example:contingent",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "headword": "contingent",
+      "variants": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "example:contingent-dependent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "example:author"
+          ],
+          "definition": "Dependent on a condition being met.",
+          "simpleDefinition": "Only possible if something else happens first.",
+          "examples": [
+            "The trip is contingent on good weather.",
+            "The grant is contingent on final approval."
+          ],
+          "synonyms": [
+            "dependent"
+          ],
+          "synonymNote": "Use contingent on when a result needs a condition to be met.",
+          "collocations": [
+            "contingent on approval"
+          ],
+          "status": "ready"
+        }
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "id": "example:library",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "title": "A library trial",
+      "paragraphs": [
+        {
+          "id": "paragraph:trial",
+          "text": "A town library will test longer opening hours for six weeks. On Tuesdays it will close at eight rather than six. The extra hours depend on volunteers being available. The manager will count evening visits before deciding whether to continue."
+        },
+        {
+          "id": "paragraph:view",
+          "text": "The manager believes the trial could help workers who finish late, but warns that a small rise in visits would not by itself prove that permanent funding is worthwhile."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "example:comprehension",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "comprehension",
+      "origin": "original",
+      "title": "Comprehension",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What must happen before the extra hours can be offered?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "Volunteers must be available."
+          },
+          {
+            "id": "option:1",
+            "text": "Permanent funding must already be approved."
+          },
+          {
+            "id": "option:2",
+            "text": "Every worker must visit."
+          },
+          {
+            "id": "option:3",
+            "text": "Visits must double."
+          }
+        ],
+        "correctIds": [
+          "option:0"
+        ],
+        "multiple": false
+      },
+      "explanation": "The trial depends on volunteers being available.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:error-identification",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "error-identification",
+      "origin": "original",
+      "title": "Error Identification",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Which part contains an error: The manager / have counted / the visits?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "The manager"
+          },
+          {
+            "id": "option:1",
+            "text": "have counted"
+          },
+          {
+            "id": "option:2",
+            "text": "the visits"
+          }
+        ],
+        "correctIds": [
+          "option:1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Manager is singular, so use has counted.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:sentence-completion",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "sentence-completion",
+      "origin": "original",
+      "title": "Sentence Completion",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "The trial will last {{field:answer}} weeks.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "Number of weeks",
+            "accepted": [
+              "six"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "The first sentence specifies six weeks.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:paragraph-improvement",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "paragraph-improvement",
+      "origin": "original",
+      "title": "Paragraph Improvement",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Put the sentences into a logical order.",
+      "interaction": {
+        "kind": "ordering",
+        "items": [
+          {
+            "id": "sentence:a",
+            "text": "The library starts a trial."
+          },
+          {
+            "id": "sentence:b",
+            "text": "During it, staff count visits."
+          },
+          {
+            "id": "sentence:c",
+            "text": "They then use those figures to decide what to do next."
+          }
+        ],
+        "correctOrder": [
+          "sentence:a",
+          "sentence:b",
+          "sentence:c"
+        ]
+      },
+      "explanation": "The trial starts, visits are counted, and the results inform the decision.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:true-false-not-given",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "true-false-not-given",
+      "origin": "original",
+      "title": "True False Not Given",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "The library normally closes at six on Tuesdays.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "True"
+          },
+          {
+            "id": "option:1",
+            "text": "False"
+          },
+          {
+            "id": "option:2",
+            "text": "Not Given"
+          }
+        ],
+        "correctIds": [
+          "option:0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Eight rather than six identifies the usual closing time.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:yes-no-not-given",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "yes-no-not-given",
+      "origin": "original",
+      "title": "Yes No Not Given",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "The manager thinks a small rise in visits would prove the value of permanent funding.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "Yes"
+          },
+          {
+            "id": "option:1",
+            "text": "No"
+          },
+          {
+            "id": "option:2",
+            "text": "Not Given"
+          }
+        ],
+        "correctIds": [
+          "option:1"
+        ],
+        "multiple": false
+      },
+      "explanation": "The manager explicitly warns against that conclusion.",
+      "evidenceParagraphIds": [
+        "paragraph:view"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:matching-headings",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "matching-headings",
+      "origin": "original",
+      "title": "Matching Headings",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Match the item to the best option.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "item:a",
+            "text": "Paragraph 1"
+          }
+        ],
+        "options": [
+          {
+            "id": "match:a",
+            "text": "A limited trial"
+          },
+          {
+            "id": "match:b",
+            "text": "A permanent service"
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "item:a",
+            "optionId": "match:a"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "The correct match follows the stated plan or the manager's stated view.",
+      "evidenceParagraphIds": [
+        "paragraph:trial",
+        "paragraph:view"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:matching-information",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "matching-information",
+      "origin": "original",
+      "title": "Matching Information",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Match the item to the best option.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "item:a",
+            "text": "The length of the trial"
+          }
+        ],
+        "options": [
+          {
+            "id": "match:a",
+            "text": "Paragraph 1"
+          },
+          {
+            "id": "match:b",
+            "text": "Paragraph 2"
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "item:a",
+            "optionId": "match:a"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "The correct match follows the stated plan or the manager's stated view.",
+      "evidenceParagraphIds": [
+        "paragraph:trial",
+        "paragraph:view"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:matching-features",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "matching-features",
+      "origin": "original",
+      "title": "Matching Features",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Match the item to the best option.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "item:a",
+            "text": "Warns against drawing a firm conclusion"
+          }
+        ],
+        "options": [
+          {
+            "id": "match:a",
+            "text": "The manager"
+          },
+          {
+            "id": "match:b",
+            "text": "The volunteers"
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "item:a",
+            "optionId": "match:a"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "The correct match follows the stated plan or the manager's stated view.",
+      "evidenceParagraphIds": [
+        "paragraph:trial",
+        "paragraph:view"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:matching-sentence-endings",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "matching-sentence-endings",
+      "origin": "original",
+      "title": "Matching Sentence Endings",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Match the item to the best option.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "item:a",
+            "text": "The library can offer extra hours if"
+          }
+        ],
+        "options": [
+          {
+            "id": "match:a",
+            "text": "volunteers are available."
+          },
+          {
+            "id": "match:b",
+            "text": "the trial has ended."
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "item:a",
+            "optionId": "match:a"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "The correct match follows the stated plan or the manager's stated view.",
+      "evidenceParagraphIds": [
+        "paragraph:trial",
+        "paragraph:view"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:summary-completion",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "summary-completion",
+      "origin": "original",
+      "title": "Summary Completion",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What will the manager count before deciding whether to continue?",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "The manager will count {{field:answer}}.",
+            "accepted": [
+              "evening visits"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The passage says the manager will count evening visits.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:note-completion",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "note-completion",
+      "origin": "original",
+      "title": "Note Completion",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What will the manager count before deciding whether to continue?",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "The manager will count {{field:answer}}.",
+            "accepted": [
+              "evening visits"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The passage says the manager will count evening visits.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:table-completion",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "table-completion",
+      "origin": "original",
+      "title": "Table Completion",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What will the manager count before deciding whether to continue?",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "The manager will count {{field:answer}}.",
+            "accepted": [
+              "evening visits"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The passage says the manager will count evening visits.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1,
+      "layout": {
+        "kind": "table",
+        "rows": [
+          [
+            "Decision input",
+            "{{field:answer}}"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "example:flowchart-completion",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "flowchart-completion",
+      "origin": "original",
+      "title": "Flowchart Completion",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What will the manager count before deciding whether to continue?",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "The manager will count {{field:answer}}.",
+            "accepted": [
+              "evening visits"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The passage says the manager will count evening visits.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1,
+      "layout": {
+        "kind": "flowchart",
+        "steps": [
+          "Start trial",
+          "Count {{field:answer}}",
+          "Decide whether to continue"
+        ]
+      }
+    },
+    {
+      "id": "example:short-answer",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "short-answer",
+      "origin": "original",
+      "title": "Short Answer",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What will the manager count before deciding whether to continue?",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "The manager will count {{field:answer}}.",
+            "accepted": [
+              "evening visits"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The passage says the manager will count evening visits.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    },
+    {
+      "id": "example:diagram-labelling",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "diagram-labelling",
+      "origin": "original",
+      "title": "Diagram Labelling",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Label the shaded square with the word square.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "Shape",
+            "accepted": [
+              "square"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "The image contains one square.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "layout": {
+        "kind": "diagram",
+        "imageDataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
+        "altText": "A single shaded square.",
+        "labels": [
+          {
+            "fieldId": "field:answer",
+            "x": 0.5,
+            "y": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "example:multiple-choice-cloze",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Multiple Choice Cloze",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "The extension is contingent ___ volunteer support.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "on"
+          },
+          {
+            "id": "option:1",
+            "text": "at"
+          },
+          {
+            "id": "option:2",
+            "text": "by"
+          },
+          {
+            "id": "option:3",
+            "text": "from"
+          }
+        ],
+        "correctIds": [
+          "option:0"
+        ],
+        "multiple": false
+      },
+      "explanation": "The usual phrase is contingent on.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "example:contingent-dependent"
+      ],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:open-cloze",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "open-cloze",
+      "origin": "original",
+      "title": "Open Cloze",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "The trial will proceed only {{field:answer}} volunteers are available.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "Missing word",
+            "accepted": [
+              "if"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "Only if introduces a necessary condition.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:word-formation",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "word-formation",
+      "origin": "original",
+      "title": "Word Formation",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Use APPROVE: The plan still needs final {{field:answer}}.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "Form of APPROVE",
+            "accepted": [
+              "approval"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "Approval is the noun needed after final.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:key-word-transformation",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "key-word-transformation",
+      "origin": "original",
+      "title": "Key Word Transformation",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Use DEPENDS: The plan is contingent on support. The plan {{field:answer}} support.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "field:answer",
+            "prompt": "Two words including DEPENDS",
+            "accepted": [
+              "depends on"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "Depends on expresses the same condition.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:dialogue",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "dialogue",
+      "origin": "original",
+      "title": "Dialogue",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Can we call the trial a proven success before it begins?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "No; we need results first."
+          },
+          {
+            "id": "option:1",
+            "text": "Yes; a plan proves the outcome."
+          }
+        ],
+        "correctIds": [
+          "option:0"
+        ],
+        "multiple": false
+      },
+      "explanation": "A planned trial has not yet provided evidence of success.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ]
+    },
+    {
+      "id": "example:scenario",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "scenario",
+      "origin": "original",
+      "title": "Scenario",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "Volunteer availability is not yet known. Which announcement is accurate?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "Extra hours depend on volunteer availability."
+          },
+          {
+            "id": "option:1",
+            "text": "Extra hours are guaranteed permanently."
+          }
+        ],
+        "correctIds": [
+          "option:0"
+        ],
+        "multiple": false
+      },
+      "explanation": "The first announcement preserves the condition.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    }
+  ]
+}

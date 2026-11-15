@@ -1,0 +1,8 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true, "allowImportingTsExtensions": true, "noEmit": true,
+    "resolveJsonModule": true, "types": ["react", "react-native", "node"]
+  },
+  "include": ["App.tsx", "mobile/**/*.ts", "mobile/**/*.tsx", "src/types.ts", "src/catalog.ts", "src/validation.ts", "src/notebook.ts", "src/grading.ts", "src/learning.ts"]
+}

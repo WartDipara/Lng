@@ -1,0 +1,53 @@
+{
+  "name": "english-in-practice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android.ps1",
+    "build:android": "npm run build --",
+    "test": "node --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "validate": "node src/cli.ts validate",
+    "collect": "python scripts/collect_vocabulary.py",
+    "build:data": "python scripts/build_vocabulary.py && node scripts/archive-vocabulary.ts",
+    "archive:data": "node scripts/archive-vocabulary.ts",
+    "test:data": "python -m unittest discover -s tests -p test_collection.py",
+    "start": "expo start",
+    "web": "expo start --web",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "prepare:mobile": "node scripts/prepare-mobile.ts",
+    "typecheck:mobile": "tsc -p tsconfig.mobile.json --noEmit",
+    "export": "expo export --platform all"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~58.0.17",
+    "@expo/vector-icons": "^15.0.2",
+    "@noble/hashes": "^1.8.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "expo": "^58.0.25",
+    "expo-asset": "~58.0.21",
+    "expo-constants": "~58.0.16",
+    "expo-document-picker": "~58.0.5",
+    "expo-file-system": "~58.0.13",
+    "expo-font": "~58.0.12",
+    "expo-sharing": "~58.0.23",
+    "expo-status-bar": "~58.0.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-web": "^0.21.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "typescript": "^5.9.0"
+  }
+}

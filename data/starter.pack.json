@@ -1,0 +1,4968 @@
+{
+  "schemaVersion": 1,
+  "packId": "course:starter",
+  "packVersion": 1,
+  "createdAt": "2026-11-15T00:00:00Z",
+  "requires": [],
+  "sources": [
+    {
+      "id": "course:original",
+      "revision": 1,
+      "title": "EngDictionary original learning course",
+      "url": "urn:engdictionary:original-course",
+      "license": "Original project content; usage controlled by project owner",
+      "usage": "original",
+      "retrievedAt": "2026-11-15T00:00:00Z"
+    },
+    {
+      "id": "course:iea-2026",
+      "revision": 1,
+      "title": "IEA: Energy security and renewables, 6 November 2026",
+      "url": "https://www.iea.org/news/energy-security-concerns-spur-faster-renewables-growth-across-a-widening-constellation-of-countries",
+      "license": "Reference for a short original factual summary; article text not reproduced",
+      "usage": "reference-only",
+      "retrievedAt": "2026-11-15T00:00:00Z"
+    },
+    {
+      "id": "course:unesco-2026",
+      "revision": 1,
+      "title": "UNESCO: Education and AI, 9 September 2026",
+      "url": "https://www.unesco.org/en/articles/education-ministers-call-education-remain-common-good-age-ai-unescos-digital-learning-week",
+      "license": "Reference for a short original factual summary; article text not reproduced",
+      "usage": "reference-only",
+      "retrievedAt": "2026-11-15T00:00:00Z"
+    }
+  ],
+  "vocabulary": [
+    {
+      "id": "course:word-contingent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "contingent",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-contingent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Only possible if another thing happens first.",
+          "simpleDefinition": "Only possible if another thing happens first.",
+          "examples": [
+            "The grant is contingent on final approval.",
+            "Our trip is contingent on the weather."
+          ],
+          "synonyms": [
+            "dependent"
+          ],
+          "synonymNote": "Contingent on usually introduces a condition; dependent on can also describe a continuing need.",
+          "collocations": [
+            "contingent on approval"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-equivocal",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "equivocal",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-equivocal",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Not clear enough to show one definite meaning or opinion.",
+          "simpleDefinition": "Not clear enough to show one definite meaning or opinion.",
+          "examples": [
+            "Her equivocal reply left both teams unsure.",
+            "The results were equivocal, so we ran another test."
+          ],
+          "synonyms": [
+            "unclear"
+          ],
+          "synonymNote": "Equivocal often suggests two possible readings; unclear can simply mean hard to understand.",
+          "collocations": [
+            "equivocal evidence"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-mitigate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "mitigate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-mitigate",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To make something harmful less serious.",
+          "simpleDefinition": "To make something harmful less serious.",
+          "examples": [
+            "Trees can mitigate the heat in a crowded street.",
+            "The extra checks helped mitigate the risk."
+          ],
+          "synonyms": [
+            "reduce"
+          ],
+          "synonymNote": "Mitigate usually concerns harm or risk; reduce can concern any amount.",
+          "collocations": [
+            "mitigate a risk"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-corroborate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "corroborate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-corroborate",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To give further evidence that a statement is true.",
+          "simpleDefinition": "To give further evidence that a statement is true.",
+          "examples": [
+            "The receipts corroborate her account of the journey.",
+            "Two witnesses corroborate the driver's description."
+          ],
+          "synonyms": [
+            "support"
+          ],
+          "synonymNote": "Corroborate specifically means supporting a claim with evidence.",
+          "collocations": [
+            "corroborate an account"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-substantiate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "substantiate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-substantiate",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To provide evidence that shows a claim has a sound basis.",
+          "simpleDefinition": "To provide evidence that shows a claim has a sound basis.",
+          "examples": [
+            "The company could not substantiate its promise.",
+            "We need data to substantiate the conclusion."
+          ],
+          "synonyms": [
+            "support"
+          ],
+          "synonymNote": "Substantiate stresses providing a basis; corroborate adds evidence to an existing account.",
+          "collocations": [
+            "substantiate a claim"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-undermine",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "undermine",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-undermine",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To make something weaker or less trusted.",
+          "simpleDefinition": "To make something weaker or less trusted.",
+          "examples": [
+            "Repeated delays undermine trust in the service.",
+            "The missing records undermine the report's conclusion."
+          ],
+          "synonyms": [
+            "weaken"
+          ],
+          "synonymNote": "Undermine often describes a gradual or indirect weakening.",
+          "collocations": [
+            "undermine confidence"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-exacerbate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "exacerbate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-exacerbate",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To make an existing problem worse.",
+          "simpleDefinition": "To make an existing problem worse.",
+          "examples": [
+            "A lack of sleep can exacerbate stress.",
+            "The sudden closure may exacerbate traffic problems."
+          ],
+          "synonyms": [
+            "worsen"
+          ],
+          "synonymNote": "Exacerbate normally takes a problem or harmful condition as its object.",
+          "collocations": [
+            "exacerbate a problem"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-preclude",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "preclude",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-preclude",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To prevent something or make it impossible.",
+          "simpleDefinition": "To prevent something or make it impossible.",
+          "examples": [
+            "The narrow doorway may preclude wheelchair access.",
+            "These findings do not preclude other explanations."
+          ],
+          "synonyms": [
+            "prevent"
+          ],
+          "synonymNote": "Preclude often means that a condition rules out a possibility.",
+          "collocations": [
+            "preclude an option"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-supplant",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "supplant",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-supplant",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To take the place of something that was used before.",
+          "simpleDefinition": "To take the place of something that was used before.",
+          "examples": [
+            "Digital tickets may supplant paper passes.",
+            "The new method did not supplant every older technique."
+          ],
+          "synonyms": [
+            "replace"
+          ],
+          "synonymNote": "Supplant suggests taking over an established role.",
+          "collocations": [
+            "supplant an older method"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-complement",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "complement",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-complement",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To add something useful that makes another thing work better.",
+          "simpleDefinition": "To add something useful that makes another thing work better.",
+          "examples": [
+            "The diagrams complement the written guide.",
+            "Practical lessons complement the theory classes."
+          ],
+          "synonyms": [
+            "supplement"
+          ],
+          "synonymNote": "Complement stresses a good fit; supplement stresses adding extra material.",
+          "collocations": [
+            "complement an explanation"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-conflate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "conflate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-conflate",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To treat different things as if they were the same.",
+          "simpleDefinition": "To treat different things as if they were the same.",
+          "examples": [
+            "Do not conflate low cost with good value.",
+            "The article appears to conflate income and wealth."
+          ],
+          "synonyms": [
+            "confuse"
+          ],
+          "synonymNote": "Conflate specifically means combining distinct ideas or categories.",
+          "collocations": [
+            "conflate two issues"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-reconcile",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "reconcile",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-reconcile",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To find a way for apparently different ideas or needs to fit together.",
+          "simpleDefinition": "To find a way for apparently different ideas or needs to fit together.",
+          "examples": [
+            "We must reconcile the two accounts of the event.",
+            "The plan tries to reconcile lower costs with better care."
+          ],
+          "synonyms": [
+            "harmonise"
+          ],
+          "synonymNote": "Reconcile often starts with a conflict; harmonise may simply mean bringing things into agreement.",
+          "collocations": [
+            "reconcile competing demands"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-scrutinise",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "scrutinise",
+      "variants": [
+        "scrutinize"
+      ],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-scrutinise",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To examine something very carefully.",
+          "simpleDefinition": "To examine something very carefully.",
+          "examples": [
+            "Please scrutinise the figures before signing.",
+            "The panel will scrutinise every expense claim."
+          ],
+          "synonyms": [
+            "examine"
+          ],
+          "synonymNote": "Scrutinise implies close attention to detail, not just looking at something.",
+          "collocations": [
+            "scrutinise the evidence"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-elucidate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "elucidate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-elucidate",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To make something easier to understand by explaining it.",
+          "simpleDefinition": "To make something easier to understand by explaining it.",
+          "examples": [
+            "A simple diagram can elucidate the process.",
+            "The speaker used an example to elucidate the rule."
+          ],
+          "synonyms": [
+            "clarify"
+          ],
+          "synonymNote": "Elucidate is formal and usually means explaining an idea in more detail.",
+          "collocations": [
+            "elucidate a point"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-qualify",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "qualify",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-qualify",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To limit a statement so that it is more exact.",
+          "simpleDefinition": "To limit a statement so that it is more exact.",
+          "examples": [
+            "I should qualify my earlier claim: the result applies only to adults.",
+            "The authors qualify their conclusion by noting the small sample."
+          ],
+          "synonyms": [
+            "limit"
+          ],
+          "synonymNote": "In this sense, qualify adds a condition or limit to a claim; it does not mean passing a test.",
+          "collocations": [
+            "qualify a claim"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-concede",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "concede",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-concede",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To admit that something is true, often after resisting it.",
+          "simpleDefinition": "To admit that something is true, often after resisting it.",
+          "examples": [
+            "She had to concede that the old route was faster.",
+            "The manager will concede that the service needs work."
+          ],
+          "synonyms": [
+            "admit"
+          ],
+          "synonymNote": "Concede often involves accepting an unwelcome point in a disagreement.",
+          "collocations": [
+            "concede a point"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-infer",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "infer",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-infer",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To reach an idea from the information available.",
+          "simpleDefinition": "To reach an idea from the information available.",
+          "examples": [
+            "We cannot infer a cause from this pattern alone.",
+            "Readers may infer that the narrator is worried."
+          ],
+          "synonyms": [
+            "deduce"
+          ],
+          "synonymNote": "Infer is broad; deduce often suggests a more formal chain of reasoning.",
+          "collocations": [
+            "infer from evidence"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-attribute",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "attribute",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-attribute",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To say that something is caused by a particular thing.",
+          "simpleDefinition": "To say that something is caused by a particular thing.",
+          "examples": [
+            "The team cannot attribute the rise to one factor.",
+            "She chose to attribute the error to a misunderstanding."
+          ],
+          "synonyms": [
+            "ascribe"
+          ],
+          "synonymNote": "Attribute and ascribe both link a result to a cause; attribute is more common.",
+          "collocations": [
+            "attribute a change to"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-discern",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "discern",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-discern",
+          "partOfSpeech": "verb",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "To notice or recognise something that is not obvious.",
+          "simpleDefinition": "To notice or recognise something that is not obvious.",
+          "examples": [
+            "It was hard to discern a pattern in the data.",
+            "With practice, you can discern small differences in tone."
+          ],
+          "synonyms": [
+            "detect"
+          ],
+          "synonymNote": "Discern often involves understanding a difference, while detect can mean simply noticing a presence.",
+          "collocations": [
+            "discern a pattern"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-tentative",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "tentative",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-tentative",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Not yet certain or finally agreed.",
+          "simpleDefinition": "Not yet certain or finally agreed.",
+          "examples": [
+            "We made a tentative plan for Friday.",
+            "The report offers only a tentative explanation."
+          ],
+          "synonyms": [
+            "provisional"
+          ],
+          "synonymNote": "Tentative stresses uncertainty; provisional stresses waiting for a final version.",
+          "collocations": [
+            "tentative conclusion"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-provisional",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "provisional",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-provisional",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Used for now but likely to be reviewed or changed.",
+          "simpleDefinition": "Used for now but likely to be reviewed or changed.",
+          "examples": [
+            "The team announced a provisional timetable.",
+            "Her acceptance is provisional until the documents arrive."
+          ],
+          "synonyms": [
+            "temporary"
+          ],
+          "synonymNote": "Provisional usually anticipates confirmation or revision; temporary only says something will not last.",
+          "collocations": [
+            "provisional approval"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-plausible",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "plausible",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-plausible",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Seeming reasonable or possibly true.",
+          "simpleDefinition": "Seeming reasonable or possibly true.",
+          "examples": [
+            "That is a plausible explanation for the delay.",
+            "The story sounds plausible, but we need evidence."
+          ],
+          "synonyms": [
+            "credible"
+          ],
+          "synonymNote": "Plausible means a claim could be true; credible may imply stronger reasons to trust it.",
+          "collocations": [
+            "plausible explanation"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-tenable",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "tenable",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-tenable",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Able to be defended with good reasons.",
+          "simpleDefinition": "Able to be defended with good reasons.",
+          "examples": [
+            "That position is no longer tenable after the new evidence.",
+            "Is the assumption tenable in a small town?"
+          ],
+          "synonyms": [
+            "defensible"
+          ],
+          "synonymNote": "Tenable normally describes a claim or position that can withstand criticism.",
+          "collocations": [
+            "tenable argument"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-salient",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "salient",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-salient",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Especially important or easy to notice in the situation.",
+          "simpleDefinition": "Especially important or easy to notice in the situation.",
+          "examples": [
+            "The summary should include the salient points.",
+            "Cost was the most salient concern in the discussion."
+          ],
+          "synonyms": [
+            "prominent"
+          ],
+          "synonymNote": "Salient stresses relevance or importance; prominent can simply mean highly visible.",
+          "collocations": [
+            "salient feature"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-germane",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "germane",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-germane",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Directly related to the matter being discussed.",
+          "simpleDefinition": "Directly related to the matter being discussed.",
+          "examples": [
+            "Please raise questions that are germane to the proposal.",
+            "Her experience is germane to this debate."
+          ],
+          "synonyms": [
+            "relevant"
+          ],
+          "synonymNote": "Germane is a formal way to say directly relevant to the current subject.",
+          "collocations": [
+            "germane to the issue"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-disparate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "disparate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-disparate",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "So different that they do not naturally form one group.",
+          "simpleDefinition": "So different that they do not naturally form one group.",
+          "examples": [
+            "The project brings together disparate sources of data.",
+            "The committee must balance disparate interests."
+          ],
+          "synonyms": [
+            "diverse"
+          ],
+          "synonymNote": "Disparate stresses a lack of similarity; diverse may simply mean varied.",
+          "collocations": [
+            "disparate groups"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-inadvertent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "inadvertent",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-inadvertent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Done by accident rather than on purpose.",
+          "simpleDefinition": "Done by accident rather than on purpose.",
+          "examples": [
+            "The omission was inadvertent, and we corrected it.",
+            "An inadvertent click closed the form."
+          ],
+          "synonyms": [
+            "accidental"
+          ],
+          "synonymNote": "Inadvertent often describes an action caused by a lack of attention.",
+          "collocations": [
+            "inadvertent omission"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-negligible",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "negligible",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-negligible",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "So small that it has little practical effect.",
+          "simpleDefinition": "So small that it has little practical effect.",
+          "examples": [
+            "The difference in travel time was negligible.",
+            "The change had a negligible effect on total costs."
+          ],
+          "synonyms": [
+            "tiny"
+          ],
+          "synonymNote": "Negligible means too small to matter in context, not merely small in size.",
+          "collocations": [
+            "negligible effect"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-substantial",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "substantial",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-substantial",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Large enough in amount or importance to matter.",
+          "simpleDefinition": "Large enough in amount or importance to matter.",
+          "examples": [
+            "The repair will require substantial funding.",
+            "The two versions contain substantial differences."
+          ],
+          "synonyms": [
+            "considerable"
+          ],
+          "synonymNote": "Substantial often suggests practical importance as well as size.",
+          "collocations": [
+            "substantial change"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-commensurate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "commensurate",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-commensurate",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Matching something in size, amount or degree.",
+          "simpleDefinition": "Matching something in size, amount or degree.",
+          "examples": [
+            "Pay should be commensurate with responsibility.",
+            "The response was not commensurate with the scale of the problem."
+          ],
+          "synonyms": [
+            "proportionate"
+          ],
+          "synonymNote": "Commensurate with compares levels; proportionate to often judges whether a response is suitably sized.",
+          "collocations": [
+            "commensurate with experience"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-inherent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "inherent",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-inherent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Existing as a basic part of something.",
+          "simpleDefinition": "Existing as a basic part of something.",
+          "examples": [
+            "There are risks inherent in any new project.",
+            "The method has an inherent limit: it cannot show cause."
+          ],
+          "synonyms": [
+            "intrinsic"
+          ],
+          "synonymNote": "Both mean built into something; inherent often describes a quality or risk.",
+          "collocations": [
+            "inherent limitation"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-ubiquitous",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "ubiquitous",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-ubiquitous",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Found almost everywhere in a particular setting.",
+          "simpleDefinition": "Found almost everywhere in a particular setting.",
+          "examples": [
+            "Mobile payment signs have become ubiquitous in the city.",
+            "The phrase is ubiquitous in business reports."
+          ],
+          "synonyms": [
+            "widespread"
+          ],
+          "synonymNote": "Ubiquitous suggests almost everywhere; widespread only means many places.",
+          "collocations": [
+            "ubiquitous technology"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-resilient",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "resilient",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-resilient",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Able to recover after difficulty or change.",
+          "simpleDefinition": "Able to recover after difficulty or change.",
+          "examples": [
+            "A resilient system can keep working after one part fails.",
+            "The community proved resilient after the flood."
+          ],
+          "synonyms": [
+            "robust"
+          ],
+          "synonymNote": "Resilient stresses recovery; robust stresses strength or resistance to failure.",
+          "collocations": [
+            "resilient community"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-stringent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "stringent",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-stringent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Very strict and carefully enforced.",
+          "simpleDefinition": "Very strict and carefully enforced.",
+          "examples": [
+            "The laboratory follows stringent safety rules.",
+            "Applicants face stringent checks before approval."
+          ],
+          "synonyms": [
+            "strict"
+          ],
+          "synonymNote": "Stringent often describes demanding rules or standards.",
+          "collocations": [
+            "stringent requirements"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-arbitrary",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "arbitrary",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-arbitrary",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Based on no clear reason, rule or fair method.",
+          "simpleDefinition": "Based on no clear reason, rule or fair method.",
+          "examples": [
+            "The cut-off date seemed arbitrary.",
+            "We need consistent criteria rather than arbitrary choices."
+          ],
+          "synonyms": [
+            "random"
+          ],
+          "synonymNote": "Arbitrary lacks a defensible reason; random may follow a deliberate chance-based method.",
+          "collocations": [
+            "arbitrary decision"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-ambivalent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "ambivalent",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-ambivalent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Having both positive and negative feelings about something.",
+          "simpleDefinition": "Having both positive and negative feelings about something.",
+          "examples": [
+            "She felt ambivalent about leaving her job.",
+            "Residents remain ambivalent about the new development."
+          ],
+          "synonyms": [
+            "uncertain"
+          ],
+          "synonymNote": "Ambivalent means mixed feelings, not simply a lack of information.",
+          "collocations": [
+            "ambivalent about change"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-impartial",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "impartial",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-impartial",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Not favouring one side unfairly.",
+          "simpleDefinition": "Not favouring one side unfairly.",
+          "examples": [
+            "An impartial reviewer should assess the complaint.",
+            "The chair must remain impartial during the vote."
+          ],
+          "synonyms": [
+            "unbiased"
+          ],
+          "synonymNote": "Both reject unfair preference; impartial often concerns fair treatment of opposing sides.",
+          "collocations": [
+            "impartial assessment"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-pragmatic",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "pragmatic",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-pragmatic",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Focused on what can work in practice.",
+          "simpleDefinition": "Focused on what can work in practice.",
+          "examples": [
+            "We need a pragmatic response to the shortage.",
+            "The team took a pragmatic approach and tested a smaller version."
+          ],
+          "synonyms": [
+            "practical"
+          ],
+          "synonymNote": "Pragmatic often suggests accepting workable compromises instead of insisting on an ideal.",
+          "collocations": [
+            "pragmatic approach"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-cogent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "cogent",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-cogent",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Clear, well supported and likely to persuade.",
+          "simpleDefinition": "Clear, well supported and likely to persuade.",
+          "examples": [
+            "She presented a cogent argument for the change.",
+            "The report gives a cogent explanation of the failure."
+          ],
+          "synonyms": [
+            "convincing"
+          ],
+          "synonymNote": "Cogent especially describes reasoning that is clear and logically strong.",
+          "collocations": [
+            "cogent argument"
+          ],
+          "status": "ready"
+        }
+      ]
+    },
+    {
+      "id": "course:word-ostensible",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "headword": "ostensible",
+      "variants": [],
+      "tags": [
+        "Core course",
+        "Advanced usage"
+      ],
+      "cefr": null,
+      "status": "ready",
+      "senses": [
+        {
+          "id": "course:sense-ostensible",
+          "partOfSpeech": "adjective",
+          "sourceIds": [
+            "course:original"
+          ],
+          "definition": "Stated or appearing to be the reason, though the real one may differ.",
+          "simpleDefinition": "Stated or appearing to be the reason, though the real one may differ.",
+          "examples": [
+            "The ostensible purpose of the meeting was to discuss costs.",
+            "He visited for the ostensible reason of returning a book."
+          ],
+          "synonyms": [
+            "apparent"
+          ],
+          "synonymNote": "Ostensible often raises doubt about whether the stated purpose is genuine.",
+          "collocations": [
+            "ostensible purpose"
+          ],
+          "status": "ready"
+        }
+      ]
+    }
+  ],
+  "passages": [
+    {
+      "id": "course:passage-grid",
+      "revision": 1,
+      "sourceIds": [
+        "course:original",
+        "course:iea-2026"
+      ],
+      "title": "Renewables need connections",
+      "paragraphs": [
+        {
+          "id": "course:grid-p1",
+          "text": "In November 2026, the IEA reported that energy security was encouraging more countries to expand renewables. Yet adding generating equipment was not enough: electricity networks also needed investment. Projects awaiting connection illustrated this constraint."
+        },
+        {
+          "id": "course:grid-p2",
+          "text": "The agency also highlighted storage and flexible demand. Moving some electricity use to periods of plentiful renewable supply could help systems use available generation more effectively. These measures support expansion; they do not make networks unnecessary."
+        }
+      ],
+      "publishedAt": "2026-11-06T00:00:00Z",
+      "verifiedAt": "2026-11-15T00:00:00Z"
+    },
+    {
+      "id": "course:passage-ai",
+      "revision": 1,
+      "sourceIds": [
+        "course:original",
+        "course:unesco-2026"
+      ],
+      "title": "Learning remains a human concern",
+      "paragraphs": [
+        {
+          "id": "course:ai-p1",
+          "text": "At UNESCO's Digital Learning Week in September 2026, education representatives called for AI to support human judgement rather than replace it. They linked potential benefits to preparation and governance, not simply to access to a tool."
+        },
+        {
+          "id": "course:ai-p2",
+          "text": "Their statement also stressed teacher participation in adoption decisions. This treats teachers as contributors to policy, not merely recipients of a finished product. The position permits carefully governed use without endorsing unrestricted adoption."
+        }
+      ],
+      "publishedAt": "2026-09-09T00:00:00Z",
+      "verifiedAt": "2026-11-15T00:00:00Z"
+    },
+    {
+      "id": "course:passage-trial",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "title": "When a pilot looks successful",
+      "paragraphs": [
+        {
+          "id": "course:trial-p1",
+          "text": "Fictional case study. A city tested later library opening hours at two branches for eight weeks. Evening visits rose by 18 per cent compared with the previous eight weeks. The period also included university examinations. The evaluation team therefore described the increase as encouraging but could not attribute it solely to the new hours."
+        },
+        {
+          "id": "course:trial-p2",
+          "text": "Maya, the service manager, wanted to extend the trial before committing to permanent staffing costs. Arun, the finance officer, asked for the cost per additional visit and warned that high attendance alone would not establish value for money. Leila, a community organiser, requested a survey of people who had not attended; current visitors could not represent everyone who might need the service."
+        },
+        {
+          "id": "course:trial-p3",
+          "text": "The next phase will add two comparison branches that retain their normal hours. Both groups will record visits using the same method. The team will publish the results after twelve weeks. A decision on permanent opening hours is contingent on that review; no permanent change has yet been approved."
+        }
+      ]
+    },
+    {
+      "id": "course:passage-repair",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "title": "A repair service changes its rules",
+      "paragraphs": [
+        {
+          "id": "course:repair-p1",
+          "text": "Fictional case study. A community workshop accepts small household devices for assessment. Customers first submit a description of the fault. A technician then inspects the item and provides a written estimate. Repairs begin only after the customer approves that estimate. If parts cannot be obtained, the workshop returns the item without carrying out a repair."
+        },
+        {
+          "id": "course:repair-p2",
+          "text": "A proposed notice says, 'Every device will be fixed within seven days.' The coordinator rejects it because neither parts nor successful repair can be guaranteed. She instead proposes, 'We aim to assess each item within seven days and will contact you before any chargeable repair.' The deadline concerns assessment, not completion."
+        },
+        {
+          "id": "course:repair-p3",
+          "text": "The service charges a five-pound assessment fee, payable even if repair is not possible. That fee is deducted from the final bill when a repair goes ahead. A volunteer suggests hiding the fee in small print to make the notice shorter. The coordinator objects: brevity should not obscure a condition that affects a customer's decision."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "course:q-grid-main-point",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "comprehension",
+      "origin": "original",
+      "title": "Grid main point",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "What is the main point?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Expansion also needs supporting systems."
+          },
+          {
+            "id": "course:option-1",
+            "text": "Networks are no longer needed."
+          },
+          {
+            "id": "course:option-2",
+            "text": "Renewables remove every constraint."
+          },
+          {
+            "id": "course:option-3",
+            "text": "Storage prevents new construction."
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Generating capacity alone does not solve the connection constraint.",
+      "evidenceParagraphIds": [
+        "course:grid-p1",
+        "course:grid-p2"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "comprehension"
+      ],
+      "passageId": "course:passage-grid",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-grid-short-answer",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "short-answer",
+      "origin": "original",
+      "title": "Grid short answer",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Which measure, besides storage, can improve use of available generation? Use TWO WORDS.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Measure",
+            "accepted": [
+              "flexible demand"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The second paragraph names flexible demand.",
+      "evidenceParagraphIds": [
+        "course:grid-p2"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "short-answer"
+      ],
+      "passageId": "course:passage-grid",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-ai-main-point",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "comprehension",
+      "origin": "original",
+      "title": "Ai main point",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Which description fits the position?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Conditional support"
+          },
+          {
+            "id": "course:option-1",
+            "text": "A complete ban"
+          },
+          {
+            "id": "course:option-2",
+            "text": "Unrestricted adoption"
+          },
+          {
+            "id": "course:option-3",
+            "text": "Teacher exclusion"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Benefits are linked to preparation and governance.",
+      "evidenceParagraphIds": [
+        "course:ai-p1",
+        "course:ai-p2"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "comprehension"
+      ],
+      "passageId": "course:passage-ai",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-ai-participation",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "sentence-completion",
+      "origin": "original",
+      "title": "Ai participation",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Teachers should participate in {{course:field-a}} decisions. Use ONE WORD from the text.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Type of decision",
+            "accepted": [
+              "adoption"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "The second paragraph specifies adoption decisions.",
+      "evidenceParagraphIds": [
+        "course:ai-p2"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "sentence-completion"
+      ],
+      "passageId": "course:passage-ai",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-cause",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "comprehension",
+      "origin": "original",
+      "title": "Trial cause",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Why can the rise in visits not be attributed solely to the new hours?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "The comparison period had more branches."
+          },
+          {
+            "id": "course:option-1",
+            "text": "Examinations also occurred during the trial."
+          },
+          {
+            "id": "course:option-2",
+            "text": "Visits were never counted."
+          },
+          {
+            "id": "course:option-3",
+            "text": "The branches had already closed."
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Examinations are another possible explanation. The text does not establish their exact effect, so a single cause cannot be isolated.",
+      "evidenceParagraphIds": [
+        "course:trial-p1"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "comprehension"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-multiple",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "comprehension",
+      "origin": "original",
+      "title": "Trial multiple",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Choose TWO features of the next phase.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Comparison branches"
+          },
+          {
+            "id": "course:option-1",
+            "text": "Guaranteed permanent funding"
+          },
+          {
+            "id": "course:option-2",
+            "text": "A shared recording method"
+          },
+          {
+            "id": "course:option-3",
+            "text": "A survey limited to managers"
+          }
+        ],
+        "correctIds": [
+          "course:option-0",
+          "course:option-2"
+        ],
+        "multiple": true
+      },
+      "explanation": "Paragraph 3 explicitly adds comparison branches and a common recording method. Permanent change is not approved.",
+      "evidenceParagraphIds": [
+        "course:trial-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "comprehension"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-fact",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "true-false-not-given",
+      "origin": "original",
+      "title": "Trial fact",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "The first trial lasted twelve weeks.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "True"
+          },
+          {
+            "id": "course:option-1",
+            "text": "False"
+          },
+          {
+            "id": "course:option-2",
+            "text": "Not Given"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "The first trial lasted eight weeks; twelve weeks refers to the next phase.",
+      "evidenceParagraphIds": [
+        "course:trial-p1",
+        "course:trial-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "true-false-not-given"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-unknown",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "true-false-not-given",
+      "origin": "original",
+      "title": "Trial unknown",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Most evening visitors were university students.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "True"
+          },
+          {
+            "id": "course:option-1",
+            "text": "False"
+          },
+          {
+            "id": "course:option-2",
+            "text": "Not Given"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Examinations are mentioned, but the visitors' identities and proportions are not stated.",
+      "evidenceParagraphIds": [
+        "course:trial-p1"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "true-false-not-given"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-view",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "yes-no-not-given",
+      "origin": "original",
+      "title": "Repair view",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "The coordinator believes that a shorter notice is always better, even if a fee is less clear.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Yes"
+          },
+          {
+            "id": "course:option-1",
+            "text": "No"
+          },
+          {
+            "id": "course:option-2",
+            "text": "Not Given"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "She objects to hiding the fee: clear conditions matter more than brevity in that case.",
+      "evidenceParagraphIds": [
+        "course:repair-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "yes-no-not-given"
+      ],
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-unknown-view",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "yes-no-not-given",
+      "origin": "original",
+      "title": "Repair unknown view",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "The coordinator believes that the assessment fee should be increased next year.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Yes"
+          },
+          {
+            "id": "course:option-1",
+            "text": "No"
+          },
+          {
+            "id": "course:option-2",
+            "text": "Not Given"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Her view about communicating the fee is stated; her view about changing its amount is not.",
+      "evidenceParagraphIds": [
+        "course:repair-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "yes-no-not-given"
+      ],
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-headings",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "matching-headings",
+      "origin": "original",
+      "title": "Trial headings",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Match each paragraph to its best heading.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "course:item-0",
+            "text": "Paragraph 1"
+          },
+          {
+            "id": "course:item-1",
+            "text": "Paragraph 2"
+          },
+          {
+            "id": "course:item-2",
+            "text": "Paragraph 3"
+          }
+        ],
+        "options": [
+          {
+            "id": "course:match-0",
+            "text": "Questions from different perspectives"
+          },
+          {
+            "id": "course:match-1",
+            "text": "A stronger follow-up design"
+          },
+          {
+            "id": "course:match-2",
+            "text": "An increase with an uncertain cause"
+          },
+          {
+            "id": "course:match-3",
+            "text": "An unconditional promise"
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "course:item-0",
+            "optionId": "course:match-2"
+          },
+          {
+            "promptId": "course:item-1",
+            "optionId": "course:match-0"
+          },
+          {
+            "promptId": "course:item-2",
+            "optionId": "course:match-1"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "Paragraph 1 qualifies the increase, paragraph 2 presents three perspectives, and paragraph 3 sets out the next phase.",
+      "evidenceParagraphIds": [
+        "course:trial-p1",
+        "course:trial-p2",
+        "course:trial-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "matching-headings"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-information",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "matching-information",
+      "origin": "original",
+      "title": "Repair information",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Where is each piece of information found? You may use a paragraph more than once.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "course:item-0",
+            "text": "A payment that applies even without repair"
+          },
+          {
+            "id": "course:item-1",
+            "text": "The point at which permission is needed"
+          },
+          {
+            "id": "course:item-2",
+            "text": "A distinction between assessment and completion"
+          }
+        ],
+        "options": [
+          {
+            "id": "course:match-0",
+            "text": "Paragraph 1"
+          },
+          {
+            "id": "course:match-1",
+            "text": "Paragraph 2"
+          },
+          {
+            "id": "course:match-2",
+            "text": "Paragraph 3"
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "course:item-0",
+            "optionId": "course:match-2"
+          },
+          {
+            "promptId": "course:item-1",
+            "optionId": "course:match-0"
+          },
+          {
+            "promptId": "course:item-2",
+            "optionId": "course:match-1"
+          }
+        ],
+        "reuseOptions": true
+      },
+      "explanation": "The fee appears in paragraph 3, customer approval in paragraph 1, and the deadline distinction in paragraph 2.",
+      "evidenceParagraphIds": [
+        "course:repair-p1",
+        "course:repair-p2",
+        "course:repair-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "matching-information"
+      ],
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-people",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "matching-features",
+      "origin": "original",
+      "title": "Trial people",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Match each concern to its speaker.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "course:item-0",
+            "text": "Costs relative to extra visits"
+          },
+          {
+            "id": "course:item-1",
+            "text": "People missing from the current visitor group"
+          },
+          {
+            "id": "course:item-2",
+            "text": "Avoiding an early permanent commitment"
+          }
+        ],
+        "options": [
+          {
+            "id": "course:match-0",
+            "text": "Maya"
+          },
+          {
+            "id": "course:match-1",
+            "text": "Arun"
+          },
+          {
+            "id": "course:match-2",
+            "text": "Leila"
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "course:item-0",
+            "optionId": "course:match-1"
+          },
+          {
+            "promptId": "course:item-1",
+            "optionId": "course:match-2"
+          },
+          {
+            "promptId": "course:item-2",
+            "optionId": "course:match-0"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "Arun asks about cost per visit, Leila about non-attenders, and Maya about extending the trial before committing.",
+      "evidenceParagraphIds": [
+        "course:trial-p2"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "matching-features"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-endings",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "matching-sentence-endings",
+      "origin": "original",
+      "title": "Repair endings",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Complete each sentence with the correct ending.",
+      "interaction": {
+        "kind": "matching",
+        "prompts": [
+          {
+            "id": "course:item-0",
+            "text": "Repairs can begin when"
+          },
+          {
+            "id": "course:item-1",
+            "text": "The item is returned without repair if"
+          },
+          {
+            "id": "course:item-2",
+            "text": "The assessment fee is deducted when"
+          }
+        ],
+        "options": [
+          {
+            "id": "course:match-0",
+            "text": "the customer approves the estimate."
+          },
+          {
+            "id": "course:match-1",
+            "text": "parts cannot be obtained."
+          },
+          {
+            "id": "course:match-2",
+            "text": "a repair goes ahead."
+          },
+          {
+            "id": "course:match-3",
+            "text": "a volunteer shortens the notice."
+          }
+        ],
+        "pairs": [
+          {
+            "promptId": "course:item-0",
+            "optionId": "course:match-0"
+          },
+          {
+            "promptId": "course:item-1",
+            "optionId": "course:match-1"
+          },
+          {
+            "promptId": "course:item-2",
+            "optionId": "course:match-2"
+          }
+        ],
+        "reuseOptions": false
+      },
+      "explanation": "Each ending preserves an explicit condition in the workshop's process.",
+      "evidenceParagraphIds": [
+        "course:repair-p1",
+        "course:repair-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "matching-sentence-endings"
+      ],
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-summary",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "summary-completion",
+      "origin": "original",
+      "title": "Trial summary",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Complete the summary using ONE WORD per gap: The increase was encouraging, but {{course:field-a}} may also have affected visits. Permanent changes remain contingent on a {{course:field-b}}.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Possible outside factor",
+            "accepted": [
+              "examinations"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          },
+          {
+            "id": "course:field-b",
+            "prompt": "Required next step",
+            "accepted": [
+              "review"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "Examinations occurred during the trial, and the final paragraph makes permanent change conditional on review.",
+      "evidenceParagraphIds": [
+        "course:trial-p1",
+        "course:trial-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "summary-completion"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-notes",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "note-completion",
+      "origin": "original",
+      "title": "Repair notes",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Complete the notes using NO MORE THAN TWO WORDS per gap: Before inspection, submit a description of the {{course:field-a}}. Before repair, approve the written {{course:field-b}}.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Description concerns",
+            "accepted": [
+              "fault"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          },
+          {
+            "id": "course:field-b",
+            "prompt": "Document to approve",
+            "accepted": [
+              "estimate"
+            ],
+            "caseSensitive": false,
+            "maxWords": 2
+          }
+        ]
+      },
+      "explanation": "The process starts with a description of the fault and requires approval of the estimate before work begins.",
+      "evidenceParagraphIds": [
+        "course:repair-p1"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "note-completion"
+      ],
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-table",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "table-completion",
+      "origin": "original",
+      "title": "Trial table",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Complete the table with ONE NUMBER or ONE WORD in each gap.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "First trial duration",
+            "accepted": [
+              "eight",
+              "8"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          },
+          {
+            "id": "course:field-b",
+            "prompt": "Next phase duration",
+            "accepted": [
+              "twelve",
+              "12"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "The original trial lasts eight weeks; the next phase lasts twelve.",
+      "evidenceParagraphIds": [
+        "course:trial-p1",
+        "course:trial-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "table-completion"
+      ],
+      "layout": {
+        "kind": "table",
+        "rows": [
+          [
+            "Phase",
+            "Duration in weeks"
+          ],
+          [
+            "First trial",
+            "{{course:field-a}}"
+          ],
+          [
+            "Next phase",
+            "{{course:field-b}}"
+          ]
+        ]
+      },
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-flow",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "flowchart-completion",
+      "origin": "original",
+      "title": "Repair flow",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Complete the process using ONE WORD in each gap.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Technician's document",
+            "accepted": [
+              "estimate"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          },
+          {
+            "id": "course:field-b",
+            "prompt": "Person who gives permission",
+            "accepted": [
+              "customer"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "The technician supplies the estimate. The customer must approve it before repair starts.",
+      "evidenceParagraphIds": [
+        "course:repair-p1"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "flowchart-completion"
+      ],
+      "layout": {
+        "kind": "flowchart",
+        "steps": [
+          "Submit fault description",
+          "Receive written {{course:field-a}}",
+          "Obtain approval from the {{course:field-b}}",
+          "Begin repair"
+        ]
+      },
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-repair-diagram",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "diagram-labelling",
+      "origin": "original",
+      "title": "Repair diagram",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "The three boxes show what happens after the initial fault description. Label them from left to right with ONE WORD each: the technician's inspection, the customer's approval, then the repair.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Left box",
+            "accepted": [
+              "inspection"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          },
+          {
+            "id": "course:field-b",
+            "prompt": "Middle box",
+            "accepted": [
+              "approval"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          },
+          {
+            "id": "course:field-c",
+            "prompt": "Right box",
+            "accepted": [
+              "repair"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "Inspection comes first, customer approval follows the estimate, and repair can then begin.",
+      "evidenceParagraphIds": [
+        "course:repair-p1"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "diagram-labelling"
+      ],
+      "layout": {
+        "kind": "diagram",
+        "imageDataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAACgCAIAAABfWoXWAAAE2klEQVR4nO3VsY0kRxREwTWD1tAF+i/QBAq04KguFmip5qGOnfEQBgx6Piq/fkmSNNzX7R8gSdLNDKEkaTpDKEmazhBKkqYzhJKk6QyhJGk6QyhJms4QSpKmM4SSpOkMoSRpOkMoSZrOEEqSpjOEkqTpDKEkaTpDKEmazhBKkqYzhJKk6QyhJGk6QyhJms4QSpKmM4SSpOkMoSRpOkMoSZrOEEqSpjOEkqTpDKEkaTpDKEmazhBKkqYzhJKk6QyhJGk6QyhJms4QSpKmM4SSpOkMoSRpuqMh/OPPv3ixTx2Zu+I7d0Xh5DYMIY9ObsNd8cRdUTi5DUPIo5PbcFc8cVcUTm7DEPLo5DbcFU/cFYWT2/jYEP79z7+8w0cOy13xg7uiYAhJeLAouCsKhpCEB4uCu6JgCEl4sCi4KwqGkIQHi4K7omAISXiwKLgrCoaQhAeLgruiYAhJeLAouCsKhpCEB4uCu6JgCEl4sCi4KwqGkIQHi4K7omAISXiwKLgrCoaQhAeLgruiYAhJeLAouCsKhpCEB4uCu6JgCEl4sCi4KwqGkIQHi4K7omAISXiwKLgrCoaQhAeLgruiYAhJeLAouCsKhpCEB4uCu6JgCEl4sCi4KwqGkIQHi4K7omAISXiwKLgrCoaQhAeLgruiYAhJeLAouCsKhpCEB4uCu6JgCEl4sCi4KwqGkIQHi4K7omAISXiwKLgrCoaQhAeLgruiYAhJeLAouCsKhpCEB4uCu6JgCEl4sCi4KwqGkIQHi4K7omAISXiwKLgrCoaQhAeLgruiYAhJeLAouCsKhpDE97/1uutfg0+5fkvu6pUMIYnrj5S7eqXrt+SuXskQkrj+SLmrV7p+S+7qlQwhieuPlLt6peu35K5eyRCSuP5IuatXun5L7uqVDCGJ64+Uu3ql67fkrl7JEJL4yGG5K35wVxQMIQkPFgV3RcEQkvBgUXBXFAwhCQ8WBXdFwRCS8GBRcFcUDCEJDxYFd0XBEJLwYFFwVxQMIQkPFgV3RcEQkvBgUXBXFAwhCQ8WBXdFwRCS8GBRcFcUDCEJDxYFd0XBEJLwYFFwVxQMIQkPFgV3RcEQkvBgUXBXFAwhCQ8WBXdFwRCS8GBRcFcUDCEJDxYFd0XBEJLwYFFwVxQMIQkPFgV3RcEQkvBgUXBXFAwhCQ8WBXdFwRCS8GBRcFcUDCEJDxYFd0XBEJLwYFFwVxQMIQkPFgV3RcEQkvBgUXBXFAwhCQ8WBXdFwRCS8GBRcFcUDCEJDxYFd0XBEJLwYFFwVxQMIQkPFgV3RcEQkvBgUXBXFAwhCQ8WBXdFwRCS8GBRcFcUDCEJDxYFd0XBEJLwYFFwVxQMIQkPFgV3RcEQkvBgUXBXFH6vIeR9Tm7DXfHEXVE4uQ1DyKOT23BXPHFXFE5uwxDy6OQ23BVP3BWFk9s4GkJJkv7vGUJJ0nSGUJI0nSGUJE1nCCVJ0xlCSdJ0hlCSNJ0hlCRNZwglSdMZQknSdIZQkjSdIZQkTWcIJUnTGUJJ0nSGUJI0nSGUJE1nCCVJ0xlCSdJ0hlCSNJ0hlCRNZwglSdMZQknSdIZQkjSdIZQkTWcIJUnTGUJJ0nSGUJI0nSGUJE1nCCVJ0xlCSdJ0hlCSNJ0hlCRNZwglSdMZQknSdIZQkjTdfxhcXGBLLKwYAAAAAElFTkSuQmCC",
+        "altText": "Three empty boxes connected from left to right.",
+        "labels": [
+          {
+            "fieldId": "course:field-a",
+            "x": 0.167,
+            "y": 0.5
+          },
+          {
+            "fieldId": "course:field-b",
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "fieldId": "course:field-c",
+            "x": 0.833,
+            "y": 0.5
+          }
+        ]
+      },
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-trial-short",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "short-answer",
+      "origin": "original",
+      "title": "Trial short",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "What measure did Arun request? Use NO MORE THAN FOUR WORDS from the passage.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Requested cost measure",
+            "accepted": [
+              "cost per additional visit"
+            ],
+            "caseSensitive": false,
+            "maxWords": 4
+          }
+        ]
+      },
+      "explanation": "Arun requests cost per additional visit rather than attendance alone.",
+      "evidenceParagraphIds": [
+        "course:trial-p2"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "short-answer"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-agreement-error",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "error-identification",
+      "origin": "original",
+      "title": "Agreement error",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Select the erroneous segment: Each of the estimates / have been checked / by a second reviewer.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Each of the estimates"
+          },
+          {
+            "id": "course:option-1",
+            "text": "have been checked"
+          },
+          {
+            "id": "course:option-2",
+            "text": "by a second reviewer"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Each is singular, so the verb should be has been checked. Of the estimates does not make the subject plural.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "error-identification"
+      ]
+    },
+    {
+      "id": "course:q-inversion-error",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "error-identification",
+      "origin": "original",
+      "title": "Inversion error",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Select the erroneous segment: Not until the audit ended / the committee released / its findings.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Not until the audit ended"
+          },
+          {
+            "id": "course:option-1",
+            "text": "the committee released"
+          },
+          {
+            "id": "course:option-2",
+            "text": "its findings"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "After an initial negative time phrase, use inversion in the main clause: did the committee release.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "error-identification"
+      ]
+    },
+    {
+      "id": "course:q-paragraph-precision",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "paragraph-improvement",
+      "origin": "original",
+      "title": "Paragraph precision",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "Replace this overstatement: 'Visits rose during the trial. Therefore, the longer hours caused the entire rise.'",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Visits rose during the trial, but the available comparison does not isolate the effect of longer hours."
+          },
+          {
+            "id": "course:option-1",
+            "text": "Visits rose, proving that every library needs longer hours."
+          },
+          {
+            "id": "course:option-2",
+            "text": "Visits rose, so examinations had no effect."
+          },
+          {
+            "id": "course:option-3",
+            "text": "Visits rose; therefore, the data are worthless."
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "The first revision preserves the observed increase while limiting the causal claim. The other versions add unsupported conclusions.",
+      "evidenceParagraphIds": [
+        "course:trial-p1"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "paragraph-improvement"
+      ],
+      "passageId": "course:passage-trial",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-paragraph-order",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "paragraph-improvement",
+      "origin": "original",
+      "title": "Paragraph order",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Arrange the sentences into a coherent paragraph.",
+      "interaction": {
+        "kind": "ordering",
+        "items": [
+          {
+            "id": "course:sentence-a",
+            "text": "The workshop received several complaints about unclear charges."
+          },
+          {
+            "id": "course:sentence-b",
+            "text": "To investigate them, the coordinator reviewed the notice."
+          },
+          {
+            "id": "course:sentence-c",
+            "text": "She found that the assessment fee appeared only in small print."
+          },
+          {
+            "id": "course:sentence-d",
+            "text": "She therefore moved that condition beside the booking instructions."
+          }
+        ],
+        "correctOrder": [
+          "course:sentence-a",
+          "course:sentence-b",
+          "course:sentence-c",
+          "course:sentence-d"
+        ]
+      },
+      "explanation": "The complaints establish the problem, the review investigates it, the finding identifies the cause, and the final sentence gives the response.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "paragraph-improvement"
+      ]
+    },
+    {
+      "id": "course:q-condition-cloze",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Condition cloze",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "The extension is contingent ___ an independent review.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "at"
+          },
+          {
+            "id": "course:option-1",
+            "text": "by"
+          },
+          {
+            "id": "course:option-2",
+            "text": "on"
+          },
+          {
+            "id": "course:option-3",
+            "text": "from"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "The fixed pattern is contingent on, meaning dependent on a condition.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-contingent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-open-cloze",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "open-cloze",
+      "origin": "original",
+      "title": "Open cloze",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Complete with ONE WORD: No sooner had the report appeared {{course:field-a}} questions arose about its methods.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Missing conjunction",
+            "accepted": [
+              "than"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "No sooner is paired with than. The first clause already contains the required inversion.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "open-cloze"
+      ]
+    },
+    {
+      "id": "course:q-word-formation",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "word-formation",
+      "origin": "original",
+      "title": "Word formation",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Use RELY: The committee questioned the {{course:field-a}} of the figures.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Noun from RELY",
+            "accepted": [
+              "reliability"
+            ],
+            "caseSensitive": false,
+            "maxWords": 1
+          }
+        ]
+      },
+      "explanation": "The noun reliability fits after the and before of. Reliable is an adjective and cannot fill this noun position.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "word-formation"
+      ]
+    },
+    {
+      "id": "course:q-key-word-change",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "key-word-transformation",
+      "origin": "original",
+      "title": "Key word change",
+      "instructions": "Complete the task using the supplied information.",
+      "prompt": "Use ACCOUNT without changing it. 'The panel ignored the cost.' Complete: The panel failed to {{course:field-a}}. Use FIVE WORDS.",
+      "interaction": {
+        "kind": "text",
+        "fields": [
+          {
+            "id": "course:field-a",
+            "prompt": "Missing phrase",
+            "accepted": [
+              "take the cost into account"
+            ],
+            "caseSensitive": false,
+            "maxWords": 5
+          }
+        ]
+      },
+      "explanation": "Take something into account means consider it. Failed to preserves the meaning that the cost was ignored.",
+      "evidenceParagraphIds": [],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "key-word-transformation"
+      ]
+    },
+    {
+      "id": "course:q-dialogue-evidence",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "dialogue",
+      "origin": "original",
+      "title": "Dialogue evidence",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "A colleague asks, 'May I call this result conclusive?' The study has only ten participants. Choose the most careful reply.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Certainly; a small study proves every case."
+          },
+          {
+            "id": "course:option-1",
+            "text": "I would qualify that claim until we have stronger evidence."
+          },
+          {
+            "id": "course:option-2",
+            "text": "The claim is irrelevant because no small study has value."
+          },
+          {
+            "id": "course:option-3",
+            "text": "No further evidence could ever help."
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Qualifying the claim acknowledges the limitation without dismissing the study or ruling out later evidence.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-qualify"
+      ],
+      "tags": [
+        "Core course",
+        "dialogue"
+      ]
+    },
+    {
+      "id": "course:q-scenario-notice",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "scenario",
+      "origin": "original",
+      "title": "Scenario notice",
+      "instructions": "Use the supplied text. Choose the best-supported answer.",
+      "prompt": "You must publish the workshop's service notice. Which wording is consistent with its rules?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "Every item is repaired free within seven days."
+          },
+          {
+            "id": "course:option-1",
+            "text": "Assessment normally precedes a written estimate; repair requires your approval."
+          },
+          {
+            "id": "course:option-2",
+            "text": "Approval is assumed once an item arrives."
+          },
+          {
+            "id": "course:option-3",
+            "text": "The assessment fee applies only to successful repairs."
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "The second option preserves the process. The others invent guarantees, remove consent or misstate the fee.",
+      "evidenceParagraphIds": [
+        "course:repair-p1",
+        "course:repair-p2",
+        "course:repair-p3"
+      ],
+      "senseIds": [],
+      "tags": [
+        "Core course",
+        "scenario"
+      ],
+      "passageId": "course:passage-repair",
+      "passageRevision": 1
+    },
+    {
+      "id": "course:q-vocab-contingent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Contingent in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The grant is ____ on final approval.\n\nMeaning required: Only possible if another thing happens first.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "contingent"
+          },
+          {
+            "id": "course:option-1",
+            "text": "equivocal"
+          },
+          {
+            "id": "course:option-2",
+            "text": "plausible"
+          },
+          {
+            "id": "course:option-3",
+            "text": "germane"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Contingent fits this meaning. Contingent on usually introduces a condition; dependent on can also describe a continuing need.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-contingent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-equivocal",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Equivocal in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Her ____ reply left both teams unsure.\n\nMeaning required: Not clear enough to show one definite meaning or opinion.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "tentative"
+          },
+          {
+            "id": "course:option-1",
+            "text": "equivocal"
+          },
+          {
+            "id": "course:option-2",
+            "text": "tenable"
+          },
+          {
+            "id": "course:option-3",
+            "text": "disparate"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Equivocal fits this meaning. Equivocal often suggests two possible readings; unclear can simply mean hard to understand.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-equivocal"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-mitigate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Mitigate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Trees can ____ the heat in a crowded street.\n\nMeaning required: To make something harmful less serious.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "undermine"
+          },
+          {
+            "id": "course:option-1",
+            "text": "supplant"
+          },
+          {
+            "id": "course:option-2",
+            "text": "mitigate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "reconcile"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Mitigate fits this meaning. Mitigate usually concerns harm or risk; reduce can concern any amount.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-mitigate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-corroborate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Corroborate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The receipts ____ her account of the journey.\n\nMeaning required: To give further evidence that a statement is true.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "exacerbate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "complement"
+          },
+          {
+            "id": "course:option-2",
+            "text": "scrutinise"
+          },
+          {
+            "id": "course:option-3",
+            "text": "corroborate"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Corroborate fits this meaning. Corroborate specifically means supporting a claim with evidence.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-corroborate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-substantiate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Substantiate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The company could not ____ its promise.\n\nMeaning required: To provide evidence that shows a claim has a sound basis.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "substantiate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "preclude"
+          },
+          {
+            "id": "course:option-2",
+            "text": "conflate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "elucidate"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Substantiate fits this meaning. Substantiate stresses providing a basis; corroborate adds evidence to an existing account.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-substantiate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-undermine",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Undermine in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Repeated delays ____ trust in the service.\n\nMeaning required: To make something weaker or less trusted.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "supplant"
+          },
+          {
+            "id": "course:option-1",
+            "text": "undermine"
+          },
+          {
+            "id": "course:option-2",
+            "text": "reconcile"
+          },
+          {
+            "id": "course:option-3",
+            "text": "qualify"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Undermine fits this meaning. Undermine often describes a gradual or indirect weakening.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-undermine"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-exacerbate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Exacerbate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "A lack of sleep can ____ stress.\n\nMeaning required: To make an existing problem worse.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "complement"
+          },
+          {
+            "id": "course:option-1",
+            "text": "scrutinise"
+          },
+          {
+            "id": "course:option-2",
+            "text": "exacerbate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "concede"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Exacerbate fits this meaning. Exacerbate normally takes a problem or harmful condition as its object.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-exacerbate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-preclude",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Preclude in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The narrow doorway may ____ wheelchair access.\n\nMeaning required: To prevent something or make it impossible.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "conflate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "elucidate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "infer"
+          },
+          {
+            "id": "course:option-3",
+            "text": "preclude"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Preclude fits this meaning. Preclude often means that a condition rules out a possibility.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-preclude"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-supplant",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Supplant in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Digital tickets may ____ paper passes.\n\nMeaning required: To take the place of something that was used before.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "supplant"
+          },
+          {
+            "id": "course:option-1",
+            "text": "reconcile"
+          },
+          {
+            "id": "course:option-2",
+            "text": "qualify"
+          },
+          {
+            "id": "course:option-3",
+            "text": "attribute"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Supplant fits this meaning. Supplant suggests taking over an established role.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-supplant"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-complement",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Complement in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The diagrams ____ the written guide.\n\nMeaning required: To add something useful that makes another thing work better.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "scrutinise"
+          },
+          {
+            "id": "course:option-1",
+            "text": "complement"
+          },
+          {
+            "id": "course:option-2",
+            "text": "concede"
+          },
+          {
+            "id": "course:option-3",
+            "text": "discern"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Complement fits this meaning. Complement stresses a good fit; supplement stresses adding extra material.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-complement"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-conflate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Conflate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Do not ____ low cost with good value.\n\nMeaning required: To treat different things as if they were the same.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "elucidate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "infer"
+          },
+          {
+            "id": "course:option-2",
+            "text": "conflate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "mitigate"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Conflate fits this meaning. Conflate specifically means combining distinct ideas or categories.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-conflate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-reconcile",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Reconcile in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "We must ____ the two accounts of the event.\n\nMeaning required: To find a way for apparently different ideas or needs to fit together.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "qualify"
+          },
+          {
+            "id": "course:option-1",
+            "text": "attribute"
+          },
+          {
+            "id": "course:option-2",
+            "text": "corroborate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "reconcile"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Reconcile fits this meaning. Reconcile often starts with a conflict; harmonise may simply mean bringing things into agreement.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-reconcile"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-scrutinise",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Scrutinise in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Please ____ the figures before signing.\n\nMeaning required: To examine something very carefully.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "scrutinise"
+          },
+          {
+            "id": "course:option-1",
+            "text": "concede"
+          },
+          {
+            "id": "course:option-2",
+            "text": "discern"
+          },
+          {
+            "id": "course:option-3",
+            "text": "substantiate"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Scrutinise fits this meaning. Scrutinise implies close attention to detail, not just looking at something.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-scrutinise"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-elucidate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Elucidate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "A simple diagram can ____ the process.\n\nMeaning required: To make something easier to understand by explaining it.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "infer"
+          },
+          {
+            "id": "course:option-1",
+            "text": "elucidate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "mitigate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "undermine"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Elucidate fits this meaning. Elucidate is formal and usually means explaining an idea in more detail.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-elucidate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-qualify",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Qualify in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "I should ____ my earlier claim: the result applies only to adults.\n\nMeaning required: To limit a statement so that it is more exact.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "attribute"
+          },
+          {
+            "id": "course:option-1",
+            "text": "corroborate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "qualify"
+          },
+          {
+            "id": "course:option-3",
+            "text": "exacerbate"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Qualify fits this meaning. In this sense, qualify adds a condition or limit to a claim; it does not mean passing a test.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-qualify"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-concede",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Concede in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "She had to ____ that the old route was faster.\n\nMeaning required: To admit that something is true, often after resisting it.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "discern"
+          },
+          {
+            "id": "course:option-1",
+            "text": "substantiate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "preclude"
+          },
+          {
+            "id": "course:option-3",
+            "text": "concede"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Concede fits this meaning. Concede often involves accepting an unwelcome point in a disagreement.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-concede"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-infer",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Infer in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "We cannot ____ a cause from this pattern alone.\n\nMeaning required: To reach an idea from the information available.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "infer"
+          },
+          {
+            "id": "course:option-1",
+            "text": "mitigate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "undermine"
+          },
+          {
+            "id": "course:option-3",
+            "text": "supplant"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Infer fits this meaning. Infer is broad; deduce often suggests a more formal chain of reasoning.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-infer"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-attribute",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Attribute in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The team cannot ____ the rise to one factor.\n\nMeaning required: To say that something is caused by a particular thing.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "corroborate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "attribute"
+          },
+          {
+            "id": "course:option-2",
+            "text": "exacerbate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "complement"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Attribute fits this meaning. Attribute and ascribe both link a result to a cause; attribute is more common.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-attribute"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-discern",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Discern in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "It was hard to ____ a pattern in the data.\n\nMeaning required: To notice or recognise something that is not obvious.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "substantiate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "preclude"
+          },
+          {
+            "id": "course:option-2",
+            "text": "discern"
+          },
+          {
+            "id": "course:option-3",
+            "text": "conflate"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Discern fits this meaning. Discern often involves understanding a difference, while detect can mean simply noticing a presence.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-discern"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-tentative",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Tentative in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "We made a ____ plan for Friday.\n\nMeaning required: Not yet certain or finally agreed.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "pragmatic"
+          },
+          {
+            "id": "course:option-1",
+            "text": "contingent"
+          },
+          {
+            "id": "course:option-2",
+            "text": "plausible"
+          },
+          {
+            "id": "course:option-3",
+            "text": "tentative"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Tentative fits this meaning. Tentative stresses uncertainty; provisional stresses waiting for a final version.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-tentative"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-provisional",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Provisional in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The team announced a ____ timetable.\n\nMeaning required: Used for now but likely to be reviewed or changed.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "provisional"
+          },
+          {
+            "id": "course:option-1",
+            "text": "cogent"
+          },
+          {
+            "id": "course:option-2",
+            "text": "equivocal"
+          },
+          {
+            "id": "course:option-3",
+            "text": "tenable"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Provisional fits this meaning. Provisional usually anticipates confirmation or revision; temporary only says something will not last.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-provisional"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-plausible",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Plausible in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "That is a ____ explanation for the delay.\n\nMeaning required: Seeming reasonable or possibly true.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "ostensible"
+          },
+          {
+            "id": "course:option-1",
+            "text": "plausible"
+          },
+          {
+            "id": "course:option-2",
+            "text": "tentative"
+          },
+          {
+            "id": "course:option-3",
+            "text": "salient"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Plausible fits this meaning. Plausible means a claim could be true; credible may imply stronger reasons to trust it.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-plausible"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-tenable",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Tenable in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "That position is no longer ____ after the new evidence.\n\nMeaning required: Able to be defended with good reasons.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "contingent"
+          },
+          {
+            "id": "course:option-1",
+            "text": "provisional"
+          },
+          {
+            "id": "course:option-2",
+            "text": "tenable"
+          },
+          {
+            "id": "course:option-3",
+            "text": "germane"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Tenable fits this meaning. Tenable normally describes a claim or position that can withstand criticism.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-tenable"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-salient",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Salient in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The summary should include the ____ points.\n\nMeaning required: Especially important or easy to notice in the situation.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "equivocal"
+          },
+          {
+            "id": "course:option-1",
+            "text": "plausible"
+          },
+          {
+            "id": "course:option-2",
+            "text": "disparate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "salient"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Salient fits this meaning. Salient stresses relevance or importance; prominent can simply mean highly visible.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-salient"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-germane",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Germane in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Please raise questions that are ____ to the proposal.\n\nMeaning required: Directly related to the matter being discussed.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "germane"
+          },
+          {
+            "id": "course:option-1",
+            "text": "tentative"
+          },
+          {
+            "id": "course:option-2",
+            "text": "tenable"
+          },
+          {
+            "id": "course:option-3",
+            "text": "inadvertent"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Germane fits this meaning. Germane is a formal way to say directly relevant to the current subject.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-germane"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-disparate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Disparate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The project brings together ____ sources of data.\n\nMeaning required: So different that they do not naturally form one group.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "provisional"
+          },
+          {
+            "id": "course:option-1",
+            "text": "disparate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "salient"
+          },
+          {
+            "id": "course:option-3",
+            "text": "negligible"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Disparate fits this meaning. Disparate stresses a lack of similarity; diverse may simply mean varied.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-disparate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-inadvertent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Inadvertent in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The omission was ____, and we corrected it.\n\nMeaning required: Done by accident rather than on purpose.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "plausible"
+          },
+          {
+            "id": "course:option-1",
+            "text": "germane"
+          },
+          {
+            "id": "course:option-2",
+            "text": "inadvertent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "substantial"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Inadvertent fits this meaning. Inadvertent often describes an action caused by a lack of attention.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-inadvertent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-negligible",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Negligible in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The difference in travel time was ____.\n\nMeaning required: So small that it has little practical effect.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "tenable"
+          },
+          {
+            "id": "course:option-1",
+            "text": "disparate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "commensurate"
+          },
+          {
+            "id": "course:option-3",
+            "text": "negligible"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Negligible fits this meaning. Negligible means too small to matter in context, not merely small in size.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-negligible"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-substantial",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Substantial in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The repair will require ____ funding.\n\nMeaning required: Large enough in amount or importance to matter.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "substantial"
+          },
+          {
+            "id": "course:option-1",
+            "text": "salient"
+          },
+          {
+            "id": "course:option-2",
+            "text": "inadvertent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "inherent"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Substantial fits this meaning. Substantial often suggests practical importance as well as size.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-substantial"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-commensurate",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Commensurate in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Pay should be ____ with responsibility.\n\nMeaning required: Matching something in size, amount or degree.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "germane"
+          },
+          {
+            "id": "course:option-1",
+            "text": "commensurate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "negligible"
+          },
+          {
+            "id": "course:option-3",
+            "text": "ubiquitous"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Commensurate fits this meaning. Commensurate with compares levels; proportionate to often judges whether a response is suitably sized.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-commensurate"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-inherent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Inherent in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "There are risks ____ in any new project.\n\nMeaning required: Existing as a basic part of something.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "disparate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "substantial"
+          },
+          {
+            "id": "course:option-2",
+            "text": "inherent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "resilient"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Inherent fits this meaning. Both mean built into something; inherent often describes a quality or risk.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-inherent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-ubiquitous",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Ubiquitous in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "Mobile payment signs have become ____ in the city.\n\nMeaning required: Found almost everywhere in a particular setting.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "inadvertent"
+          },
+          {
+            "id": "course:option-1",
+            "text": "commensurate"
+          },
+          {
+            "id": "course:option-2",
+            "text": "stringent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "ubiquitous"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Ubiquitous fits this meaning. Ubiquitous suggests almost everywhere; widespread only means many places.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-ubiquitous"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-resilient",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Resilient in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "A ____ system can keep working after one part fails.\n\nMeaning required: Able to recover after difficulty or change.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "resilient"
+          },
+          {
+            "id": "course:option-1",
+            "text": "negligible"
+          },
+          {
+            "id": "course:option-2",
+            "text": "inherent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "arbitrary"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Resilient fits this meaning. Resilient stresses recovery; robust stresses strength or resistance to failure.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-resilient"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-stringent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Stringent in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The laboratory follows ____ safety rules.\n\nMeaning required: Very strict and carefully enforced.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "substantial"
+          },
+          {
+            "id": "course:option-1",
+            "text": "stringent"
+          },
+          {
+            "id": "course:option-2",
+            "text": "ubiquitous"
+          },
+          {
+            "id": "course:option-3",
+            "text": "ambivalent"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Stringent fits this meaning. Stringent often describes demanding rules or standards.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-stringent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-arbitrary",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Arbitrary in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The cut-off date seemed ____.\n\nMeaning required: Based on no clear reason, rule or fair method.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "commensurate"
+          },
+          {
+            "id": "course:option-1",
+            "text": "resilient"
+          },
+          {
+            "id": "course:option-2",
+            "text": "arbitrary"
+          },
+          {
+            "id": "course:option-3",
+            "text": "impartial"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Arbitrary fits this meaning. Arbitrary lacks a defensible reason; random may follow a deliberate chance-based method.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-arbitrary"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-ambivalent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Ambivalent in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "She felt ____ about leaving her job.\n\nMeaning required: Having both positive and negative feelings about something.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "inherent"
+          },
+          {
+            "id": "course:option-1",
+            "text": "stringent"
+          },
+          {
+            "id": "course:option-2",
+            "text": "pragmatic"
+          },
+          {
+            "id": "course:option-3",
+            "text": "ambivalent"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Ambivalent fits this meaning. Ambivalent means mixed feelings, not simply a lack of information.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-ambivalent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-impartial",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Impartial in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "An ____ reviewer should assess the complaint.\n\nMeaning required: Not favouring one side unfairly.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "impartial"
+          },
+          {
+            "id": "course:option-1",
+            "text": "ubiquitous"
+          },
+          {
+            "id": "course:option-2",
+            "text": "arbitrary"
+          },
+          {
+            "id": "course:option-3",
+            "text": "cogent"
+          }
+        ],
+        "correctIds": [
+          "course:option-0"
+        ],
+        "multiple": false
+      },
+      "explanation": "Impartial fits this meaning. Both reject unfair preference; impartial often concerns fair treatment of opposing sides.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-impartial"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-pragmatic",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Pragmatic in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "We need a ____ response to the shortage.\n\nMeaning required: Focused on what can work in practice.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "resilient"
+          },
+          {
+            "id": "course:option-1",
+            "text": "pragmatic"
+          },
+          {
+            "id": "course:option-2",
+            "text": "ambivalent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "ostensible"
+          }
+        ],
+        "correctIds": [
+          "course:option-1"
+        ],
+        "multiple": false
+      },
+      "explanation": "Pragmatic fits this meaning. Pragmatic often suggests accepting workable compromises instead of insisting on an ideal.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-pragmatic"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-cogent",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Cogent in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "She presented a ____ argument for the change.\n\nMeaning required: Clear, well supported and likely to persuade.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "stringent"
+          },
+          {
+            "id": "course:option-1",
+            "text": "impartial"
+          },
+          {
+            "id": "course:option-2",
+            "text": "cogent"
+          },
+          {
+            "id": "course:option-3",
+            "text": "contingent"
+          }
+        ],
+        "correctIds": [
+          "course:option-2"
+        ],
+        "multiple": false
+      },
+      "explanation": "Cogent fits this meaning. Cogent especially describes reasoning that is clear and logically strong.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-cogent"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    },
+    {
+      "id": "course:q-vocab-ostensible",
+      "revision": 1,
+      "sourceIds": [
+        "course:original"
+      ],
+      "type": "multiple-choice-cloze",
+      "origin": "original",
+      "title": "Ostensible in use",
+      "instructions": "Complete the sentence. Use the meaning clue to select the precise word.",
+      "prompt": "The ____ purpose of the meeting was to discuss costs.\n\nMeaning required: Stated or appearing to be the reason, though the real one may differ.",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "course:option-0",
+            "text": "arbitrary"
+          },
+          {
+            "id": "course:option-1",
+            "text": "pragmatic"
+          },
+          {
+            "id": "course:option-2",
+            "text": "equivocal"
+          },
+          {
+            "id": "course:option-3",
+            "text": "ostensible"
+          }
+        ],
+        "correctIds": [
+          "course:option-3"
+        ],
+        "multiple": false
+      },
+      "explanation": "Ostensible fits this meaning. Ostensible often raises doubt about whether the stated purpose is genuine.",
+      "evidenceParagraphIds": [],
+      "senseIds": [
+        "course:sense-ostensible"
+      ],
+      "tags": [
+        "Core course",
+        "multiple-choice-cloze"
+      ]
+    }
+  ]
+}

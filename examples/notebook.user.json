@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "notes": [
+    {
+      "id": "note:conditions",
+      "title": "Conditions",
+      "body": "Check whether a promise depends on something else.",
+      "tags": [
+        "conditions"
+      ],
+      "target": {
+        "kind": "question",
+        "id": "example:comprehension",
+        "revision": 1
+      },
+      "createdAt": "2026-11-15T00:00:00Z",
+      "updatedAt": "2026-11-15T00:00:00Z"
+    },
+    {
+      "id": "note:freewriting",
+      "title": "My own sentences",
+      "body": "The trip is contingent on good weather.",
+      "tags": [
+        "writing"
+      ],
+      "createdAt": "2026-11-15T00:00:00Z",
+      "updatedAt": "2026-11-15T00:00:00Z"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "attempt:example",
+      "kind": "question",
+      "target": {
+        "kind": "question",
+        "id": "example:comprehension",
+        "revision": 1
+      },
+      "answer": [
+        "option:1"
+      ],
+      "score": 0,
+      "maxScore": 1,
+      "createdAt": "2026-11-15T00:00:00Z"
+    }
+  ],
+  "mistakes": [
+    {
+      "target": {
+        "kind": "question",
+        "id": "example:comprehension",
+        "revision": 1
+      },
+      "attemptIds": [
+        "attempt:example"
+      ],
+      "mastered": false,
+      "updatedAt": "2026-11-15T00:00:00Z"
+    }
+  ],
+  "reviews": [],
+  "settings": {
+    "dailyNewLimit": 10,
+    "selectedTags": []
+  }
+}

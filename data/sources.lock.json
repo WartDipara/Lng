@@ -1,0 +1,343 @@
+{
+  "retrievedAt": "2026-11-15T09:18:54.110281+00:00",
+  "files": [
+    {
+      "id": "kyle:4a63fb31d2d88138",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "1 初中-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/1%20%E5%88%9D%E4%B8%AD-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "4a63fb31d2d88138.txt",
+      "sha256": "97a0c7aa25dc2cc93fac34a533715c30b7fe4b558d8c2c69c2b366e6cd7bbd16",
+      "bytes": 206943
+    },
+    {
+      "id": "kyle:a3ea7e02d45f489f",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "2 高中-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/2%20%E9%AB%98%E4%B8%AD-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "a3ea7e02d45f489f.txt",
+      "sha256": "7b2905414a9dba3eb829feddc749e94b16ba67cc38426dead21117d6cc30d4ed",
+      "bytes": 332886
+    },
+    {
+      "id": "kyle:a192769676ef6ffd",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "3 四级-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/3%20%E5%9B%9B%E7%BA%A7-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "a192769676ef6ffd.txt",
+      "sha256": "b6ef93b392837bfad92467ed6a8b3f22da6caf07fcfe8858c4f9eccb72069835",
+      "bytes": 293401
+    },
+    {
+      "id": "kyle:6e0074b1d6f48bc6",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "4 六级-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/4%20%E5%85%AD%E7%BA%A7-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "6e0074b1d6f48bc6.txt",
+      "sha256": "4a938c26f5732194330c5453a7fe28d65cf3fd7009fcdfb5bea4517b8ce48ddb",
+      "bytes": 231996
+    },
+    {
+      "id": "kyle:9d8699ce74a4b84c",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "5 考研-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/5%20%E8%80%83%E7%A0%94-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "9d8699ce74a4b84c.txt",
+      "sha256": "8a88f5cc466ec18f86f389460e986530444083f5801a131693a057b6b6a5ab17",
+      "bytes": 531874
+    },
+    {
+      "id": "kyle:4e0ead2a2d6c8c2a",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "6 托福-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/6%20%E6%89%98%E7%A6%8F-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "4e0ead2a2d6c8c2a.txt",
+      "sha256": "f7028faff8298e1f75421800b8370014f58fa1a76f0724aa5590b220b36bb516",
+      "bytes": 511291
+    },
+    {
+      "id": "kyle:3b9f57b5b81633e8",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "7 SAT-乱序.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/7%20SAT-%E4%B9%B1%E5%BA%8F.txt",
+      "localFile": "3b9f57b5b81633e8.txt",
+      "sha256": "2e373bf3edbe6544c35b62c9720cb946d9dc3140befa709672feb7cc2cc1b641",
+      "bytes": 431887
+    },
+    {
+      "id": "kyle:63f6b16f8619e62a",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "full_line_tsv/simple/正序/GMAT.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/full_line_tsv/simple/%E6%AD%A3%E5%BA%8F/GMAT.txt",
+      "localFile": "63f6b16f8619e62a.txt",
+      "sha256": "f9d95ef69e9474e3b15f27db2c4cc7b33728adb93b47ea378126aa2df1f5e018",
+      "bytes": 1551909
+    },
+    {
+      "id": "kyle:20fc203406443071",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "full_line_tsv/simple/正序/GRE.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/full_line_tsv/simple/%E6%AD%A3%E5%BA%8F/GRE.txt",
+      "localFile": "20fc203406443071.txt",
+      "sha256": "1a8545debd775e30acbeecd999a8c16a2f5b99857326f201b7a0def8b90333e6",
+      "bytes": 1546437
+    },
+    {
+      "id": "kyle:cdf1dda86b1197b2",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "full_line_tsv/simple/正序/专八.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/full_line_tsv/simple/%E6%AD%A3%E5%BA%8F/%E4%B8%93%E5%85%AB.txt",
+      "localFile": "cdf1dda86b1197b2.txt",
+      "sha256": "79c870bef7ae36c96acde43ea6db44e55f71fb5c23b70e5adc19cab2ad1ace55",
+      "bytes": 3157482
+    },
+    {
+      "id": "kyle:886d3a9c23b7a10a",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "full_line_tsv/simple/正序/专四.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/full_line_tsv/simple/%E6%AD%A3%E5%BA%8F/%E4%B8%93%E5%9B%9B.txt",
+      "localFile": "886d3a9c23b7a10a.txt",
+      "sha256": "67fcdd46b5c919b7805461a9757bf22f4979d438b298f7b371cef27fd9bf5d11",
+      "bytes": 1210065
+    },
+    {
+      "id": "kyle:699d704d753c50ca",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "full_line_tsv/simple/正序/商务英语.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/full_line_tsv/simple/%E6%AD%A3%E5%BA%8F/%E5%95%86%E5%8A%A1%E8%8B%B1%E8%AF%AD.txt",
+      "localFile": "699d704d753c50ca.txt",
+      "sha256": "c13037eae92c7d7091be44cf3b3b93d34a3ae0e0c59fb1405c5b82dec7300537",
+      "bytes": 2173042
+    },
+    {
+      "id": "kyle:f11187b12555e7e2",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "full_line_tsv/simple/正序/雅思.txt",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/full_line_tsv/simple/%E6%AD%A3%E5%BA%8F/%E9%9B%85%E6%80%9D.txt",
+      "localFile": "f11187b12555e7e2.txt",
+      "sha256": "88ac83aac02c76e47d21fafa2ed52eee88b14f4274011409c6921d80c790bbca",
+      "bytes": 1991367
+    },
+    {
+      "id": "kyle:c75afbca1f35a99c",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/LICENSE",
+      "localFile": "c75afbca1f35a99c",
+      "sha256": "5746ff57c9bb587018a73c030e57ba8d116c0b9843c0617c88dde9c21757b2d2",
+      "bytes": 1500
+    },
+    {
+      "id": "kyle:d4fa4c5705836643",
+      "provider": "kyle",
+      "repository": "KyleBing/english-vocabulary",
+      "revision": "731240a848dca14e2cf17510f384312b788863c1",
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/KyleBing/english-vocabulary/731240a848dca14e2cf17510f384312b788863c1/README.md",
+      "localFile": "d4fa4c5705836643.md",
+      "sha256": "ccb88b9c8da9aded4e3312722ec55f1cd5d8ca6e80581d41642568da01e9e044",
+      "bytes": 6682
+    },
+    {
+      "id": "mahavivo:d5b4be67cde86bc8",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "CET4_edited.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/CET4_edited.txt",
+      "localFile": "d5b4be67cde86bc8.txt",
+      "sha256": "662dcf755a053aa0c6951193d0c258c8fb1515d48a00cbc874057bb5103973b4",
+      "bytes": 198810
+    },
+    {
+      "id": "mahavivo:953b86cb7a87c7b1",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "CET6_edited.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/CET6_edited.txt",
+      "localFile": "953b86cb7a87c7b1.txt",
+      "sha256": "2756c14f1f84d1985969b0e5080a7e8f5691c0ffcb32abbe1d3a061739e89572",
+      "bytes": 177864
+    },
+    {
+      "id": "mahavivo:19948d07b10c0f2f",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "CET_4+6_edited.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/CET_4%2B6_edited.txt",
+      "localFile": "19948d07b10c0f2f.txt",
+      "sha256": "7cad65566db74c2beb4ddbd349ca7b364c4a4a445e976002f38deed9b811765b",
+      "bytes": 65877
+    },
+    {
+      "id": "mahavivo:11189dc1ebc6398f",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "COCA_20000.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/COCA_20000.txt",
+      "localFile": "11189dc1ebc6398f.txt",
+      "sha256": "30e238cc345ca5f3ebb17c078c96c521f54dc8ea64f41fdfdadab3b404b4bbb6",
+      "bytes": 170223
+    },
+    {
+      "id": "mahavivo:9d004e16d4fdf622",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "GRE_8000_Words.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/GRE_8000_Words.txt",
+      "localFile": "9d004e16d4fdf622.txt",
+      "sha256": "133d2507356af1bdfdd526231185b36ccf33fb62c6310957652f69f8282db8e0",
+      "bytes": 367372
+    },
+    {
+      "id": "mahavivo:86f59ad0b32e2ca2",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "NPEE_Wordlist.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/NPEE_Wordlist.txt",
+      "localFile": "86f59ad0b32e2ca2.txt",
+      "sha256": "3e9383908e04aafa2626fda429b3d486e0f1667a3a66032097261b55f4ba72ad",
+      "bytes": 300430
+    },
+    {
+      "id": "mahavivo:70ac6539d8d2dd8e",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "TOEFL.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/TOEFL.txt",
+      "localFile": "70ac6539d8d2dd8e.txt",
+      "sha256": "3a95d7ccb44a9e93b472fa55fe1898e99d9e302bcead6951aa333a948a27bd02",
+      "bytes": 349781
+    },
+    {
+      "id": "mahavivo:5d57c4da0735ff48",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "台灣高中英文參考詞彙表.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/%E5%8F%B0%E7%81%A3%E9%AB%98%E4%B8%AD%E8%8B%B1%E6%96%87%E5%8F%83%E8%80%83%E8%A9%9E%E5%BD%99%E8%A1%A8.txt",
+      "localFile": "5d57c4da0735ff48.txt",
+      "sha256": "2cfe721e76572e57eb7a4bb12709afe7e866e2ce2f113e8a6556314fcee9b78b",
+      "bytes": 118329
+    },
+    {
+      "id": "mahavivo:12925c6bae80de53",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "英语专业四八级词汇表.txt",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/%E8%8B%B1%E8%AF%AD%E4%B8%93%E4%B8%9A%E5%9B%9B%E5%85%AB%E7%BA%A7%E8%AF%8D%E6%B1%87%E8%A1%A8.txt",
+      "localFile": "12925c6bae80de53.txt",
+      "sha256": "ae4262fc683836adf9250ab708b71307ca4fea43fc3320ff78dde47eb5a89c1f",
+      "bytes": 944986
+    },
+    {
+      "id": "mahavivo:43e99835c856b728",
+      "provider": "mahavivo",
+      "repository": "mahavivo/english-wordlists",
+      "revision": "395cebd583d97be61b065d281d16dc49c7e4a8b0",
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/mahavivo/english-wordlists/395cebd583d97be61b065d281d16dc49c7e4a8b0/README.md",
+      "localFile": "43e99835c856b728.md",
+      "sha256": "b224c4e3c2de000df2f0fd25d36225ec34ce9d99f2ac3237d28d97cf2b1008d6",
+      "bytes": 2089
+    },
+    {
+      "id": "ecdict:fa68e64d87e0384b",
+      "provider": "ecdict",
+      "repository": "skywind3000/ECDICT",
+      "revision": "39cfb9672c0906b63569e0453c2e6abfb9ab182a",
+      "path": "ecdict.csv",
+      "url": "https://raw.githubusercontent.com/skywind3000/ECDICT/39cfb9672c0906b63569e0453c2e6abfb9ab182a/ecdict.csv",
+      "localFile": "fa68e64d87e0384b.csv",
+      "sha256": "d1ecbdf9ee2b920afb6f430ca6b6bb9f559588cf0dff86e04bd255f9390843cc",
+      "bytes": 66009548
+    },
+    {
+      "id": "ecdict:296cc877110e4942",
+      "provider": "ecdict",
+      "repository": "skywind3000/ECDICT",
+      "revision": "39cfb9672c0906b63569e0453c2e6abfb9ab182a",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/skywind3000/ECDICT/39cfb9672c0906b63569e0453c2e6abfb9ab182a/LICENSE",
+      "localFile": "296cc877110e4942",
+      "sha256": "f8552dd246f61a4e064569eae6194a01c6b3d63b03bf27c6ca863593c549ed0f",
+      "bytes": 1063
+    },
+    {
+      "id": "ecdict:12c5aa69191a5d3b",
+      "provider": "ecdict",
+      "repository": "skywind3000/ECDICT",
+      "revision": "39cfb9672c0906b63569e0453c2e6abfb9ab182a",
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/skywind3000/ECDICT/39cfb9672c0906b63569e0453c2e6abfb9ab182a/README.md",
+      "localFile": "12c5aa69191a5d3b.md",
+      "sha256": "0c3f95fc7e15f7eccf65feedb58ba3ebace1fe7b7cbdd1af60c9ace4cef9094b",
+      "bytes": 18414
+    },
+    {
+      "id": "oewn:2025",
+      "provider": "oewn",
+      "revision": "2025",
+      "path": "english-wordnet-2025.xml.gz",
+      "url": "https://en-word.net/static/english-wordnet-2025.xml.gz",
+      "localFile": "english-wordnet-2025.xml.gz",
+      "sha256": "9ca6d1dcb75f822fdd66617f7d9da48142ace38dd544d6ad5e2feca1674ad3fe",
+      "bytes": 11363503
+    },
+    {
+      "id": "oewn:license",
+      "provider": "oewn",
+      "revision": "9b6aca775ae10ad3d2dc9956e8ad42a4ce1e076b",
+      "path": "LICENSE.md",
+      "url": "https://raw.githubusercontent.com/globalwordnet/english-wordnet/9b6aca775ae10ad3d2dc9956e8ad42a4ce1e076b/LICENSE.md",
+      "localFile": "oewn-LICENSE.md",
+      "sha256": "672cc8b5663e8dc74c4b07a9dcf477193853575b119908fd3dc0aeeb60a9dbbb",
+      "bytes": 19863
+    },
+    {
+      "id": "oewn:princeton-license",
+      "provider": "oewn",
+      "revision": "9b6aca775ae10ad3d2dc9956e8ad42a4ce1e076b",
+      "path": "WNDB_License.txt",
+      "url": "https://raw.githubusercontent.com/globalwordnet/english-wordnet/9b6aca775ae10ad3d2dc9956e8ad42a4ce1e076b/WNDB_License.txt",
+      "localFile": "oewn-WNDB_License.txt",
+      "sha256": "df30ec18fbabcdaf031b79ea026d3e6b959010cffe6dd7be9ac137822175b904",
+      "bytes": 1740
+    }
+  ]
+}

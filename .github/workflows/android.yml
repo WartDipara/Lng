@@ -1,0 +1,130 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  android:
+    name: Signed offline Android APK
+    runs-on: windows-2025
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Check version and signing configuration
+        env:
+          SIGNING_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:SIGNING_KEY)) {
+            throw 'Add the ANDROID_KEYSTORE_BASE64 repository secret with the existing app signing keystore before running this workflow.'
+          }
+          $app = (Get-Content -Raw app.json | ConvertFrom-Json).expo
+          $package = Get-Content -Raw package.json | ConvertFrom-Json
+          if ($app.version -ne $package.version) { throw 'app.json and package.json versions must match.' }
+          if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -ne "v$($app.version)") {
+            throw "Tag must be v$($app.version), matching app.json."
+          }
+          if ($app.android.versionCode -lt 1) { throw 'android.versionCode must be a positive integer.' }
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          cmdline-tools-version: '15859902'
+          packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0 ndk;27.1.12297006 cmake;3.30.5 cmake;3.22.1'
+
+      - name: Restore existing signing identity
+        env:
+          SIGNING_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $keyPath = Join-Path $env:GITHUB_WORKSPACE 'android/app/debug.keystore'
+          [IO.Directory]::CreateDirectory((Split-Path $keyPath -Parent)) | Out-Null
+          [IO.File]::WriteAllBytes($keyPath, [Convert]::FromBase64String($env:SIGNING_KEY))
+          # The build script preserves this identity across native project generation.
+
+      - name: Build and verify release APK
+        run: |
+          & ./scripts/build-android.ps1 -Workers 4
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload installable APK and verification report
+        id: apk
+        uses: actions/upload-artifact@v7
+        with:
+          name: English-in-Practice-android-${{ github.run_number }}
+          path: |
+            output/English-in-Practice.apk
+            output/android-build-verification.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+
+      - name: Summarize build
+        env:
+          ARTIFACT_URL: ${{ steps.apk.outputs.artifact-url }}
+        run: |
+          $report = Get-Content -Raw output/android-build-verification.json | ConvertFrom-Json
+          @"
+          ## Android APK ready
+          - Version: $($report.version) (Android versionCode $($report.versionCode))
+          - [Download APK and verification report]($env:ARTIFACT_URL)
+          - SHA-256: $($report.sha256)
+          - Bundled offline assets verified: $($report.offlinePackCount)
+          - This job checks compilation, tests, signing and bundled content; it does not run a device or emulator.
+          "@ | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+
+      - name: Upload build diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-build-diagnostics-${{ github.run_number }}
+          path: |
+            output/builds/*.log
+            android/build/reports/
+            android/app/build/reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Remove restored signing key
+        if: always()
+        run: |
+          $keyPath = Join-Path $env:GITHUB_WORKSPACE 'android/app/debug.keystore'
+          if (Test-Path -LiteralPath $keyPath) { Remove-Item -LiteralPath $keyPath -Force }

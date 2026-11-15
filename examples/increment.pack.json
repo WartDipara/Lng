@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "packId": "example:increment",
+  "packVersion": 1,
+  "createdAt": "2026-11-15T00:00:00Z",
+  "requires": [
+    {
+      "packId": "example:base",
+      "minVersion": 1
+    }
+  ],
+  "sources": [],
+  "questions": [
+    {
+      "id": "example:comprehension-extra",
+      "revision": 1,
+      "sourceIds": [
+        "example:author"
+      ],
+      "type": "comprehension",
+      "origin": "original",
+      "title": "Comprehension",
+      "instructions": "Complete the task using the supplied text.",
+      "prompt": "What must happen before the extra hours can be offered?",
+      "interaction": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "option:0",
+            "text": "Volunteers must be available."
+          },
+          {
+            "id": "option:1",
+            "text": "Permanent funding must already be approved."
+          },
+          {
+            "id": "option:2",
+            "text": "Every worker must visit."
+          },
+          {
+            "id": "option:3",
+            "text": "Visits must double."
+          }
+        ],
+        "correctIds": [
+          "option:0"
+        ],
+        "multiple": false
+      },
+      "explanation": "The trial depends on volunteers being available.",
+      "evidenceParagraphIds": [
+        "paragraph:trial"
+      ],
+      "senseIds": [],
+      "tags": [
+        "FORMAT-EXAMPLE"
+      ],
+      "passageId": "example:library",
+      "passageRevision": 1
+    }
+  ]
+}
