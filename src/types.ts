@@ -57,9 +57,17 @@ export interface Catalog {
 export interface Target { kind: 'question' | 'sense'; id: string; revision: number }
 export interface Note { id: string; title: string; body: string; tags: string[]; target?: Target; createdAt: string; updatedAt: string }
 export interface Attempt { id: string; target: Target; kind: 'question' | 'spelling' | 'recall'; answer: unknown; score: number; maxScore: number; createdAt: string }
+export interface PracticeItem {
+  question: Question; passage?: Passage; answer: unknown;
+  attemptId?: string; score?: number; maxScore?: number;
+}
+export interface PracticeSession { id: string; createdAt: string; submittedAt?: string; items: PracticeItem[] }
 export interface UserState {
   schemaVersion: 1; notes: Note[]; attempts: Attempt[];
   mistakes: { target: Target; attemptIds: string[]; mastered: boolean; updatedAt: string }[];
   reviews: { target: Target; dueAt: string; intervalDays: number; ease: number; repetitions: number }[];
   settings: { dailyNewLimit: number; selectedTags: string[] };
+  profile?: { id: string; createdAt: string; name: string };
+  practiceSize?: number;
+  practiceSessions?: PracticeSession[];
 }

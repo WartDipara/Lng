@@ -13,10 +13,10 @@ export const io: JsonIO = {
     file.parentDirectory.create({ idempotent: true, intermediates: true });
     const temp = new File(root, path + '.tmp');
     if (temp.exists) temp.delete();
-    temp.write(text);
+    await temp.write(text);
     // Engine commits alternate slots. If killed between delete and move, the other
     // checksummed slot remains valid and initialize() recovers it.
     if (file.exists) file.delete();
-    temp.move(file);
+    await temp.move(file);
   },
 };

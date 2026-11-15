@@ -11,7 +11,7 @@ export async function pickJson(): Promise<{ name: string; text: string }[]> {
 }
 export async function exportJson(name: string, value: unknown) {
   const file = new File(Paths.cache, name);
-  file.write(JSON.stringify(value));
+  await file.write(JSON.stringify(value));
   if (!await Sharing.isAvailableAsync()) throw new Error('File sharing is unavailable on this device.');
   await Sharing.shareAsync(file.uri, { mimeType: 'application/json', UTI: 'public.json', dialogTitle: 'Save your EngDictionary backup' });
 }

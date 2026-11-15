@@ -1,6 +1,7 @@
+import { useTheme } from '../theme';
 import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Button, Card, Field, Heading, ui } from '../components/UI';
+import { Button, Card, Chip, Field, Heading, useUI } from '../components/UI';
 import type { ScreenProps } from '../routes';
 import { pickJson, exportJson } from '../storage/documents';
 import { planImport } from '../../src/catalog.ts';
@@ -9,6 +10,7 @@ import type { ContentPack } from '../../src/types.ts';
 import type { Backup } from '../engine';
 
 export function LibraryScreen({ engine, refresh, notify }: ScreenProps) {
+  const ui = useUI(); const { colors: c, mode, setMode, error: themeError } = useTheme();
   const [busy, setBusy] = useState(false); const [progress, setProgress] = useState('');
   const [packs, setPacks] = useState<ContentPack[]>([]); const [summary, setSummary] = useState('');
   const [backup, setBackup] = useState<Backup>(); const [limit, setLimit] = useState(String(engine.user.settings.dailyNewLimit));
@@ -69,6 +71,7 @@ export function LibraryScreen({ engine, refresh, notify }: ScreenProps) {
       {backup && <><Text style={ui.body}>Restore {backup.user.notes.length} notes and {backup.user.attempts.length} attempts? This replaces your current notebook and progress. Export your current backup first if you want to keep both.</Text><View style={ui.row}><Button title="Restore backup" onPress={restore} disabled={busy} /><Button title="Keep current data" secondary onPress={() => setBackup(undefined)} disabled={busy} /></View></>}
     </Card>
     <Card><Text style={ui.h2}>Take your notebook with you</Text><Text style={ui.body}>Export your notes, mistakes, review schedule and imported packs. Restore them here on another device.</Text><Button title="Export backup" secondary onPress={exportBackup} disabled={busy} /></Card>
+    <Card><Text style={ui.h2}>Appearance</Text><View style={ui.row}>{(['system', 'light', 'dark'] as const).map(value => <Chip key={value} label={value === 'system' ? 'System' : value === 'light' ? 'Light' : 'Dark'} selected={mode === value} onPress={() => setMode(value)} />)}</View>{!!themeError && <Text style={ui.small}>{themeError}</Text>}</Card>
     <Card><Text style={ui.h2}>Your learning rhythm</Text><Field label="New meanings per day" value={limit} onChangeText={setLimit} keyboardType="number-pad" /><Field label="Review tags (leave empty for all)" value={selectedTags} onChangeText={setSelectedTags} placeholder="advanced, work" /><Text style={ui.small}>Tags filter new cards and due reviews. Use tags shown on your vocabulary or practice tasks.</Text><Button title="Save preferences" onPress={settings} /></Card>
     <Button title={packageList ? 'Hide content sources' : 'View content sources'} secondary onPress={() => setPackageList(!packageList)} />
     {packageList && <Sources engine={engine} />}
@@ -76,6 +79,7 @@ export function LibraryScreen({ engine, refresh, notify }: ScreenProps) {
   </ScrollView>;
 }
 function Sources({ engine }: Pick<ScreenProps, 'engine'>) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [sources, setSources] = useState<{ title: string; license: string; url: string }[]>([]);
   const [notice, setNotice] = useState('');
   React.useEffect(() => { let active = true; Promise.all(Object.keys(engine.catalog.entities.sources).map(id => engine.entity<any>('sources', id))).then(items => active && setSources(items.filter(Boolean))); return () => { active = false; }; }, []);

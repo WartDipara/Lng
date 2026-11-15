@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Image,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -9,6 +10,8 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '../theme';
 import type { Interaction, Passage, Question } from '../../src/types.ts';
 
 export interface QuestionPanelProps {
@@ -18,6 +21,8 @@ export interface QuestionPanelProps {
   onChange: (answer: unknown) => void;
   submitted: boolean;
   result?: { score: number; maxScore: number };
+  feedback?: string;
+  deferred?: boolean;
   onSubmit: () => void | Promise<void>;
   onNext?: () => void;
   onNote: () => void;
@@ -25,18 +30,10 @@ export interface QuestionPanelProps {
 }
 
 type TextField = Extract<Interaction, { kind: 'text' }>['fields'][number];
-const color = {
-  ink: '#17324D',
-  body: '#263D50',
-  muted: '#52697B',
-  teal: '#117B72',
-  pale: '#EDF3F8',
-  border: '#CEDBE4',
-  white: '#FFFFFF',
-  correct: '#E5F4EE',
-  wrong: '#FFF0ED',
-  red: '#A33E32',
-};
+type ThemeColors = ReturnType<typeof useTheme>['colors'];
+const panelColors = (c: ThemeColors) => ({ ink: c.ink, body: c.text, muted: c.muted, teal: c.teal,
+  pale: c.blue, border: c.line, white: c.paper, correct: c.paleTeal, wrong: c.paleRed,
+  red: c.red, onAccent: c.onAccent });
 
 function stringMap(answer: unknown): Record<string, string> {
   if (!answer || typeof answer !== 'object' || Array.isArray(answer)) return {};
@@ -69,9 +66,16 @@ function readablePrompt(value: string): string {
 
 /** Controlled, offline question UI. The parent owns grading and durable attempt storage. */
 export function QuestionPanel(props: QuestionPanelProps) {
+  const { colors: c } = useTheme();
+  const color = useMemo(() => panelColors(c), [c]);
+  const styles = useMemo(() => createStyles(c), [c]);
   const { question, passage, answer, onChange, submitted, result, onSubmit, onNext, onNote, onWord } = props;
   const interaction = question.interaction;
-  const [showPassage, setShowPassage] = useState(true);
+  const [showPassage, setShowPassage] = useState(false);
+  const [paragraphIndex, setParagraphIndex] = useState(0);
+  const [allParagraphs, setAllParagraphs] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const readerScroll = useRef<React.ComponentRef<typeof ScrollView>>(null);
   const [activeMatch, setActiveMatch] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -80,15 +84,29 @@ export function QuestionPanel(props: QuestionPanelProps) {
   const [imageRatio, setImageRatio] = useState(1.5);
 
   useEffect(() => {
-    setShowPassage(true);
+    setShowPassage(false);
+    setParagraphIndex(0);
+    setAllParagraphs(false);
+    setShowExplanation(false);
     setActiveMatch(null);
     setSubmitError('');
     submittingRef.current = false;
     setSubmitting(false);
   }, [question.id, question.revision]);
 
+  useEffect(() => { readerScroll.current?.scrollTo({ y: 0, animated: false }); }, [paragraphIndex, allParagraphs]);
+
+  function openPassage(evidence = false) {
+    if (evidence && passage) {
+      const index = passage.paragraphs.findIndex(p => question.evidenceParagraphIds.includes(p.id));
+      setParagraphIndex(Math.max(0, index));
+      setAllParagraphs(false);
+    }
+    setShowPassage(true);
+  }
+
   useEffect(() => {
-    if (interaction.kind === 'ordering' && !submitted) {
+    if (interaction.kind === 'ordering' && !submitted && !props.deferred) {
       const ids = stringArray(answer);
       if (ids.length !== interaction.items.length || new Set(ids).size !== ids.length || !ids.every(id => interaction.items.some(item => item.id === id))) {
         onChange(interaction.items.map(item => item.id));
@@ -245,10 +263,9 @@ export function QuestionPanel(props: QuestionPanelProps) {
             <View style={[styles.optionMarker, selected && styles.selectedMarker]}><Text style={[styles.optionLetter, selected && styles.selectedLetter]}>{String.fromCharCode(65 + index)}</Text></View>
             <View style={styles.flex}>
               <Text style={styles.optionText}>{option.text}</Text>
-              {submitted && <Text style={[styles.feedback, wrong && styles.wrongText]}>{correct ? selected ? 'Your answer · correct' : 'Correct answer' : selected ? 'Your answer · incorrect' : 'Not the answer'}</Text>}
+              {submitted && (correct || selected) && <Text style={[styles.feedback, wrong && styles.wrongText]}>{correct ? selected ? 'Your answer · correct' : 'Correct answer' : 'Your answer · incorrect'}</Text>}
             </View>
           </Pressable>
-          {submitted && question.optionExplanations?.[option.id] && <Text style={styles.optionExplanation}>{question.optionExplanations[option.id]}</Text>}
         </View>;
       })}
     </View>;
@@ -273,9 +290,9 @@ export function QuestionPanel(props: QuestionPanelProps) {
             accessibilityLabel={`Choose match for ${prompt.text}. ${selected?.text ?? 'No match chosen.'}`}
             onPress={() => setActiveMatch(expanded ? null : prompt.id)}
             disabled={locked}
-            style={[styles.matchPicker, submitted && (correct ? styles.correctInput : styles.wrongInput)]}
+            style={({ pressed }) => [styles.matchPicker, submitted && (correct ? styles.correctInput : styles.wrongInput), pressed && styles.pressed]}
           ><Text style={[styles.flex, styles.body]}>{selected?.text ?? 'Choose a match'}</Text><Text style={styles.matchToggle}>{expanded ? '−' : '+'}</Text></Pressable>
-          {!locked && selected && <Pressable accessibilityRole="button" style={styles.clearButton} onPress={() => {
+          {!locked && selected && <Pressable accessibilityRole="button" style={({ pressed }) => [styles.clearButton, pressed && styles.pressed]} onPress={() => {
             const next = { ...fieldAnswers }; delete next[prompt.id]; onChange(next);
           }}><Text style={styles.linkText}>Clear match</Text></Pressable>}
           {!locked && expanded && <View style={styles.matchOptions}>
@@ -310,8 +327,8 @@ export function QuestionPanel(props: QuestionPanelProps) {
         return <View key={id} style={[styles.orderItem, submitted && (correct ? styles.correctOption : styles.wrongOption)]}>
           <View style={styles.orderText}><Text style={styles.orderNumber}>{index + 1}</Text><Text style={[styles.body, styles.flex]}>{item?.text}</Text></View>
           {!submitted && <View style={styles.orderControls}>
-            <Pressable accessibilityRole="button" accessibilityLabel={`Move sentence ${index + 1} up`} disabled={locked || index === 0} onPress={() => move(index, -1)} style={[styles.orderButton, (locked || index === 0) && styles.disabled]}><Text style={styles.linkText}>Up</Text></Pressable>
-            <Pressable accessibilityRole="button" accessibilityLabel={`Move sentence ${index + 1} down`} disabled={locked || index === order.length - 1} onPress={() => move(index, 1)} style={[styles.orderButton, (locked || index === order.length - 1) && styles.disabled]}><Text style={styles.linkText}>Down</Text></Pressable>
+            <Pressable accessibilityRole="button" accessibilityLabel={`Move sentence ${index + 1} up`} accessibilityState={{ disabled: locked || index === 0 }} disabled={locked || index === 0} onPress={() => move(index, -1)} style={({ pressed }) => [styles.orderButton, (locked || index === 0) && styles.disabled, pressed && styles.pressed]}><Text style={styles.linkText}>Up</Text></Pressable>
+            <Pressable accessibilityRole="button" accessibilityLabel={`Move sentence ${index + 1} down`} accessibilityState={{ disabled: locked || index === order.length - 1 }} disabled={locked || index === order.length - 1} onPress={() => move(index, 1)} style={({ pressed }) => [styles.orderButton, (locked || index === order.length - 1) && styles.disabled, pressed && styles.pressed]}><Text style={styles.linkText}>Down</Text></Pressable>
           </View>}
         </View>;
       })}
@@ -330,19 +347,36 @@ export function QuestionPanel(props: QuestionPanelProps) {
     </View>
     <Text accessibilityRole="header" style={styles.title}>{question.title}</Text>
     {question.exam && <Text style={styles.hint}>{question.exam.name}{question.exam.year ? ` (${question.exam.year})` : ''}: {question.exam.reference}</Text>}
-    {passage ? <View style={styles.passage}>
-      <Pressable accessibilityRole="button" accessibilityState={{ expanded: showPassage }} onPress={() => setShowPassage(!showPassage)} style={styles.passageToggle}>
-        <Text style={[styles.subheading, styles.flex]}>{passage.title}</Text>
-        <Text style={styles.linkText}>{showPassage ? 'Hide text' : 'Read text'}</Text>
+    {passage ? <>
+      <Pressable accessibilityRole="button" accessibilityLabel="Read passage" accessibilityState={{ expanded: showPassage }} onPress={() => openPassage()} style={({ pressed }) => [styles.passageToggle, pressed && styles.pressed]}>
+        <Text style={styles.linkText}>Read passage</Text>
+        <Text numberOfLines={1} style={[styles.hint, styles.flex]}>{passage.paragraphs.length} paragraphs</Text>
+        <Text style={styles.linkText}>↗</Text>
       </Pressable>
-      {showPassage && <View style={styles.passageBody}>
-        {passage.paragraphs.map((paragraph, index) => <View key={paragraph.id} style={[styles.paragraph, submitted && question.evidenceParagraphIds.includes(paragraph.id) && styles.evidence]}>
-          <Text style={styles.paragraphLabel}>Paragraph {index + 1}</Text>
-          <Text selectable style={styles.reading}>{paragraph.text}</Text>
-          {submitted && question.evidenceParagraphIds.includes(paragraph.id) && <Text style={styles.feedback}>Evidence for this answer</Text>}
-        </View>)}
-      </View>}
-    </View> : question.passageId ? <Text accessibilityRole="alert" style={styles.error}>The reading text is unavailable. Import the content pack containing this passage before answering.</Text> : null}
+      <Modal visible={showPassage} animationType="none" presentationStyle="fullScreen" onRequestClose={() => setShowPassage(false)}>
+        <SafeAreaView style={styles.reader}>
+          <View style={styles.readerHeader}>
+            <Text accessibilityRole="header" numberOfLines={2} style={[styles.subheading, styles.flex]}>{passage.title}</Text>
+            <Pressable accessibilityRole="button" accessibilityLabel="Close passage" onPress={() => setShowPassage(false)} style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}><Text style={styles.linkText}>Done</Text></Pressable>
+          </View>
+          <View style={styles.readerToolbar}>
+            <Text accessibilityLiveRegion="polite" style={styles.hint}>{allParagraphs ? `${passage.paragraphs.length} paragraphs` : `Paragraph ${paragraphIndex + 1} of ${passage.paragraphs.length}`}</Text>
+            <Pressable accessibilityRole="button" accessibilityState={{ selected: allParagraphs }} onPress={() => setAllParagraphs(!allParagraphs)} style={({ pressed }) => [styles.clearButton, pressed && styles.pressed]}><Text style={styles.linkText}>{allParagraphs ? 'One paragraph' : 'All paragraphs'}</Text></Pressable>
+          </View>
+          <ScrollView ref={readerScroll} style={styles.flex} contentContainerStyle={styles.readerContent}>
+            {passage.paragraphs.map((paragraph, index) => (allParagraphs || index === paragraphIndex) && <View key={paragraph.id} style={[styles.paragraph, submitted && question.evidenceParagraphIds.includes(paragraph.id) && styles.evidence]}>
+              <Text style={styles.paragraphLabel}>Paragraph {index + 1}</Text>
+              <Text selectable style={styles.reading}>{paragraph.text}</Text>
+              {submitted && question.evidenceParagraphIds.includes(paragraph.id) && <Text style={styles.feedback}>Evidence for this answer</Text>}
+            </View>)}
+          </ScrollView>
+          {!allParagraphs && <View style={styles.readerNavigation}>
+            <Pressable accessibilityRole="button" accessibilityLabel="Previous paragraph" accessibilityState={{ disabled: paragraphIndex === 0 }} disabled={paragraphIndex === 0} onPress={() => setParagraphIndex(index => index - 1)} style={({ pressed }) => [styles.secondaryButton, styles.flex, paragraphIndex === 0 && styles.disabled, pressed && styles.pressed]}><Text style={styles.linkText}>Previous</Text></Pressable>
+            <Pressable accessibilityRole="button" accessibilityLabel="Next paragraph" accessibilityState={{ disabled: paragraphIndex >= passage.paragraphs.length - 1 }} disabled={paragraphIndex >= passage.paragraphs.length - 1} onPress={() => setParagraphIndex(index => index + 1)} style={({ pressed }) => [styles.primaryButton, styles.flex, paragraphIndex >= passage.paragraphs.length - 1 && styles.disabled, pressed && styles.pressed]}><Text style={styles.primaryButtonText}>Next</Text></Pressable>
+          </View>}
+        </SafeAreaView>
+      </Modal>
+    </> : question.passageId ? <Text accessibilityRole="alert" style={styles.error}>The reading text is unavailable. Import the content pack containing this passage before answering.</Text> : null}
     <Text style={styles.instructions}>{question.instructions}</Text>
     <Text selectable style={styles.prompt}>{readablePrompt(question.prompt)}</Text>
     {renderChoices()}
@@ -352,9 +386,13 @@ export function QuestionPanel(props: QuestionPanelProps) {
     {submitError ? <Text accessibilityRole="alert" style={styles.error}>{submitError}</Text> : null}
     {submitted ? <View style={[styles.result, successful ? styles.correctOption : styles.resultNeutral]} accessibilityLiveRegion="polite">
       <Text accessibilityRole="header" style={styles.subheading}>{result ? `${result.score} / ${result.maxScore} correct` : 'Answer review'}</Text>
-      <Text selectable style={styles.body}>{question.explanation}</Text>
-      {onWord && question.senseIds.length > 0 && <View style={styles.wordLinks}>{question.senseIds.map((id, index) => <Pressable key={id} accessibilityRole="button" onPress={() => onWord(id)} style={styles.secondaryButton}><Text style={styles.linkText}>Study word {index + 1}</Text></Pressable>)}</View>}
-    </View> : <Pressable
+      {!!props.feedback && <Text style={styles.body}>{props.feedback}</Text>}
+      <Pressable accessibilityRole="button" accessibilityLabel={showExplanation ? "Hide explanation" : "Show explanation"} accessibilityState={{ expanded: showExplanation }} onPress={() => setShowExplanation(!showExplanation)} style={({ pressed }) => [styles.explanationToggle, pressed && styles.pressed]}><Text style={styles.linkText}>{showExplanation ? 'Hide explanation' : 'Show explanation'}</Text><Text style={styles.linkText}>{showExplanation ? '−' : '+'}</Text></Pressable>
+      {showExplanation && <Text selectable style={styles.body}>{question.explanation}</Text>}
+      {showExplanation && interaction.kind === 'choice' && interaction.options.map((option, index) => question.optionExplanations?.[option.id] && <View key={option.id} style={styles.explanationItem}><Text style={styles.fieldLabel}>{String.fromCharCode(65 + index)}. {option.text}</Text><Text style={styles.optionExplanation}>{question.optionExplanations[option.id]}</Text></View>)}
+      {passage && question.evidenceParagraphIds.length > 0 && <Pressable accessibilityRole="button" onPress={() => openPassage(true)} style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}><Text style={styles.linkText}>Read evidence</Text></Pressable>}
+      {showExplanation && onWord && question.senseIds.length > 0 && <View style={styles.wordLinks}>{question.senseIds.map((id, index) => <Pressable key={id} accessibilityRole="button" onPress={() => onWord(id)} style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}><Text style={styles.linkText}>Study word {index + 1}</Text></Pressable>)}</View>}
+    </View> : props.deferred ? null : <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: !ready || locked || Boolean(question.passageId && !passage), busy: submitting }}
       disabled={!ready || locked || Boolean(question.passageId && !passage)}
@@ -363,13 +401,15 @@ export function QuestionPanel(props: QuestionPanelProps) {
       style={({ pressed }) => [styles.primaryButton, (!ready || locked || Boolean(question.passageId && !passage)) && styles.disabled, pressed && styles.pressed]}
     ><Text style={styles.primaryButtonText}>{submitting ? 'Saving answer…' : 'Check answer'}</Text></Pressable>}
     <View style={styles.actions}>
-      <Pressable accessibilityRole="button" onPress={onNote} style={styles.secondaryButton}><Text style={styles.linkText}>Add a note</Text></Pressable>
-      {submitted && onNext && <Pressable accessibilityRole="button" onPress={onNext} style={[styles.primaryButton, styles.nextButton]}><Text style={styles.primaryButtonText}>Next question</Text></Pressable>}
+      <Pressable accessibilityRole="button" onPress={onNote} style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}><Text style={styles.linkText}>Add a note</Text></Pressable>
+      {submitted && onNext && <Pressable accessibilityRole="button" onPress={onNext} style={({ pressed }) => [styles.primaryButton, styles.nextButton, pressed && styles.pressed]}><Text style={styles.primaryButtonText}>Next question</Text></Pressable>}
     </View>
   </View>;
 }
 
-const styles = StyleSheet.create({
+const createStyles = (c: ThemeColors) => {
+  const color = panelColors(c);
+  return StyleSheet.create({
   root: { gap: 18, paddingBottom: 28, width: '100%' },
   flex: { flex: 1, minWidth: 0 },
   stack: { gap: 12 },
@@ -382,28 +422,33 @@ const styles = StyleSheet.create({
   hint: { color: color.muted, fontSize: 13, lineHeight: 20 },
   instructions: { color: color.muted, fontSize: 15, lineHeight: 23 },
   prompt: { color: color.ink, fontSize: 19, fontWeight: '600', lineHeight: 29 },
-  passage: { backgroundColor: color.pale, borderRadius: 14, overflow: 'hidden' },
-  passageToggle: { padding: 16, minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  passageBody: { paddingHorizontal: 8, paddingBottom: 12 },
+  passageToggle: { paddingHorizontal: 16, minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: color.pale, borderRadius: 12 },
+  reader: { flex: 1, backgroundColor: c.paper },
+  readerHeader: { paddingHorizontal: 20, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', gap: 16, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: c.line },
+  readerToolbar: { paddingHorizontal: 24, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 8 },
+  readerContent: { paddingHorizontal: 14, paddingTop: 12, paddingBottom: 36, gap: 22, width: '100%', maxWidth: 720, alignSelf: 'center' },
+  readerNavigation: { padding: 20, flexDirection: 'row', gap: 12, borderTopWidth: StyleSheet.hairlineWidth, borderColor: c.line },
+  explanationToggle: { minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   paragraph: { padding: 12, gap: 7, borderRadius: 6 },
   paragraphLabel: { color: color.muted, fontSize: 12, fontWeight: '600' },
-  reading: { color: color.body, fontSize: 17, lineHeight: 29 },
-  evidence: { backgroundColor: '#DCEFE6', borderLeftWidth: 3, borderLeftColor: color.teal },
+  reading: { color: color.body, fontSize: 19, lineHeight: 33, fontFamily: Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia' }) },
+  evidence: { backgroundColor: color.correct, borderLeftWidth: 3, borderLeftColor: color.teal },
   option: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, backgroundColor: color.white, padding: 15, borderWidth: 1, borderColor: color.border, borderRadius: 10, minHeight: 56 },
-  selectedOption: { borderColor: color.teal, backgroundColor: '#EFF8F5' },
+  selectedOption: { borderColor: color.teal, backgroundColor: color.correct },
   correctOption: { borderColor: color.teal, backgroundColor: color.correct },
-  wrongOption: { borderColor: '#DDA99E', backgroundColor: color.wrong },
+  wrongOption: { borderColor: color.red, backgroundColor: color.wrong },
   optionMarker: { borderWidth: 1, borderColor: color.border, borderRadius: 16, width: 28, height: 28, alignItems: 'center', justifyContent: 'center' },
   selectedMarker: { backgroundColor: color.teal, borderColor: color.teal },
   optionLetter: { color: color.muted, fontSize: 13, fontWeight: '700' },
-  selectedLetter: { color: color.white },
+  selectedLetter: { color: color.onAccent },
   optionText: { color: color.body, fontSize: 16, lineHeight: 25 },
-  optionExplanation: { color: color.muted, fontSize: 14, lineHeight: 22, paddingTop: 7, paddingHorizontal: 12 },
+  optionExplanation: { color: color.muted, fontSize: 14, lineHeight: 23 },
+  explanationItem: { gap: 7, paddingTop: 14, borderTopWidth: StyleSheet.hairlineWidth, borderColor: color.border },
   fieldGroup: { gap: 7, width: '100%' },
   fieldLabel: { color: color.body, fontSize: 15, lineHeight: 23, fontWeight: '600' },
   input: { backgroundColor: color.white, color: color.ink, borderWidth: 1, borderColor: color.border, borderRadius: 8, paddingHorizontal: 13, paddingVertical: 12, fontSize: 17, minHeight: 50, width: '100%' },
   correctInput: { borderColor: color.teal, backgroundColor: color.correct },
-  wrongInput: { borderColor: '#DDA99E', backgroundColor: color.wrong },
+  wrongInput: { borderColor: color.red, backgroundColor: color.wrong },
   feedback: { color: color.teal, fontSize: 13, lineHeight: 20, marginTop: 3 },
   wrongText: { color: color.red },
   tableContainer: { flexGrow: 1, paddingBottom: 8 },
@@ -423,18 +468,18 @@ const styles = StyleSheet.create({
   matchToggle: { color: color.teal, fontSize: 22, fontWeight: '500' },
   matchOptions: { borderWidth: 1, borderColor: color.border, borderRadius: 8, overflow: 'hidden' },
   matchOption: { minHeight: 48, padding: 13, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: color.border, backgroundColor: color.white },
-  clearButton: { alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center', paddingHorizontal: 8 },
+  clearButton: { alignSelf: 'flex-start', minHeight: 48, justifyContent: 'center', paddingHorizontal: 8 },
   orderItem: { padding: 14, gap: 8, borderWidth: 1, borderColor: color.border, borderRadius: 10, backgroundColor: color.white },
   orderText: { flexDirection: 'row', gap: 12 },
   orderNumber: { color: color.teal, fontSize: 16, fontWeight: '700', lineHeight: 25 },
   orderControls: { flexDirection: 'row', justifyContent: 'flex-end', gap: 8 },
-  orderButton: { minHeight: 44, minWidth: 64, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 14, backgroundColor: color.pale, borderRadius: 7 },
+  orderButton: { minHeight: 48, minWidth: 64, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 14, backgroundColor: color.pale, borderRadius: 7 },
   answerBox: { padding: 16, gap: 12, backgroundColor: color.pale, borderRadius: 10 },
   result: { padding: 18, gap: 10, borderRadius: 12, borderWidth: 1 },
   resultNeutral: { backgroundColor: color.pale, borderColor: color.border },
   actions: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 12 },
   primaryButton: { minHeight: 52, paddingVertical: 14, paddingHorizontal: 22, borderRadius: 9, backgroundColor: color.teal, alignItems: 'center', justifyContent: 'center' },
-  primaryButtonText: { color: color.white, fontSize: 16, fontWeight: '700', lineHeight: 22 },
+  primaryButtonText: { color: color.onAccent, fontSize: 16, fontWeight: '700', lineHeight: 22 },
   secondaryButton: { minHeight: 48, paddingHorizontal: 14, paddingVertical: 12, borderWidth: 1, borderColor: color.border, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
   linkText: { color: color.teal, fontSize: 14, lineHeight: 20, fontWeight: '700' },
   nextButton: { flexGrow: 1 },
@@ -443,5 +488,6 @@ const styles = StyleSheet.create({
   disabled: { opacity: 0.45 },
   error: { color: color.red, fontSize: 15, lineHeight: 23, backgroundColor: color.wrong, padding: 13, borderRadius: 8 },
 });
+};
 
 export default QuestionPanel;

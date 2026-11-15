@@ -7,6 +7,7 @@ import { emptyCatalog, planImport } from '../src/catalog.ts';
 import { emptyUserState } from '../src/notebook.ts';
 import { dueReviews, newSensesToday, scheduleReview, studiedToday } from '../src/learning.ts';
 import type { Attempt, ContentPack, Note, Target, UserState } from '../src/types.ts';
+import { sessionSummary } from '../src/practice-session.ts';
 
 const NOW = '2026-11-15T10:00:00Z';
 const questionTarget: Target = { kind: 'question', id: 'example:comprehension', revision: 1 };
@@ -45,6 +46,22 @@ function note(id = 'note:first', target: Target | null = questionTarget): Note {
 function attempt(id = 'attempt:first', target = questionTarget, correct = false): Attempt {
   return { id, target, kind: target.kind === 'sense' ? 'spelling' : 'question', answer: target.kind === 'sense' ? 'contigent' : ['option:1'], score: correct ? 1 : 0, maxScore: 1, createdAt: NOW };
 }
+
+test('automatic word outcomes and schedules survive restart and backup restore', async () => {
+  const { value, io, bundled } = await engine();
+  const input = { id: 'attempt:auto', target: senseTarget, text: 'contingent', assisted: false, createdAt: NOW };
+  await value.wordTest(input);
+  await value.wordTest(input);
+  assert.equal(value.user.attempts.length, 1);
+  assert.equal(value.user.reviews[0].intervalDays, 1);
+  const reopened = new StudyEngine(io, bundled);
+  await reopened.initialize();
+  assert.deepEqual(reopened.user, value.user);
+  const restored = (await engine()).value;
+  await restored.restore(await reopened.backup());
+  assert.deepEqual(restored.user.attempts[0].answer, { text: 'contingent', outcome: 'recalled' });
+  assert.deepEqual(restored.user.reviews, value.user.reviews);
+});
 function questionRevision(revision = 2): ContentPack {
   const q = structuredClone(basePack().questions![0]);
   q.revision = revision; q.explanation += ` Revision ${revision}: check the stated condition.`;
@@ -71,11 +88,63 @@ test('mobile initializes bundled content offline and persists notes across a fre
   assert.equal(value.words.length, 1);
   assert.equal(value.questions.length, 22);
   assert.equal((await value.word('example:contingent'))?.headword, 'contingent');
-  assert.deepEqual(value.user, emptyUserState());
+  assert.deepEqual(value.user, { ...emptyUserState(), profile: value.user.profile });
+  assert.ok(value.user.profile?.id.startsWith('learner:'));
   await value.note(note());
   const restarted = await engine(io, bundled);
   assert.deepEqual(restarted.value.user.notes, [note()]);
   assert.equal(restarted.value.recovered, false);
+});
+
+test('practice drafts resume, submit atomically once, and retain identity through restore', async () => {
+  const { value, io, bundled } = await engine();
+  const sessionId = await value.startPractice(2, value.questions.map(q => q.id));
+  await assert.rejects(value.startPractice(1, value.questions.map(q => q.id)), /unfinished/);
+  const item = value.user.practiceSessions![0].items[0];
+  const i = item.question.interaction;
+  const answer = i.kind === 'choice' ? i.correctIds : i.kind === 'ordering' ? i.correctOrder : i.kind === 'text'
+    ? Object.fromEntries(i.fields.map(f => [f.id, f.accepted[0]])) : Object.fromEntries(i.pairs.map(p => [p.promptId, p.optionId]));
+  await value.savePracticeAnswer(sessionId, 0, answer);
+  assert.equal(value.user.attempts.length, 0);
+  const restarted = (await engine(io, bundled)).value;
+  assert.deepEqual(restarted.user.practiceSessions, value.user.practiceSessions);
+  const before = structuredClone(restarted.user);
+  io.failNextWrite = true;
+  await assert.rejects(restarted.submitPractice(sessionId), /disk full/);
+  assert.deepEqual(restarted.user, before);
+  await restarted.submitPractice(sessionId);
+  const submitted = structuredClone(restarted.user);
+  await restarted.submitPractice(sessionId);
+  assert.deepEqual(restarted.user, submitted);
+  assert.deepEqual(sessionSummary(submitted.practiceSessions![0]), { total: 2, correct: 1, incorrect: 0, unanswered: 1, accuracy: 50 });
+  await assert.rejects(restarted.savePracticeAnswer(sessionId, 0, []), /cannot be edited/);
+  const restored = (await engine()).value;
+  await restored.restore(await restarted.backup());
+  assert.deepEqual(restored.user, restarted.user);
+});
+
+test('old saves gain a persistent identity without changing notes or attempts', async () => {
+  const { value, io, bundled } = await engine();
+  await value.note(note());
+  await value.updateUser(user => { const next = { ...user }; delete next.profile; return next; });
+  const old = structuredClone(value.user);
+  const migrated = (await engine(io, bundled)).value;
+  assert.ok(migrated.user.profile?.id);
+  assert.deepEqual({ ...migrated.user, profile: undefined }, { ...old, profile: undefined });
+  const again = (await engine(io, bundled)).value;
+  assert.deepEqual(again.user, migrated.user);
+});
+
+test('submitted set snapshots remain readable after content updates', async () => {
+  const { value } = await engine();
+  const sid = await value.startPractice(1, [questionTarget.id]);
+  const snapshot = structuredClone(value.user.practiceSessions![0].items[0].question);
+  await value.import(questionRevision());
+  assert.equal((await value.question(questionTarget.id))?.revision, 2);
+  assert.deepEqual(value.user.practiceSessions![0].items[0].question, snapshot);
+  await value.submitPractice(sid);
+  assert.deepEqual(sessionSummary(value.user.practiceSessions![0]), { total: 1, correct: 0, incorrect: 0, unanswered: 1, accuracy: 0 });
+  assert.equal(value.user.attempts.length, 0);
 });
 
 test('mobile wrong answers and notes stay pinned to old revisions after import and restart', async () => {
@@ -100,9 +169,9 @@ test('mobile wrong answers and notes stay pinned to old revisions after import a
 
 test('mobile recovers the previous user slot if the newest slot is truncated', async () => {
   const { value, io, bundled } = await engine();
-  await value.note(note('note:first')); // sequence 1, slot 1
-  await value.note(note('note:second')); // sequence 2, slot 0
-  io.files.set('user-0.json', '{"sequence":2,"checksum":');
+  await value.note(note('note:first')); // sequence 2; identity was saved first
+  await value.note(note('note:second')); // sequence 3, slot 1
+  io.files.set('user-1.json', '{"sequence":3,"checksum":');
   const restarted = (await engine(io, bundled)).value;
   assert.equal(restarted.recovered, true);
   assert.deepEqual(restarted.user.notes.map(n => n.id), ['note:first']);

@@ -25,6 +25,16 @@ Offline English study for Android. Download and install **English-in-Practice.ap
 - Offline assets verified: $($report.offlinePackCount)
 - Build: https://github.com/$($env:GH_REPO)/actions/runs/$($env:GITHUB_RUN_ID)
 
+Included in this release:
+- Configurable practice sets with saved drafts, batch grading and per-question results.
+- Offline profile, practice history, accuracy chart and activity calendar.
+- Automatic spelling assessment and repeat-aware practice scheduling.
+- Compact mobile layouts, dark mode and highlighted vocabulary in examples.
+- Reliable asynchronous saves and update compatibility checks.
+
+To update, install this APK over the existing app. Do not uninstall or clear app storage.
+Export a backup from Profile / Library before changing devices.
+
 Includes the build verification report and SHA256SUMS.txt. This build checks compilation,
 tests, signing and bundled content; it does not run device tests.
 "@

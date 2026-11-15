@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { PracticeSessionScreen } from './mobile/screens/PracticeSession';
+import { ProfileScreen } from './mobile/screens/Profile';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, BackHandler, KeyboardAvoidingView, Modal, Platform, Pressable, Share, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -13,18 +15,19 @@ import { WordsScreen, WordDetail } from './mobile/screens/Words';
 import { PracticeScreen, QuestionScreen } from './mobile/screens/Practice';
 import { NotebookScreen, NoteEditor, MistakesScreen } from './mobile/screens/Notebook';
 import { LibraryScreen } from './mobile/screens/Library';
-import { Button, Card, ui } from './mobile/components/UI';
-import { colors as c } from './mobile/theme';
+import { Button, Card, useUI } from './mobile/components/UI';
+import { ThemeProvider, useTheme, type Colors } from './mobile/theme';
 import { dueReviews, newSensesToday } from './src/learning.ts';
 import { latest } from './src/catalog.ts';
 import type { Target } from './src/types.ts';
 
 const tabs: { name: MainTab; label: string; icon: React.ComponentProps<typeof Ionicons>['name'] }[] = [
   { name: 'today', label: 'Today', icon: 'sunny-outline' }, { name: 'words', label: 'Words', icon: 'book-outline' },
-  { name: 'practice', label: 'Practice', icon: 'create-outline' }, { name: 'notebook', label: 'Notebook', icon: 'journal-outline' }, { name: 'library', label: 'Library', icon: 'folder-open-outline' },
+  { name: 'practice', label: 'Practice', icon: 'create-outline' }, { name: 'notebook', label: 'Notebook', icon: 'journal-outline' }, { name: 'profile', label: 'Profile', icon: 'person-outline' },
 ];
-export default function App() { return <SafeAreaProvider><StudyApp /></SafeAreaProvider>; }
+export default function App() { return <SafeAreaProvider><ThemeProvider><StudyApp /></ThemeProvider></SafeAreaProvider>; }
 function StudyApp() {
+  const { colors: c, isDark, setMode } = useTheme(); const ui = useUI(); const styles = useMemo(() => createStyles(c), [c]);
   const [engine] = useState(() => new StudyEngine(io, bundle));
   const [loaded, setLoaded] = useState(false); const [bootError, setBootError] = useState('');
   const [bootProgress, setBootProgress] = useState<BootProgress>({ phase: 'Opening bundled library', completed: 0, total: 1 });
@@ -101,7 +104,7 @@ function StudyApp() {
     else { go({ name: 'today' }); setMessage('Session complete. Your progress is saved.'); }
   }
   const props: ScreenProps = { engine, refresh, navigate: go, notify: setMessage, openTarget };
-  const key = 'id' in route ? `${route.name}:${route.id}:${route.revision ?? 'latest'}${route.name === 'word' ? `:${route.senseId ?? ''}:${route.study ?? false}` : ''}` : route.name === 'note' ? `note:${route.note?.id ?? 'new'}` : route.name;
+  const key = 'id' in route ? `${route.name}:${route.id}:${'revision' in route ? route.revision ?? 'latest' : ''}${route.name === 'word' ? `:${route.senseId ?? ''}:${route.study ?? false}` : ''}` : route.name === 'note' ? `note:${route.note?.id ?? 'new'}` : route.name;
   let screen: React.ReactNode;
   if (!loaded) screen = <View style={{ flex: 1, justifyContent: 'center', padding: 32, gap: 20, alignItems: 'center' }}><Text style={ui.title}>English in Practice</Text>{bootError ? <><Text style={ui.body}>{bootError}</Text><Button title="Try again" onPress={initialize} /></> : <><ActivityIndicator size="large" color={c.teal} /><Text style={ui.body}>Opening your offline library…</Text></>}
     <Text accessibilityLiveRegion="polite" style={ui.body}>{bootProgress.phase}</Text>
@@ -114,25 +117,27 @@ function StudyApp() {
   else if (route.name === 'word') screen = <WordDetail key={key} {...props} route={route} onNext={session.current.length ? next : undefined} />;
   else if (route.name === 'practice') screen = <PracticeScreen {...props} />;
   else if (route.name === 'question') screen = <QuestionScreen key={key} {...props} route={route} onNext={session.current.length ? next : undefined} />;
+  else if (route.name === 'practice-session') screen = <PracticeSessionScreen key={key} {...props} sessionId={route.id} onDirtyChange={value => { dirty.current = value; }} />;
+  else if (route.name === 'profile') screen = <ProfileScreen {...props} />;
   else if (route.name === 'notebook') screen = <NotebookScreen {...props} />;
   else if (route.name === 'note') screen = <NoteEditor key={key} {...props} route={route} onDirtyChange={v => { dirty.current = v; }} onSaved={() => { dirty.current = false; go({ name: 'notebook' }, true); }} />;
   else if (route.name === 'mistakes') screen = <MistakesScreen {...props} />;
   else if (route.name === 'reviews') screen = <ReviewsScreen {...props} />;
   else screen = <LibraryScreen {...props} />;
   const isMain = tabs.some(t => t.name === route.name);
-  return <SafeAreaView style={{ flex: 1, backgroundColor: c.background }}><StatusBar style="dark" />
-    <View style={styles.header}>{loaded && !isMain ? <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={back} style={styles.back}><Ionicons name="chevron-back" size={23} color={c.ink} /><Text style={ui.body}>Back</Text></Pressable> : <View style={{ flexDirection: 'row', alignItems: 'center', gap: 9 }}><View style={styles.mark}><Text style={{ color: 'white', fontWeight: '700', fontSize: 19 }}>e</Text></View><Text style={{ color: c.ink, fontSize: 16, fontWeight: '600' }}>English in Practice</Text></View>}<Text style={ui.small}>Offline</Text></View>
+  return <SafeAreaView style={{ flex: 1, backgroundColor: c.background }}><StatusBar style={isDark ? "light" : "dark"} />
+    <View style={styles.header}>{loaded && !isMain ? <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={back} style={styles.back}><Ionicons name="chevron-back" size={23} color={c.ink} /><Text style={ui.body}>Back</Text></Pressable> : <View style={{ flexDirection: 'row', alignItems: 'center', gap: 9 }}><View style={styles.mark}><Text style={{ color: c.onAccent, fontWeight: '700', fontSize: 19 }}>e</Text></View><Text style={{ color: c.ink, fontSize: 16, fontWeight: '600' }}>English in Practice</Text></View>}<Pressable accessibilityRole="button" accessibilityLabel={isDark ? "Switch to light theme" : "Switch to dark theme"} onPress={() => setMode(isDark ? "light" : "dark")} style={{ minWidth: 48, minHeight: 48, alignItems: "center", justifyContent: "center" }}><Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={22} color={c.ink} /></Pressable></View>
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>{screen}</KeyboardAvoidingView>
     {loaded && <View style={styles.tabs}>{tabs.map(t => <Pressable accessibilityRole="tab" accessibilityState={{ selected: tab === t.name }} accessibilityLabel={t.label} key={t.name} onPress={() => go({ name: t.name })} style={styles.tab}><Ionicons name={t.icon} size={22} color={tab === t.name ? c.teal : c.muted} /><Text style={{ fontSize: 11, color: tab === t.name ? c.teal : c.muted, fontWeight: tab === t.name ? '700' : '400' }}>{t.label}</Text></Pressable>)}</View>}
     <Modal visible={!!message} transparent animationType="none" onRequestClose={() => setMessage('')}><View style={styles.scrim}><Card style={{ width: '100%', maxWidth: 460 }}><Text accessibilityLiveRegion="polite" style={ui.body}>{message}</Text><Button title="Got it" onPress={() => setMessage('')} /></Card></View></Modal>
-    <Modal visible={!!pending} transparent animationType="none" onRequestClose={() => setPending(undefined)}><View style={styles.scrim}><Card style={{ width: '100%', maxWidth: 460 }}><Text style={ui.h2}>Keep your draft?</Text><Text style={ui.body}>This note has unsaved changes.</Text><Button title="Keep editing" onPress={() => setPending(undefined)} /><Button title="Discard changes" secondary danger onPress={() => { const destination = pending!; dirty.current = false; setPending(undefined); go(destination, true); }} /></Card></View></Modal>
+    <Modal visible={!!pending} transparent animationType="none" onRequestClose={() => setPending(undefined)}><View style={styles.scrim}><Card style={{ width: '100%', maxWidth: 460 }}><Text style={ui.h2}>Keep your draft?</Text><Text style={ui.body}>Some changes have not been saved yet.</Text><Button title="Keep editing" onPress={() => setPending(undefined)} /><Button title="Discard changes" secondary danger onPress={() => { const destination = pending!; dirty.current = false; setPending(undefined); go(destination, true); }} /></Card></View></Modal>
   </SafeAreaView>;
 }
-const styles = StyleSheet.create({
-  header: { minHeight: 60, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: c.line },
+const createStyles = (c: Colors) => StyleSheet.create({
+  header: { minHeight: 60, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: c.paper, borderBottomWidth: 1, borderBottomColor: c.line },
   mark: { width: 28, height: 30, borderRadius: 7, backgroundColor: c.teal, alignItems: 'center', justifyContent: 'center' },
   back: { flexDirection: 'row', alignItems: 'center', minHeight: 44, gap: 4 },
-  tabs: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: c.line, backgroundColor: 'white', paddingVertical: 7 },
+  tabs: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: c.line, backgroundColor: c.paper, paddingVertical: 7 },
   tab: { flex: 1, minHeight: 50, justifyContent: 'center', alignItems: 'center', gap: 5 },
-  scrim: { flex: 1, backgroundColor: 'rgba(23,50,77,0.42)', justifyContent: 'center', alignItems: 'center', padding: 24 },
+  scrim: { flex: 1, backgroundColor: c.scrim, justifyContent: 'center', alignItems: 'center', padding: 24 },
 });

@@ -107,6 +107,20 @@ export function validateUserState(input: unknown): asserts input is UserState {
   unique(state.reviews.map(m => targetKey(m.target)), 'review target');
   for (const note of state.notes) invariant(Date.parse(note.updatedAt) >= Date.parse(note.createdAt), `${note.id}: updatedAt precedes createdAt`);
   const attempts = new Map(state.attempts.map(a => [a.id, a]));
+  unique((state.practiceSessions ?? []).map(s => s.id), 'practice session');
+  invariant((state.practiceSessions ?? []).filter(s => !s.submittedAt).length <= 1, 'Only one unfinished practice is allowed');
+  for (const session of state.practiceSessions ?? []) {
+    unique(session.items.map(i => `${i.question.id}@${i.question.revision}`), 'session question');
+    invariant(!session.submittedAt || Date.parse(session.submittedAt) >= Date.parse(session.createdAt), 'Invalid session date');
+    for (const item of session.items) {
+      validateQuestion(item.question);
+      invariant(!item.question.passageId || (item.passage?.id === item.question.passageId && item.passage.revision === item.question.passageRevision), 'Session passage mismatch');
+      if (item.attemptId) {
+        const attempt = attempts.get(item.attemptId);
+        invariant(session.submittedAt && attempt && attempt.target.id === item.question.id && attempt.target.revision === item.question.revision && attempt.score === item.score && attempt.maxScore === item.maxScore, 'Invalid session result');
+      } else invariant(item.score === undefined && item.maxScore === undefined, 'Result requires an attempt');
+    }
+  }
   for (const attempt of state.attempts) {
     invariant(attempt.score <= attempt.maxScore, `${attempt.id}: invalid score`);
     invariant(attempt.target.kind === (attempt.kind === 'question' ? 'question' : 'sense'), `${attempt.id}: invalid target kind`);

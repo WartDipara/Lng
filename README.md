@@ -30,6 +30,22 @@ succeeds and the downloaded APK checksum is verified. Failed uploads remain draf
 can be retried; rerunning an already published version preserves its existing downloads.
 Pre-release versions (such as `1.1.0-beta.1`) are marked as pre-releases. No app-store upload occurs.
 
+## Keep your progress when updating
+
+Download the newer APK from Releases and install it over the current app; do not uninstall.
+Android requires the same application ID (`com.engdictionary.practice`) and signing key.
+Increase versionCode for every release. The build checks the existing signing certificate.
+Private local files survive an in-place update. Uninstalling or clearing app storage removes them.
+Use Profile → Library & backups to export before changing devices or uninstalling, then import
+that backup to restore your local identity, drafts, results, notes and imported packs.
+New optional progress fields migrate old saves without replacing their study history.
+An old app version may not understand a backup produced by a newer version; keep the newer app.
+
+Practice sets contain 1–50 randomly selected, non-repeating questions from the current filter.
+Answers are saved as drafts; grading is performed once when the full set is submitted.
+Accuracy is fully correct questions / all set questions, including skipped questions.
+Question snapshots preserve historical results across future content updates.
+
 ## Build locally
 
 ```sh

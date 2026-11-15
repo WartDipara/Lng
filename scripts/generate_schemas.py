@@ -77,7 +77,14 @@ def build():
         "reviews": arr(obj({"target": ref("target"), "dueAt": DATE, "intervalDays": {"type": "number", "minimum": 0},
                              "ease": {"type": "number", "minimum": 1.3}, "repetitions": {"type": "integer", "minimum": 0}})),
         "settings": obj({"dailyNewLimit": {"type": "integer", "minimum": 0}, "selectedTags": arr(S)})})
-    user.update({"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://engdictionary.local/schemas/user-state.v1.json", "$defs": {"target": defs["target"]}})
+    user['properties'].update({
+        'profile': obj({'id': ID, 'createdAt': DATE, 'name': S}),
+        'practiceSize': {'type': 'integer', 'minimum': 1, 'maximum': 50},
+        'practiceSessions': arr(obj({'id': ID, 'createdAt': DATE, 'submittedAt': DATE,
+            'items': dict(arr(obj({'question': ref('question'), 'passage': ref('passage'), 'answer': {},
+                'attemptId': ID, 'score': {'type': 'integer', 'minimum': 0}, 'maxScore': INT}, ['question', 'answer']), 1), maxItems=50)}, ['id', 'createdAt', 'items']))
+    })
+    user.update({"$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://engdictionary.local/schemas/user-state.v1.json", "$defs": defs})
     out = ROOT / "schemas"
     out.mkdir(exist_ok=True)
     for filename, schema in [("content-pack.v1.schema.json", pack), ("user-state.v1.schema.json", user)]:

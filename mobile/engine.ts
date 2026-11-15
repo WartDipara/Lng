@@ -1,8 +1,11 @@
+import { submitPractice } from '../src/practice-session.ts';
+import { recordQuestionTest } from '../src/question-progress.ts';
+import { recordWordTest } from '../src/word-progress.ts';
 import { canonical, emptyCatalog, hash, kinds, latest, planImport } from '../src/catalog.ts';
 import { emptyUserState, recordAttempt, saveNote, markMastered } from '../src/notebook.ts';
 import { invariant, validatePack, validateUserState } from '../src/validation.ts';
 import { scheduleReview, type Rating, targetKey } from '../src/learning.ts';
-import type { Catalog, ContentPack, ContentEntity, Word, Question, Passage, Target, Note, Attempt, UserState, Kind } from '../src/types.ts';
+import type { Catalog, ContentPack, ContentEntity, Word, Question, Passage, Target, Note, Attempt, UserState, Kind, PracticeSession } from '../src/types.ts';
 
 export interface JsonIO { read(path: string): Promise<string | null>; write(path: string, text: string): Promise<void> }
 export interface WordRow { id: string; headword: string; tags: string[]; ready: string[] }
@@ -89,6 +92,7 @@ export class StudyEngine {
     this.overlay = await this.readSlots('content', this.overlay);
     onProgress?.({ phase: 'Opening saved progress', completed: 1, total: 2 });
     this.user = await this.readSlots('user', emptyUserState(), validateUserState);
+    if (!this.user.profile) await this.updateUser(user => ({ ...user, profile: { id: id('learner'), name: 'My learning', createdAt: new Date().toISOString() } }));
     onProgress?.({ phase: 'Opening saved progress', completed: 2, total: 2 });
     await this.reindex(onProgress);
     onProgress?.({ phase: 'Ready', completed: 1, total: 1 });
@@ -239,6 +243,48 @@ export class StudyEngine {
       return scheduleReview(recordAttempt(user, attempt), attempt.target, rating, new Date(attempt.createdAt));
     });
   }
+  async startPractice(count: number, questionIds: string[]) {
+    invariant(Number.isInteger(count) && count >= 1 && count <= 50 && count <= questionIds.length, 'Choose 1–50 questions within the available pool.');
+    invariant(!this.user.practiceSessions?.some(s => !s.submittedAt), 'Resume your unfinished practice first.');
+    const pool = [...new Set(questionIds)];
+    invariant(count <= pool.length, 'Not enough different questions.');
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    const items: PracticeSession['items'] = [];
+    for (const qid of pool.slice(0, count)) {
+      const question = await this.question(qid); invariant(question, 'A selected question is unavailable.');
+      const passage = question.passageId ? await this.passage(question.passageId, question.passageRevision!) : undefined;
+      invariant(!question.passageId || passage, 'A selected passage is unavailable.');
+      items.push({ question: structuredClone(question), ...(passage ? { passage: structuredClone(passage) } : {}), answer: null });
+    }
+    const session: PracticeSession = { id: id('practice'), createdAt: new Date().toISOString(), items };
+    await this.updateUser(user => {
+      invariant(!user.practiceSessions?.some(s => !s.submittedAt), 'Resume your unfinished practice first.');
+      return { ...user, practiceSize: count, practiceSessions: [...user.practiceSessions ?? [], session] };
+    });
+    return session.id;
+  }
+  async savePracticeAnswer(sessionId: string, index: number, answer: unknown) {
+    await this.updateUser(user => {
+      const session = user.practiceSessions?.find(s => s.id === sessionId);
+      invariant(session && !session.submittedAt && session.items[index], 'This practice cannot be edited.');
+      return { ...user, practiceSessions: user.practiceSessions!.map(s => s.id === sessionId ? { ...s, items: s.items.map((item, i) => i === index ? { ...item, answer: structuredClone(answer) } : item) } : s) };
+    });
+  }
+  async submitPractice(sessionId: string) {
+    await this.updateUser(user => submitPractice(user, sessionId, new Date().toISOString()));
+  }
+  async questionTest(input: { id: string; target: Target; answer: unknown; createdAt: string }) {
+    const question = await this.question(input.target.id, input.target.revision);
+    invariant(input.target.kind === 'question' && question, 'This question is unavailable.');
+    let result!: ReturnType<typeof recordQuestionTest>;
+    await this.updateUser(user => { result = recordQuestionTest(user, question!, input); return result.state; });
+    return { score: result.score, maxScore: result.maxScore, outcome: result.outcome };
+  }
+  async wordTest(input: { id: string; target: Target; text: string; assisted: boolean; revealed?: boolean; createdAt: string }) {
+    const found = await this.sense(input.target.id, input.target.revision);
+    invariant(input.target.kind === 'sense' && found, 'This meaning is unavailable.');
+    return this.updateUser(user => recordWordTest(user, { ...input, accepted: [found!.word.headword, ...found!.word.variants] }).state);
+  }
   async note(note: Note) { return this.updateUser(user => saveNote(user, note)); }
   async deleteNote(noteId: string) { return this.updateUser(user => ({ ...user, notes: user.notes.filter(n => n.id !== noteId) })); }
   async mastery(target: Target, mastered: boolean) { return this.updateUser(user => markMastered(user, target, mastered, new Date().toISOString())); }
@@ -269,6 +315,6 @@ export class StudyEngine {
     }
     for (const pack of ordered) await this.import(pack);
     // Content additions are safe if a later disk write fails; user state is replaced in one commit.
-    await this.updateUser(() => structuredClone(backup.user));
+    await this.updateUser(user => ({ ...structuredClone(backup.user), profile: backup.user.profile ?? user.profile }));
   }
 }

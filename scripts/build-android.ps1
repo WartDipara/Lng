@@ -79,6 +79,15 @@ try {
     $apk = Join-Path $root 'android/app/build/outputs/apk/release/app-release.apk'
     Invoke-Step 'Verify APK signature' "$sdk/build-tools/37.0.0/apksigner.bat" @('verify', '--verbose', '--print-certs', $apk)
 
+    $certificate = & "$sdk/build-tools/37.0.0/apksigner.bat" verify --print-certs $apk
+    if ($LASTEXITCODE -ne 0) { throw 'Could not read APK signing certificate.' }
+    $expectedCertificate = 'fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c'
+    if (!(($certificate -join "`n").ToLowerInvariant().Contains($expectedCertificate))) {
+        throw 'Signing identity changed. This APK cannot safely update existing installations.'
+    }
+    $appConfig = (Get-Content -Raw app.json | ConvertFrom-Json).expo
+    if ($appConfig.android.package -ne 'com.engdictionary.practice') { throw 'Application ID changed; existing data would not be retained.' }
+
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $archive = [IO.Compression.ZipFile]::OpenRead($apk)
     try {
@@ -113,7 +122,7 @@ try {
         apk = 'output/English-in-Practice.apk'; archivedApk = "output/builds/$archiveName"
         sizeBytes = (Get-Item $apk).Length; sha256 = (Get-Sha256 $apk).ToLowerInvariant()
         offlinePackCount = $assets.Count; allPackBytesMatchSource = $true; hermesBundleBytes = $bundleBytes
-        abis = @('arm64-v8a', 'x86_64'); signatureVerified = $true
+        abis = @('arm64-v8a', 'x86_64'); signatureVerified = $true; signingCertificateSha256 = $expectedCertificate
         checks = @('core typecheck', 'mobile typecheck', 'core/mobile tests', 'collection tests', 'APK signature', 'bundled assets')
         runtimeTest = 'Not run by this packaging command; previous emulator results do not validate a newly changed app.'
     }

@@ -1,75 +1,103 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
-import { Button, Card, Chip, Empty, Field, Heading, ui } from '../components/UI';
-import { colors as c } from '../theme';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Button, Chip, Disclosure, Empty, Feedback, Field, Heading, HighlightText, Reveal, useUI } from '../components/UI';
+import { useTheme } from '../theme';
 import type { ScreenProps, Route } from '../routes';
 import type { Word, Sense, Target } from '../../src/types.ts';
 import { checkSpelling } from '../../src/notebook.ts';
 import { id } from '../engine';
-import type { Rating } from '../../src/learning.ts';
 
 const tags = ['IELTS', 'TOEFL', 'CET4', 'CET6', 'GRE', 'SAT', 'NPEE', 'TEM8'];
 export function WordsScreen({ engine, navigate }: ScreenProps) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [query, setQuery] = useState(''); const [delayed, setDelayed] = useState('');
   const [tag, setTag] = useState(''); const [ready, setReady] = useState(false);
   useEffect(() => { const timer = setTimeout(() => setDelayed(query), 160); return () => clearTimeout(timer); }, [query]);
   const rows = useMemo(() => engine.searchWords(delayed, tag, ready), [engine.words, delayed, tag, ready]);
   return <FlatList data={rows} keyExtractor={w => w.id} contentContainerStyle={ui.page} keyboardShouldPersistTaps="handled"
-    ListHeaderComponent={<View style={{ gap: 16, marginBottom: 10 }}><Heading title="Words in context" subtitle="Learn a meaning. Notice how it works." />
-      <Field label="Search the offline dictionary" placeholder="Try contingent, nuance, or take off" value={query} onChangeText={setQuery} autoCorrect={false} />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}><Chip label="All words" selected={!ready && !tag} onPress={() => { setReady(false); setTag(''); }} /><Chip label="Learning cards" selected={ready} onPress={() => setReady(!ready)} />{tags.map(t => <Chip key={t} label={t} selected={tag === t} onPress={() => setTag(tag === t ? '' : t)} />)}</ScrollView>
-      <Text style={ui.small}>{engine.words.length.toLocaleString()} entries on your device. Showing up to 100 matches.</Text>
+    ListHeaderComponent={<View style={{ gap: 14, marginBottom: 4 }}>
+      <Heading title="Words in context" subtitle="A word makes sense in a sentence." />
+      <Field label="Search the offline dictionary" placeholder="A word or phrase" value={query} onChangeText={setQuery} autoCorrect={false} />
+      <View style={ui.row}><Chip label="All words" selected={!ready && !tag} onPress={() => { setReady(false); setTag(''); }} /><Chip label="Learning cards" selected={ready} onPress={() => setReady(!ready)} /></View>
+      <Disclosure title={tag ? `Exam lists: ${tag}` : 'Exam lists'}><View style={ui.row}>{tags.map(t => <Chip key={t} label={t} selected={tag === t} onPress={() => setTag(tag === t ? '' : t)} />)}</View></Disclosure>
+      <Text style={ui.small}>{rows.length ? `Showing ${rows.length === 100 ? 'the first ' : ''}${rows.length} matches` : 'No matches'} from {engine.words.length.toLocaleString()} offline entries.</Text>
     </View>}
     ListEmptyComponent={<Empty title="No matching words" text="Try a shorter spelling or remove a vocabulary filter." />}
-    renderItem={({ item }) => <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.headword}`} onPress={() => navigate({ name: 'word', id: item.id })} style={({ pressed }) => ({ paddingVertical: 17, borderBottomWidth: 1, borderBottomColor: c.line, opacity: pressed ? 0.5 : 1 })}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}><Text style={{ ...ui.h2, flex: 1 }}>{item.headword}</Text>{item.ready.length > 0 && <Text style={{ ...ui.small, color: c.teal }}>Learning card</Text>}</View>
-      <Text numberOfLines={1} style={ui.small}>{item.tags.filter(t => t !== 'WORDNET').slice(0, 5).join(' / ') || 'English reference'}</Text>
+    renderItem={({ item }) => <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.headword}`} onPress={() => navigate({ name: 'word', id: item.id })}
+      style={({ pressed }) => ({ paddingVertical: 17, borderBottomWidth: 1, borderBottomColor: c.line, opacity: pressed ? 0.55 : 1, gap: 3 })}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Text style={{ ...ui.h2, flex: 1 }}>{item.headword}</Text>{item.ready.length > 0 && <View style={{ width: 7, height: 7, borderRadius: 4, backgroundColor: c.teal }} accessibilityLabel="Learning card available" />}<Text style={{ ...ui.body, color: c.muted }} accessibilityElementsHidden>›</Text></View>
+      <Text numberOfLines={1} style={ui.small}>{item.tags.filter(t => t !== 'WORDNET').slice(0, 4).join(' / ') || 'English reference'}</Text>
     </Pressable>} />;
 }
 
+function hideSpelling(text: string, word: Word): string {
+  // Reference definitions can themselves contain the answer. Hide declared spellings
+  // in the clue as well as the title, without changing persisted content.
+  return [word.headword, ...word.variants].filter(Boolean).sort((a, b) => b.length - a.length).reduce((value, spelling) =>
+    value.replace(new RegExp('(^|[^\\p{L}\\p{N}])' + spelling.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?=$|[^\\p{L}\\p{N}])', 'giu'), '$1_____'), text);
+}
+
 export function WordDetail({ engine, refresh, notify, navigate, route, onNext }: ScreenProps & { route: Extract<Route, { name: 'word' }>; onNext?: () => void }) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [word, setWord] = useState<Word | null>(null); const [senseId, setSenseId] = useState(route.senseId ?? '');
-  const [revealed, setRevealed] = useState(!route.study); const [spelling, setSpelling] = useState(false);
+  const [revealed, setRevealed] = useState(!route.study); const [spelling, setSpelling] = useState(!!route.study);
   const [typed, setTyped] = useState(''); const [checked, setChecked] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false); const [rated, setRated] = useState(false); const [error, setError] = useState('');
-  useEffect(() => { let active = true; engine.word(route.id, route.revision).then(w => { if (active) { setWord(w); if (!w) setError('This word is no longer available.'); } }).catch(e => active && setError(e.message)); return () => { active = false; }; }, [route.id, route.revision]);
+  const [savedMessage, setSavedMessage] = useState('');
+  const assisted = useRef(!route.study); const submitting = useRef(false);
+  useEffect(() => {
+    let active = true;
+    setWord(null); setError(''); setSenseId(route.senseId ?? ''); setRevealed(!route.study);
+    setSpelling(!!route.study); assisted.current = !route.study; setTyped(''); setChecked(null); setRated(false); setSavedMessage('');
+    engine.word(route.id, route.revision).then(w => { if (active) { setWord(w); if (!w) setError('This word is no longer available.'); } }).catch(e => active && setError(e.message));
+    return () => { active = false; };
+  }, [route.id, route.revision, route.senseId, route.study]);
   const senses = useMemo(() => [...word?.senses ?? []].sort((a, b) => Number(b.status === 'ready') - Number(a.status === 'ready')), [word]);
   const sense: Sense | undefined = senses.find(s => s.id === senseId) ?? senses[0];
   const target: Target | undefined = sense && word ? { kind: 'sense', id: sense.id, revision: word.revision } : undefined;
-  async function rate(rating: Rating) {
-    if (!target || busy || rated) return; setBusy(true);
+  async function check(revealAnswer = false) {
+    if (!word || !target || (!revealAnswer && !typed.trim()) || checked !== null || submitting.current) return;
+    submitting.current = true; setBusy(true);
     try {
-      await engine.attempt({ id: id('attempt'), kind: 'recall', target, answer: rating, score: rating === 'Again' ? 0 : 1, maxScore: 1, createdAt: new Date().toISOString() }, rating);
-      setRated(true); refresh(); notify(rating === 'Again' ? 'Saved. Review again in 10 minutes.' : 'Saved to your review schedule.');
-    } catch (e) { notify((e as Error).message); } finally { setBusy(false); }
-  }
-  async function check() {
-    if (!word || !target || !typed.trim() || checked !== null) return; setBusy(true);
-    try {
-      const correct = checkSpelling(typed, [word.headword, ...word.variants]);
-      await engine.attempt({ id: id('attempt'), kind: 'spelling', target, answer: typed, score: Number(correct), maxScore: 1, createdAt: new Date().toISOString() }, correct ? 'Good' : 'Again');
+      const correct = !revealAnswer && checkSpelling(typed, [word.headword, ...word.variants]);
+      const helped = assisted.current;
+      await engine.wordTest({ id: id('attempt'), target, text: typed, assisted: helped, revealed: revealAnswer, createdAt: new Date().toISOString() });
       setChecked(correct); setRated(true); refresh();
-    } catch (e) { notify((e as Error).message); } finally { setBusy(false); }
+      setSavedMessage(revealAnswer ? 'Answer viewed. A short review is scheduled.' : !correct ? 'Needs practice. Saved to your mistake notebook.' : helped ? 'Correct after studying. A later test will check your recall.' : 'Recalled without help. Your review schedule is saved.');
+      assisted.current = true;
+    } catch (e) { notify((e as Error).message); } finally { submitting.current = false; setBusy(false); }
   }
-  if (!word) return <View style={ui.page}><Text style={ui.body}>{error || 'Opening word…'}</Text></View>;
-  return <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={ui.page}>
-    <Heading title={spelling && checked === null ? 'Spell the word' : word.headword} subtitle={sense ? `${sense.partOfSpeech} • ${sense.status === 'ready' ? 'Learning card' : 'Reference meaning'}` : 'Word list entry'} />
-    {senses.length > 1 && <ScrollView horizontal contentContainerStyle={{ gap: 8 }} showsHorizontalScrollIndicator={false}>{senses.map((s, i) => <Chip key={s.id} label={`Meaning ${i + 1}${s.status === 'ready' ? ' ✓' : ''}`} selected={sense?.id === s.id} onPress={() => { setSenseId(s.id); setRevealed(true); setRated(false); setSpelling(false); setChecked(null); setTyped(''); }} />)}</ScrollView>}
-    {!sense ? <Empty title="A meaning is still needed" text="This word is in a collected list. Import an enriched content pack to add definitions and examples, or make your own note." /> : <>
-      {sense.status !== 'ready' && <Text style={ui.small}>Reference content has not yet been rewritten in simple English. You can still choose to review it.</Text>}
-      {spelling ? <Card><Text style={ui.h2}>{sense.simpleDefinition ?? sense.definition}</Text><Field label="Your spelling" value={typed} onChangeText={setTyped} autoCapitalize="none" autoCorrect={false} editable={checked === null} onSubmitEditing={check} />
-        {checked === null ? <Button title="Check spelling" onPress={check} disabled={!typed.trim()} busy={busy} /> : <View style={{ gap: 8 }}><Text style={{ ...ui.h2, color: checked ? c.teal : c.red }}>{checked ? 'Correct spelling' : 'Keep practising'}</Text><Text style={ui.body}>Your answer: {typed}</Text><Text style={ui.body}>Correct spelling: {word.headword}</Text>{!checked && <Text style={ui.small}>This spelling has been added to your mistake notebook.</Text>}</View>}
-      </Card> : <>
-        <Card style={{ backgroundColor: c.blue }}><Text style={ui.small}>In context</Text><Text style={{ ...ui.body, fontSize: 20, lineHeight: 31 }}>{sense.examples[0] ?? 'Think of a sentence where you could use this word.'}</Text></Card>
-        {!revealed ? <Button title="Reveal meaning" onPress={() => setRevealed(true)} /> : <>
-          <View style={{ gap: 12 }}><Text style={ui.h2}>{sense.simpleDefinition ?? sense.definition ?? 'No definition available.'}</Text>{sense.examples.slice(1).map((e, i) => <Text key={i} style={ui.body}>{e}</Text>)}</View>
-          {sense.synonyms.length > 0 && <Card><Text style={ui.h2}>Similar words, different uses</Text><Text style={{ ...ui.body, color: c.teal }}>{sense.synonyms.join(', ')}</Text><Text style={ui.body}>{sense.synonymNote ?? 'These words share this meaning. They may not fit the same sentence or level of formality.'}</Text></Card>}
-          {sense.collocations.length > 0 && <View style={{ gap: 8 }}><Text style={ui.h2}>Often used with</Text><View style={ui.row}>{sense.collocations.map(t => <Chip key={t} label={t} />)}</View></View>}
-          {!rated && <View style={{ gap: 10 }}><Text style={ui.small}>How well did you remember this meaning?</Text><View style={ui.row}>{(['Again', 'Hard', 'Good', 'Easy'] as Rating[]).map(r => <Button key={r} title={r} secondary={r !== 'Good'} disabled={busy} onPress={() => rate(r)} />)}</View></View>}
-        </>}
+  function changeSense(s: Sense) { assisted.current = true; setSenseId(s.id); setRevealed(!route.study); setRated(false); setSpelling(false); setChecked(null); setTyped(''); setSavedMessage(''); }
+  function toggleSpelling() { assisted.current = true; setSpelling(!spelling); setChecked(null); setTyped(''); setRated(false); setSavedMessage(''); }
+  if (!word) return <View style={ui.page}>{error ? <Feedback kind="error"><Text style={ui.body}>{error}</Text></Feedback> : <Text style={ui.body}>Opening word…</Text>}</View>;
+  const headingSize = word.headword.length > 22 ? 34 : word.headword.length > 15 ? 40 : 52;
+  const meaning = sense?.simpleDefinition ?? sense?.definition ?? 'No definition available.';
+  return <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[ui.page, { gap: 22 }]}>
+    <View style={{ alignItems: 'center', paddingTop: 18, paddingBottom: 10, gap: 10 }}>
+      <Text accessibilityRole="header" style={{ color: c.ink, fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif', textAlign: 'center', fontSize: spelling && checked === null ? 34 : headingSize, lineHeight: spelling && checked === null ? 44 : headingSize + 12 }}>{spelling && checked === null ? 'Spell the word' : word.headword}</Text>
+      <Text style={{ ...ui.small, textAlign: 'center' }}>{sense?.partOfSpeech ?? 'Word list entry'}</Text>
+    </View>
+    {senses.length > 1 && !spelling && <Disclosure title={`Choose a meaning (${senses.length})`}><View style={ui.row}>{senses.map((s, i) => <Chip key={s.id} label={`Meaning ${i + 1}${s.status === 'ready' ? ' ✓' : ''}`} selected={sense?.id === s.id} onPress={() => changeSense(s)} />)}</View></Disclosure>}
+    {!sense ? <Empty title="A meaning is still needed" text="This collected word does not have a definition yet. You can add a note or enrich it with a content pack." /> : <>
+      {spelling ? <View style={{ gap: 20 }}>
+        <Text style={{ ...ui.body, textAlign: 'center', fontSize: 20, lineHeight: 30 }}>{checked === null ? hideSpelling(meaning, word) : meaning}</Text>
+        <Field label="Your spelling" placeholder="Type the word" value={typed} onChangeText={setTyped} autoCapitalize="none" autoCorrect={false} spellCheck={false} editable={checked === null && !busy} onSubmitEditing={() => check()} returnKeyType="done" style={{ textAlign: 'center', fontSize: 22 }} />
+        {checked === null ? <View style={{ gap: 10 }}><Button title="Check spelling" onPress={() => check()} disabled={!typed.trim()} busy={busy} /><Button title="Show answer" secondary disabled={busy} onPress={() => check(true)} /></View> : <Feedback kind={checked ? 'success' : 'error'}><Text style={{ ...ui.h2, color: checked ? c.teal : c.red }}>{checked ? 'Correct spelling' : 'Keep practising'}</Text><Text style={ui.body}>Your answer: {typed}</Text><Text style={ui.body}>Correct spelling: {word.headword}</Text><Text style={ui.small}>{savedMessage}</Text></Feedback>}
+      </View> : <>
+        <View style={{ paddingVertical: 20, paddingHorizontal: 16, borderRadius: 16, backgroundColor: c.blue, borderLeftWidth: 3, borderLeftColor: c.teal }}><HighlightText text={sense.examples[0] ?? 'Recall a sentence where you could use this word.'} terms={[word.headword, ...word.variants]} style={{ ...ui.body, textAlign: 'center', fontSize: 21, lineHeight: 33 }} /></View>
+        {!revealed && <View style={{ gap: 10 }}><Text style={{ ...ui.small, textAlign: 'center' }}>Can you recall its meaning here?</Text><Button title="Reveal meaning" onPress={() => { assisted.current = true; setRevealed(true); }} /></View>}
+        <Reveal visible={revealed}><View style={{ gap: 20 }}>
+          <Text style={{ ...ui.h2, fontSize: 21, lineHeight: 31, textAlign: 'center', fontWeight: '500' }}>{meaning}</Text>
+          {savedMessage ? <Feedback kind="success"><Text style={ui.body}>{savedMessage}</Text></Feedback> : null}
+          {sense.examples.length > 1 && <Disclosure title="More examples">{sense.examples.slice(1).map((example, i) => <HighlightText key={i} text={example} terms={[word.headword, ...word.variants]} style={ui.body} />)}</Disclosure>}
+          {sense.synonyms.length > 0 && <Disclosure title="Similar words, different uses"><Text style={{ ...ui.body, color: c.teal }}>{sense.synonyms.join(', ')}</Text><Text style={ui.body}>{sense.synonymNote ?? 'These words share this meaning. Their grammar or level of formality may differ.'}</Text></Disclosure>}
+          {sense.collocations.length > 0 && <Disclosure title="Often used with"><View style={ui.row}>{sense.collocations.map(t => <Chip key={t} label={t} />)}</View></Disclosure>}
+          {sense.status !== 'ready' && <Text style={ui.small}>Reference meaning. This explanation has not yet been rewritten in simple English.</Text>}
+        </View></Reveal>
       </>}
-      <View style={ui.row}><Button title={spelling ? 'Read the meaning' : 'Practise spelling'} secondary onPress={() => { setSpelling(!spelling); setChecked(null); setTyped(''); setRated(false); }} /><Button title="Add a note" secondary onPress={() => navigate({ name: 'note', target })} /></View>
+      {checked !== null && <Button title="Try spelling again" secondary disabled={busy} onPress={() => { setTyped(''); setChecked(null); setRated(false); setSavedMessage(''); setSpelling(true); }} />}
       {rated && onNext && <Button title="Next review" onPress={onNext} />}
+      <View style={{ flexDirection: 'row', gap: 10 }}><View style={{ flex: 1 }}><Button title={spelling ? 'Read the meaning' : 'Practise spelling'} secondary disabled={busy || (!!route.study && checked === null)} onPress={toggleSpelling} /></View><View style={{ flex: 1 }}><Button title="Add a note" secondary disabled={busy} onPress={() => navigate({ name: 'note', target })} /></View></View>
     </>}
     {!sense && <Button title="Write a note" onPress={() => navigate({ name: 'note' })} />}
   </ScrollView>;

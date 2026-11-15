@@ -15,6 +15,12 @@ test-results/
 docs/
 output/
 android/
+!/modules/*/android/
+/modules/*/android/*
+!/modules/*/android/build.gradle
+!/modules/*/android/src/
+!/modules/*/android/src/**
+/modules/*/README.md
 ios/
 mobile/assets/
 data/vocabulary.json

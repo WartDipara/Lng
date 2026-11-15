@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
-import { Button, Card, Chip, Empty, Field, Heading, ui } from '../components/UI';
+import { Button, Card, Chip, Empty, Field, Heading, useUI } from '../components/UI';
 import type { ScreenProps, Route } from '../routes';
 import { id } from '../engine';
-import { colors as c } from '../theme';
+import { useTheme } from '../theme';
 
 export function NotebookScreen({ engine, navigate }: ScreenProps) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [query, setQuery] = useState('');
   const notes = [...engine.user.notes].filter(n => `${n.title} ${n.body} ${n.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase())).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   return <FlatList data={notes} keyExtractor={n => n.id} contentContainerStyle={ui.page}
@@ -15,6 +16,7 @@ export function NotebookScreen({ engine, navigate }: ScreenProps) {
 }
 
 export function NoteEditor({ engine, refresh, notify, route, openTarget, onDirtyChange, onSaved }: ScreenProps & { route: Extract<Route, { name: 'note' }>; onDirtyChange: (dirty: boolean) => void; onSaved: () => void }) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [title, setTitle] = useState(route.note?.title ?? ''); const [body, setBody] = useState(route.note?.body ?? '');
   const [tags, setTags] = useState(route.note?.tags.join(', ') ?? ''); const [busy, setBusy] = useState(false); const [confirmDelete, setConfirmDelete] = useState(false);
   const target = route.note?.target ?? route.target;
@@ -45,6 +47,7 @@ export function NoteEditor({ engine, refresh, notify, route, openTarget, onDirty
 }
 
 export function MistakesScreen({ engine, openTarget, notify, refresh }: ScreenProps) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [showMastered, setShowMastered] = useState(false); const [kind, setKind] = useState('all');
   const rows = [...engine.user.mistakes].filter(m => (showMastered || !m.mastered) && (kind === 'all' || m.target.kind === kind)).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   return <FlatList data={rows} keyExtractor={m => `${m.target.id}:${m.target.revision}`} contentContainerStyle={ui.page}
@@ -53,6 +56,7 @@ export function MistakesScreen({ engine, openTarget, notify, refresh }: ScreenPr
     renderItem={({ item }) => <MistakeCard engine={engine} item={item} open={() => openTarget(item.target)} mark={async () => { try { await engine.mastery(item.target, !item.mastered); refresh(); } catch (e) { notify((e as Error).message); } }} />} />;
 }
 function MistakeCard({ engine, item, open, mark }: { engine: ScreenProps['engine']; item: ScreenProps['engine']['user']['mistakes'][number]; open: () => void; mark: () => void }) {
+  const ui = useUI(); const { colors: c } = useTheme();
   const [title, setTitle] = useState('Opening saved content…');
   const attempts = engine.user.attempts.filter(a => item.attemptIds.includes(a.id));
   useEffect(() => { let active = true; (async () => {
@@ -60,6 +64,6 @@ function MistakeCard({ engine, item, open, mark }: { engine: ScreenProps['engine
     if (active) setTitle(value ?? 'Content unavailable');
   })().catch(() => active && setTitle('Content unavailable')); return () => { active = false; }; }, [item.target.id, item.target.revision]);
   return <Card style={{ marginBottom: 14 }}><Text style={ui.small}>{item.target.kind === 'question' ? 'Use of English' : 'Vocabulary'}{item.mastered ? ' • Mastered' : ''}</Text><Text style={ui.h2}>{title}</Text><Text style={ui.body}>{attempts.length} attempt{attempts.length === 1 ? '' : 's'} to learn from</Text>
-    {attempts.slice(-3).map(a => <Text key={a.id} style={ui.small}>{new Date(a.createdAt).toLocaleDateString('en')} — {a.kind === 'spelling' || a.kind === 'recall' ? String(a.answer) : `${a.score}/${a.maxScore}`}</Text>)}
+    {attempts.slice(-3).map(a => <Text key={a.id} style={ui.small}>{new Date(a.createdAt).toLocaleDateString('en')} — {a.kind === 'spelling' || a.kind === 'recall' ? (a.answer && typeof a.answer === 'object' && 'outcome' in a.answer ? `${'text' in a.answer ? a.answer.text : ''} · ${a.answer.outcome}` : String(a.answer)) : `${a.score}/${a.maxScore}`}</Text>)}
     <View style={ui.row}><Button title="Try again" disabled={!engine.targetExists(item.target)} onPress={open} /><Button title={item.mastered ? 'Mark for practice' : 'Mark mastered'} secondary onPress={mark} /></View></Card>;
 }
