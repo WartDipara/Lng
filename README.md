@@ -7,12 +7,14 @@ Original practice is not official IELTS past-paper material.
 
 ## Download an Android APK
 
-Open **Actions → Build Android APK → Run workflow**. After success, download
-`English-in-Practice-android-<run number>` under **Artifacts**, extract it and install the APK.
-Artifacts are retained for 30 days. The workflow also runs automatically on `v*` tags.
-Successful tag builds publish the APK, verification report and SHA256SUMS.txt to
-[GitHub Releases](https://github.com/WartDipara/Lng/releases). Release downloads do not
-have the Actions artifact retention limit. Manual builds only upload Actions artifacts.
+Open [GitHub Releases](https://github.com/WartDipara/Lng/releases) and download
+**English-in-Practice.apk** directly from a version's Assets. The verification report and
+SHA256SUMS.txt are attached alongside it. These downloads do not have the Actions artifact
+retention limit. A successful `v*` tag build publishes its version automatically.
+
+For a manual test build, open **Actions → Build Android APK → Run workflow**. After success,
+download `English-in-Practice-android-<run number>` under **Artifacts**, extract it and install
+the APK. Manual builds only upload Actions artifacts, retained for 30 days.
 
 For a new app release, keep `package.json` and `app.json` versions equal, increase
 `expo.android.versionCode`, commit the changes, then push a matching tag:
