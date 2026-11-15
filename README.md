@@ -1,6 +1,6 @@
 # English in Practice
 
-Offline React Native English study for Android/iOS: vocabulary and spelling, spaced review,
+Offline React Native English study for Android: vocabulary and spelling, spaced review,
 22 Use of English formats, mistake notebook, notes, incremental JSON import and backup.
 The bundle contains 131,008 reference headwords, 40 curated meanings and 70 original tasks.
 Original practice is not official IELTS past-paper material.
@@ -42,7 +42,7 @@ Restore your existing signing key to `android/app/debug.keystore` first. APK out
 `output/English-in-Practice.apk`. Logs and versioned copies: `output/builds/`.
 Use `npm run build -- -Offline` with cached dependencies, or `-Workers 2` to limit parallelism.
 The command validates content, typechecks, tests, builds and verifies signatures/assets.
-It does not run device tests. iOS requires Mac/Xcode and signing; this CI produces Android APKs.
+It does not run device tests. Android APK is the supported installation and release format.
 
 ## Signing and repository contents
 

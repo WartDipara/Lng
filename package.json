@@ -20,10 +20,9 @@
     "start": "expo start",
     "web": "expo start --web",
     "android": "expo run:android",
-    "ios": "expo run:ios",
     "prepare:mobile": "node scripts/prepare-mobile.ts",
     "typecheck:mobile": "tsc -p tsconfig.mobile.json --noEmit",
-    "export": "expo export --platform all"
+    "export": "expo export --platform android"
   },
   "dependencies": {
     "@expo/metro-runtime": "~58.0.17",
