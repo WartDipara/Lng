@@ -19,7 +19,8 @@ npm run build
 
 Requires Windows, Node.js 24+, Python 3, JDK 17 and the Android SDK.
 Restore the existing signing key to `android/app/debug.keystore` before building.
-The APK is written to `output/English-in-Practice.apk`.
+The ARM64 + ARM32 APK is written to `output/English-in-Practice.apk`.
+Use `npm run build -- -EmulatorTest` for a separate x86_64 test APK.
 
 For a release, update the versions in `package.json` and `app.json`, increase
 Android `versionCode`, then push the matching `v*` tag. GitHub Actions builds

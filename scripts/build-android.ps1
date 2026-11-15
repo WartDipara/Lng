@@ -1,11 +1,13 @@
 [CmdletBinding()]
-param([switch]$Offline, [ValidateRange(1, 16)][int]$Workers = 4)
+param([switch]$Offline, [ValidateRange(1, 16)][int]$Workers = 4, [switch]$EmulatorTest)
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 Set-Location -LiteralPath $root
 $lock = $null
 $transcribing = $false
+$abis = if ($EmulatorTest) { @('x86_64') } else { @('arm64-v8a', 'armeabi-v7a') }
+$outputName = if ($EmulatorTest) { 'English-in-Practice-emulator.apk' } else { 'English-in-Practice.apk' }
 function Get-Sha256([string]$Path) {
     $stream = [IO.File]::OpenRead($Path)
     $sha = [Security.Cryptography.SHA256]::Create()
@@ -73,7 +75,7 @@ try {
         $gradle = $gradle.Replace($marker, "$marker`n        externalNativeBuild { cmake { arguments `"-DCMAKE_OBJECT_PATH_MAX=240`" } }")
         [IO.File]::WriteAllText($gradlePath, $gradle)
     }
-    $gradleArgs = @('-p', 'android', 'assembleRelease', '--no-daemon', '-PreactNativeArchitectures=arm64-v8a,x86_64', "--max-workers=$Workers", '--console=plain')
+    $gradleArgs = @('-p', 'android', 'assembleRelease', '--no-daemon', "-PreactNativeArchitectures=$($abis -join ',')", '-Pandroid.enableMinifyInReleaseBuilds=true', '-Pandroid.enableShrinkResourcesInReleaseBuilds=true', '-Pexpo.useLegacyPackaging=true', "--max-workers=$Workers", '--console=plain')
     if ($Offline) { $gradleArgs += '--offline' }
     Invoke-Step 'Build self-contained release APK' '.\android\gradlew.bat' $gradleArgs
     $apk = Join-Path $root 'android/app/build/outputs/apk/release/app-release.apk'
@@ -93,8 +95,14 @@ try {
     try {
         $bundle = $archive.GetEntry('assets/index.android.bundle')
         if (!$bundle -or $bundle.Length -eq 0) { throw 'APK has no embedded JavaScript bundle.' }
-        foreach ($abi in @('arm64-v8a', 'x86_64')) {
+        foreach ($abi in $abis) {
             if (!($archive.Entries | Where-Object { $_.FullName -like "lib/$abi/*.so" })) { throw "Missing native ABI: $abi" }
+        }
+        $actualAbis = @($archive.Entries | Where-Object { $_.FullName -match '^lib/[^/]+/.*\.so$' } | ForEach-Object { $_.FullName.Split('/')[1] } | Sort-Object -Unique)
+        if (@(Compare-Object ($abis | Sort-Object) $actualAbis).Count) { throw 'APK contains unexpected native architectures.' }
+        if ($archive.Entries | Where-Object { $_.FullName -match 'libtranslate_jni\.so$' }) { throw 'Unused ML Kit native library is still included.' }
+        foreach ($entry in $archive.Entries | Where-Object { $_.FullName -match '^lib/.*\.so$' }) {
+            if ($entry.CompressedLength -ge $entry.Length) { throw "Native library was not compressed: $($entry.FullName)" }
         }
         $packHashes = @{}
         foreach ($entry in $archive.Entries | Where-Object { $_.FullName.EndsWith('.pack') }) {
@@ -114,21 +122,21 @@ try {
 
     $config = (Get-Content app.json -Raw | ConvertFrom-Json).expo
     $version = $config.version -replace '[^a-zA-Z0-9._-]', '_'
-    $archiveName = "English-in-Practice-$version-$($config.android.versionCode)-$stamp.apk"
+    $archiveName = "English-in-Practice-$version-$($config.android.versionCode)-$($abis -join '+')-$stamp.apk"
     Copy-Item -LiteralPath $apk -Destination "output/builds/$archiveName"
-    Copy-Item -LiteralPath $apk -Destination 'output/English-in-Practice.apk' -Force
+    Copy-Item -LiteralPath $apk -Destination "output/$outputName" -Force
     $report = [ordered]@{
         builtAt = [DateTime]::UtcNow.ToString('o'); version = $config.version; versionCode = $config.android.versionCode
-        apk = 'output/English-in-Practice.apk'; archivedApk = "output/builds/$archiveName"
+        apk = "output/$outputName"; archivedApk = "output/builds/$archiveName"
         sizeBytes = (Get-Item $apk).Length; sha256 = (Get-Sha256 $apk).ToLowerInvariant()
         offlinePackCount = $assets.Count; allPackBytesMatchSource = $true; hermesBundleBytes = $bundleBytes
-        abis = @('arm64-v8a', 'x86_64'); signatureVerified = $true; signingCertificateSha256 = $expectedCertificate
+        abis = $abis; resourceShrinking = $true; nativeLibrariesCompressed = $true; unusedTranslationModuleRemoved = $true; signatureVerified = $true; signingCertificateSha256 = $expectedCertificate
         checks = @('core typecheck', 'mobile typecheck', 'core/mobile tests', 'collection tests', 'APK signature', 'bundled assets')
         runtimeTest = 'Not run by this packaging command; previous emulator results do not validate a newly changed app.'
     }
     $report | ConvertTo-Json -Depth 5 | Set-Content "output/builds/build-$stamp.json" -Encoding UTF8
-    $report | ConvertTo-Json -Depth 5 | Set-Content 'output/android-build-verification.json' -Encoding UTF8
-    Write-Host "`nBuild succeeded: $root/output/English-in-Practice.apk" -ForegroundColor Green
+    $report | ConvertTo-Json -Depth 5 | Set-Content $(if ($EmulatorTest) { 'output/android-emulator-verification.json' } else { 'output/android-build-verification.json' }) -Encoding UTF8
+    Write-Host "`nBuild succeeded: $root/output/$outputName" -ForegroundColor Green
     Write-Host "SHA256: $($report.sha256)"
 } catch {
     Write-Host "`nBUILD FAILED: $($_.Exception.Message)" -ForegroundColor Red

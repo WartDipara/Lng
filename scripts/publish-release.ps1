@@ -13,6 +13,9 @@ $actual = (Get-FileHash -LiteralPath $apk -Algorithm SHA256).Hash.ToLowerInvaria
 if ($actual -ne $report.sha256 -or !$report.signatureVerified -or !$report.allPackBytesMatchSource) {
     throw 'APK does not match the successful build verification report.'
 }
+if (@(Compare-Object @('arm64-v8a', 'armeabi-v7a') @($report.abis)).Count -or !$report.resourceShrinking -or !$report.nativeLibrariesCompressed) {
+    throw 'Only the optimized ARM64 + ARM32 phone APK may be published.'
+}
 "$actual  English-in-Practice.apk" | Set-Content output/SHA256SUMS.txt -Encoding utf8NoBOM
 $assets = @($apk, 'output/android-build-verification.json', 'output/SHA256SUMS.txt')
 $url = "https://github.com/$($env:GH_REPO)/releases/tag/$tag"
@@ -20,17 +23,16 @@ $notes = @"
 Offline English study for Android. Download and install **English-in-Practice.apk** below.
 
 - Version: $($report.version) (Android versionCode $($report.versionCode))
-- Architectures: arm64-v8a and x86_64
+- Architectures: $($report.abis -join ', ')
 - SHA-256: $actual
 - Offline assets verified: $($report.offlinePackCount)
 - Build: https://github.com/$($env:GH_REPO)/actions/runs/$($env:GITHUB_RUN_ID)
 
 Included in this release:
-- Configurable practice sets with saved drafts, batch grading and per-question results.
-- Offline profile, practice history, accuracy chart and activity calendar.
-- Automatic spelling assessment and repeat-aware practice scheduling.
-- Compact mobile layouts, dark mode and highlighted vocabulary in examples.
-- Reliable asynchronous saves and update compatibility checks.
+- Smaller Android phone APK with ARM64 and ARM32 libraries only.
+- R8 resource shrinking and compressed native libraries.
+- Removed the unused translation native module; offline study content remains complete.
+- Existing identity, progress, notes and imported content stay in place during updates.
 
 To update, install this APK over the existing app. Do not uninstall or clear app storage.
 Export a backup from Profile / Library before changing devices.

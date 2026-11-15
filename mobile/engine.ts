@@ -197,10 +197,12 @@ export class StudyEngine {
     return Boolean(owner && this.catalog.entities.vocabulary[owner.wordId]?.[target.revision]?.senseIds?.includes(target.id));
   }
   searchWords(query: string, tag = '', readyOnly = false, limit = 100) {
-    const needle = query.trim().toLocaleLowerCase('en');
+    // English search needs Unicode case folding, not a fresh locale service for
+    // each of 131k entries. Locale casing is particularly expensive on Android.
+    const needle = query.trim().toLowerCase();
     const result: WordRow[] = []; const seen = new Set<string>();
     for (const word of this.words) {
-      if (readyOnly && !word.ready.length || tag && !word.tags.includes(tag) || needle && !word.headword.toLocaleLowerCase('en').includes(needle)) continue;
+      if (readyOnly && !word.ready.length || tag && !word.tags.includes(tag) || needle && !word.headword.toLowerCase().includes(needle)) continue;
       // A curated course entry wins over the same reference headword, except when filtering by source tag.
       if (seen.has(word.headword)) continue;
       seen.add(word.headword); result.push(word);

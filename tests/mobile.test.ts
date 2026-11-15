@@ -96,6 +96,17 @@ test('mobile initializes bundled content offline and persists notes across a fre
   assert.equal(restarted.value.recovered, false);
 });
 
+test('dictionary search handles case and filters without per-entry locale services', async () => {
+  const { value } = await engine();
+  const original = String.prototype.toLocaleLowerCase;
+  String.prototype.toLocaleLowerCase = function () { throw new Error('Per-entry locale conversion blocks Android search'); };
+  try {
+    assert.equal(value.searchWords('  CONTINGENT  ')[0].headword, 'contingent');
+    assert.equal(value.searchWords('contingent', 'not-a-tag').length, 0);
+    assert.equal(value.searchWords('no-such-headword').length, 0);
+  } finally { String.prototype.toLocaleLowerCase = original; }
+});
+
 test('practice drafts resume, submit atomically once, and retain identity through restore', async () => {
   const { value, io, bundled } = await engine();
   const sessionId = await value.startPractice(2, value.questions.map(q => q.id));
