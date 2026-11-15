@@ -16,6 +16,6 @@ async function readAsset(module: number) {
   return JSON.parse(text);
 }
 export const bundle: BundleAccess = {
-  index: () => loadIndex(readAsset, libraryAsset, libraryShards),
+  index: progress => loadIndex(readAsset, libraryAsset, libraryShards, progress),
   async pack(file) { return packAssets[file] ? await readAsset(packAssets[file]) : null; },
 };

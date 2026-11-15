@@ -29,3 +29,4 @@ scripts/verify_library.ts
 .env
 .env.*
 !.env.example
+assets/icon-prompt.txt

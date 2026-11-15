@@ -48,6 +48,10 @@ await writeFile(join(root, 'packs', imported.digest + '.pack'), JSON.stringify(s
 registry.push(`  '${imported.digest}.json': require('./packs/${imported.digest}.pack'),`);
 index.words.push(...(starter.vocabulary ?? []).map(w => ({ id: w.id, headword: w.headword, tags: w.tags, ready: w.senses.filter(s => s.status === 'ready').map(s => s.id) })));
 index.questions.push(...(starter.questions ?? []).map(q => ({ id: q.id, title: q.title, type: q.type, tags: q.tags })));
+// Sort once on the build machine, not every time a phone opens the app.
+const collator = new Intl.Collator('en');
+index.words.sort((a, b) => Number(b.ready.length > 0) - Number(a.ready.length > 0) || collator.compare(a.headword, b.headword));
+index.wordsSorted = true;
 const wordCount = index.words.length;
 const shards: string[] = [];
 for (let offset = 0; offset < wordCount; offset += 2000) {

@@ -290,3 +290,61 @@ test('daily word counts distinguish new senses from repeated reviews and questio
   assert.equal(studiedToday(state, today), 2);
   assert.equal(newSensesToday(state, today), 1);
 });
+
+test('build-sorted bundled words and catalog are reused on cold start without copying', async () => {
+  const bundled = bundle();
+  const index = await bundled.index();
+  index.wordsSorted = true;
+  const value = new StudyEngine(new MemoryIO(), { index: async () => index, pack: bundled.pack });
+  const progress: { phase: string; completed: number; total: number }[] = [];
+  await value.initialize(item => progress.push(item));
+  assert.equal(value.words, index.words);
+  assert.equal(value.catalog, index.catalog);
+  assert.equal(progress.at(-1)?.phase, 'Ready');
+  assert.ok(progress.some(item => item.phase === 'Preparing meanings' && item.completed === index.words.length));
+});
+
+test('sorted index imports merge replacements and additions while keeping ready words first', async () => {
+  const pack = basePack();
+  const reference = (name: string) => {
+    const word = structuredClone(pack.vocabulary![0]);
+    word.id = `reference:${name}`; word.headword = name; word.status = 'reference';
+    word.senses[0].id = `reference:${name}-sense`; word.senses[0].status = 'reference'; word.senses[0].simpleDefinition = null;
+    return word;
+  };
+  const alpha = reference('alpha'); const zulu = reference('zulu');
+  pack.vocabulary!.push(alpha, zulu);
+  const bundled = bundle(pack); const index = await bundled.index(); index.wordsSorted = true;
+  const value = (await engine(new MemoryIO(), { index: async () => index, pack: bundled.pack })).value;
+  const beta = structuredClone(zulu); beta.revision = 2; beta.headword = 'beta';
+  const extra = reference('aardvark');
+  await value.import({ schemaVersion: 1, packId: 'updates:sorted-words', packVersion: 1, createdAt: NOW,
+    requires: [{ packId: 'example:base', minVersion: 1 }], sources: [], vocabulary: [beta, extra] });
+  assert.deepEqual(value.words.map(word => word.headword), ['contingent', 'aardvark', 'alpha', 'beta']);
+  assert.equal(value.words.filter(word => word.id === zulu.id).length, 1);
+  assert.equal((await value.word(zulu.id))?.headword, 'beta');
+  assert.equal((await value.word(zulu.id, 1))?.headword, 'zulu');
+});
+
+test('large meaning indexes yield between batches and report actual completed counts', async () => {
+  const bundled = bundle(); const index = await bundled.index(); index.wordsSorted = true;
+  const template = Object.values(index.catalog.entities.vocabulary)[0];
+  for (let number = 0; number < 4100; number++) {
+    const wordId = `synthetic:word-${number}`;
+    index.words.push({ id: wordId, headword: `word${String(number).padStart(4, '0')}`, tags: [], ready: [] });
+    const revisions = structuredClone(template); revisions[1].senseIds = [`synthetic:sense-${number}`];
+    index.catalog.entities.vocabulary[wordId] = revisions;
+  }
+  let timerRan = false;
+  const progress: number[] = [];
+  const value = new StudyEngine(new MemoryIO(), { index: async () => index, pack: bundled.pack });
+  await value.initialize(item => {
+    if (item.phase === 'Preparing meanings') {
+      progress.push(item.completed);
+      if (item.completed === 2000) setTimeout(() => { timerRan = true; }, 0);
+      if (item.completed === 4000) assert.equal(timerRan, true);
+    }
+  });
+  assert.deepEqual(progress, [2000, 4000, 4101]);
+  assert.equal(value.targetExists({ kind: 'sense', id: 'synthetic:sense-4099', revision: 1 }), true);
+});

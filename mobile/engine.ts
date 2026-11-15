@@ -7,8 +7,9 @@ import type { Catalog, ContentPack, ContentEntity, Word, Question, Passage, Targ
 export interface JsonIO { read(path: string): Promise<string | null>; write(path: string, text: string): Promise<void> }
 export interface WordRow { id: string; headword: string; tags: string[]; ready: string[] }
 export interface QuestionRow { id: string; title: string; type: string; tags: string[] }
-export interface BundleIndex { catalog: Catalog; words: WordRow[]; questions: QuestionRow[]; notices?: { title: string; text: string }[] }
-export interface BundleAccess { index(): Promise<BundleIndex>; pack(file: string): Promise<ContentPack | null> }
+export interface BootProgress { phase: string; completed: number; total: number }
+export interface BundleIndex { catalog: Catalog; words: WordRow[]; questions: QuestionRow[]; wordsSorted?: boolean; notices?: { title: string; text: string }[] }
+export interface BundleAccess { index(onProgress?: (progress: BootProgress) => void): Promise<BundleIndex>; pack(file: string): Promise<ContentPack | null> }
 interface Overlay { catalog: Catalog; words: WordRow[]; questions: QuestionRow[] }
 interface Envelope<T> { sequence: number; checksum: string; data: T }
 export interface Backup { format: 'engdictionary-backup'; version: 1; createdAt: string; user: UserState; packs: ContentPack[] }
@@ -16,9 +17,25 @@ export interface Backup { format: 'engdictionary-backup'; version: 1; createdAt:
 export function id(prefix: string) { return `${prefix}:${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`; }
 const wordRow = (word: Word): WordRow => ({ id: word.id, headword: word.headword, tags: word.tags, ready: word.senses.filter(s => s.status === 'ready').map(s => s.id) });
 const questionRow = (q: Question): QuestionRow => ({ id: q.id, title: q.title, type: q.type, tags: q.tags });
-function overlayCatalog(base: Catalog, overlay: Catalog): Catalog {
+const wordCollator = new Intl.Collator('en');
+const compareWords = (a: WordRow, b: WordRow) => Number(b.ready.length > 0) - Number(a.ready.length > 0) || wordCollator.compare(a.headword, b.headword);
+// Yield a JS turn so React Native can paint progress. This is cooperative work,
+// not another thread: JSON.parse and object construction still run on the JS thread.
+const yieldToUI = () => new Promise<void>(resolve => setTimeout(resolve, 0));
+async function overlayCatalog(base: Catalog, overlay: Catalog): Promise<Catalog> {
+  if (!Object.keys(overlay.packs).length) return base;
   const result: Catalog = { schemaVersion: 1, packs: { ...base.packs, ...overlay.packs }, entities: { sources: {}, vocabulary: {}, passages: {}, questions: {} } };
-  for (const kind of kinds) result.entities[kind] = { ...base.entities[kind], ...overlay.entities[kind] };
+  for (const kind of kinds) {
+    const changes = overlay.entities[kind];
+    if (!Object.keys(changes).length) { result.entities[kind] = base.entities[kind]; continue; }
+    let copied = 0;
+    // Avoid allocating a second 131k-entry Object.entries/tuple array.
+    for (const entityId in base.entities[kind]) {
+      result.entities[kind][entityId] = base.entities[kind][entityId];
+      if (++copied % 2000 === 0) await yieldToUI();
+    }
+    for (const entityId in changes) result.entities[kind][entityId] = changes[entityId];
+  }
   return result;
 }
 
@@ -65,28 +82,82 @@ export class StudyEngine {
   private serialize<T>(action: () => Promise<T>): Promise<T> {
     const task = this.queue.then(action); this.queue = task.catch(() => {}); return task;
   }
-  async initialize() {
-    this.base = await this.bundled.index();
+  async initialize(onProgress?: (progress: BootProgress) => void) {
+    this.base = await this.bundled.index(onProgress);
+    onProgress?.({ phase: 'Opening saved progress', completed: 0, total: 2 });
+    await yieldToUI();
     this.overlay = await this.readSlots('content', this.overlay);
+    onProgress?.({ phase: 'Opening saved progress', completed: 1, total: 2 });
     this.user = await this.readSlots('user', emptyUserState(), validateUserState);
-    this.reindex();
+    onProgress?.({ phase: 'Opening saved progress', completed: 2, total: 2 });
+    await this.reindex(onProgress);
+    onProgress?.({ phase: 'Ready', completed: 1, total: 1 });
   }
   notices() { return this.base.notices ?? []; }
-  private reindex() {
-    this.catalog = overlayCatalog(this.base.catalog, this.overlay.catalog);
-    const wordMap = new Map(this.base.words.map(w => [w.id, w]));
-    for (const word of this.overlay.words) wordMap.set(word.id, word);
-    this.words = [...wordMap.values()].sort((a, b) => Number(b.ready.length > 0) - Number(a.ready.length > 0) || a.headword.localeCompare(b.headword));
+  private async reindex(onProgress?: (progress: BootProgress) => void) {
+    onProgress?.({ phase: 'Preparing library', completed: 0, total: 1 });
+    await yieldToUI();
+    const catalog = await overlayCatalog(this.base.catalog, this.overlay.catalog);
+    let words: WordRow[];
+    if (this.base.wordsSorted && !this.overlay.words.length) {
+      // The shipped word index is sorted at build time; no cold-start map or sort.
+      words = this.base.words;
+    } else if (this.base.wordsSorted) {
+      const changedIds = new Set(this.overlay.words.map(word => word.id));
+      const changed = [...this.overlay.words].sort(compareWords);
+      words = [];
+      let changedAt = 0; let completed = 0;
+      for (const word of this.base.words) {
+        if (!changedIds.has(word.id)) {
+          while (changedAt < changed.length && compareWords(changed[changedAt], word) < 0) words.push(changed[changedAt++]);
+          words.push(word);
+        }
+        if (++completed % 2000 === 0) {
+          onProgress?.({ phase: 'Preparing words', completed, total: this.base.words.length });
+          await yieldToUI();
+        }
+      }
+      while (changedAt < changed.length) words.push(changed[changedAt++]);
+    } else {
+      // Compatibility path for older indexes and small test bundles.
+      const wordMap = new Map<string, WordRow>();
+      let completed = 0;
+      for (const word of this.base.words) {
+        wordMap.set(word.id, word);
+        if (++completed % 2000 === 0) await yieldToUI();
+      }
+      for (const word of this.overlay.words) wordMap.set(word.id, word);
+      words = [...wordMap.values()].sort(compareWords);
+    }
+    onProgress?.({ phase: 'Preparing words', completed: words.length, total: words.length });
+    await yieldToUI();
     const questionMap = new Map(this.base.questions.map(q => [q.id, q]));
     for (const q of this.overlay.questions) questionMap.set(q.id, q);
-    this.questions = [...questionMap.values()];
-    this.senseOwners.clear();
-    for (const [wordId, revisions] of Object.entries(this.catalog.entities.vocabulary)) {
-      for (const version of Object.values(revisions)) for (const senseId of version.senseIds ?? []) {
-        const old = this.senseOwners.get(senseId);
-        if (!old || version.revision > old.revision) this.senseOwners.set(senseId, { wordId, revision: version.revision });
+    const senseOwners = catalog.entities.vocabulary === this.catalog.entities.vocabulary
+      ? this.senseOwners : new Map<string, { wordId: string; revision: number }>();
+    let completed = 0;
+    if (senseOwners !== this.senseOwners) for (const wordId in catalog.entities.vocabulary) {
+      const revisions = catalog.entities.vocabulary[wordId];
+      for (const revision in revisions) {
+        const version = revisions[revision];
+        const owner = { wordId, revision: version.revision };
+        for (const senseId of version.senseIds ?? []) {
+          const old = senseOwners.get(senseId);
+          if (!old || version.revision > old.revision) senseOwners.set(senseId, owner);
+        }
+      }
+      if (++completed % 2000 === 0) {
+        onProgress?.({ phase: 'Preparing meanings', completed, total: words.length });
+        await yieldToUI();
       }
     }
+    onProgress?.({ phase: 'Preparing meanings', completed: words.length, total: words.length });
+    // Publish all derived views together after preparation, so an in-flight import
+    // cannot expose a partially rebuilt lookup table to the current screen.
+    this.catalog = catalog;
+    this.words = words;
+    this.questions = [...questionMap.values()];
+    this.senseOwners = senseOwners;
   }
   async pack(file: string): Promise<ContentPack> {
     const cached = this.cache.get(file);
@@ -151,7 +222,7 @@ export class StudyEngine {
       overlay.questions = [...questions.values()];
       await this.io.write(`packs/${result.digest}.json`, JSON.stringify(result.pack));
       await this.commit('content', overlay);
-      this.overlay = overlay; this.reindex();
+      this.overlay = overlay; await this.reindex();
       return { ...result.counts, duplicate: false };
     });
   }

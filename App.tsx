@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, BackHandler, KeyboardAvoidingView, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, BackHandler, KeyboardAvoidingView, Modal, Platform, Pressable, Share, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StudyEngine } from './mobile/engine';
+import { StudyEngine, type BootProgress } from './mobile/engine';
+import Constants from 'expo-constants';
 import { io } from './mobile/storage/io';
 import { bundle } from './mobile/storage/bundle';
 import type { MainTab, Route, ScreenProps } from './mobile/routes';
@@ -26,13 +27,43 @@ export default function App() { return <SafeAreaProvider><StudyApp /></SafeAreaP
 function StudyApp() {
   const [engine] = useState(() => new StudyEngine(io, bundle));
   const [loaded, setLoaded] = useState(false); const [bootError, setBootError] = useState('');
+  const [bootProgress, setBootProgress] = useState<BootProgress>({ phase: 'Opening bundled library', completed: 0, total: 1 });
+  const [bootSeconds, setBootSeconds] = useState(0);
+  const bootStarted = useRef(Date.now());
+  const bootBusy = useRef(false);
+  const bootEvents = useRef<string[]>([]);
   const [route, setRoute] = useState<Route>({ name: 'today' }); const [tab, setTab] = useState<MainTab>('today');
   const [, setVersion] = useState(0); const [message, setMessage] = useState('');
   const [pending, setPending] = useState<Route>(); const dirty = useRef(false);
   const history = useRef<Route[]>([]); const session = useRef<Target[]>([]);
   const refresh = () => setVersion(v => v + 1);
-  async function initialize() { setBootError(''); try { await engine.initialize(); setLoaded(true); if (engine.recovered) setMessage('Recovered your last intact saved data.'); } catch (e) { setBootError((e as Error).message); } }
+  function diagnostics(error = bootError) {
+    return `English in Practice ${Constants.expoConfig?.version ?? 'unknown'}\n${Platform.OS} ${Platform.Version}\nStartup: ${Math.round((Date.now() - bootStarted.current) / 1000)}s\n${bootEvents.current.join('\n')}\n${error}`;
+  }
+  async function initialize() {
+    if (bootBusy.current) return;
+    bootBusy.current = true; bootStarted.current = Date.now(); bootEvents.current = [];
+    setBootSeconds(0); setBootError('');
+    try {
+      await engine.initialize(progress => {
+        setBootProgress(progress);
+        bootEvents.current.push(`${Math.round((Date.now() - bootStarted.current) / 1000)}s ${progress.phase}: ${progress.completed}/${progress.total}`);
+        if (bootEvents.current.length > 12) bootEvents.current.shift();
+      });
+      setLoaded(true);
+      void io.write('startup-diagnostics.json', diagnostics('')).catch(() => {});
+      if (engine.recovered) setMessage('Recovered your last intact saved data.');
+    } catch (e) {
+      const error = (e as Error).message; setBootError(error);
+      void io.write('startup-diagnostics.json', diagnostics(error)).catch(() => {});
+    } finally { bootBusy.current = false; }
+  }
   useEffect(() => { initialize(); }, []);
+  useEffect(() => {
+    if (loaded || bootError) return;
+    const timer = setInterval(() => setBootSeconds(Math.floor((Date.now() - bootStarted.current) / 1000)), 1000);
+    return () => clearInterval(timer);
+  }, [loaded, bootError]);
   function go(next: Route, forced = false) {
     if (dirty.current && !forced) { setPending(next); return; }
     history.current.push(route); setRoute(next);
@@ -72,7 +103,12 @@ function StudyApp() {
   const props: ScreenProps = { engine, refresh, navigate: go, notify: setMessage, openTarget };
   const key = 'id' in route ? `${route.name}:${route.id}:${route.revision ?? 'latest'}${route.name === 'word' ? `:${route.senseId ?? ''}:${route.study ?? false}` : ''}` : route.name === 'note' ? `note:${route.note?.id ?? 'new'}` : route.name;
   let screen: React.ReactNode;
-  if (!loaded) screen = <View style={{ flex: 1, justifyContent: 'center', padding: 32, gap: 20, alignItems: 'center' }}><Text style={ui.title}>English in Practice</Text>{bootError ? <><Text style={ui.body}>{bootError}</Text><Button title="Try again" onPress={initialize} /></> : <><ActivityIndicator size="large" color={c.teal} /><Text style={ui.body}>Opening your offline library…</Text></>}</View>;
+  if (!loaded) screen = <View style={{ flex: 1, justifyContent: 'center', padding: 32, gap: 20, alignItems: 'center' }}><Text style={ui.title}>English in Practice</Text>{bootError ? <><Text style={ui.body}>{bootError}</Text><Button title="Try again" onPress={initialize} /></> : <><ActivityIndicator size="large" color={c.teal} /><Text style={ui.body}>Opening your offline library…</Text></>}
+    <Text accessibilityLiveRegion="polite" style={ui.body}>{bootProgress.phase}</Text>
+    <Text style={ui.small}>{bootProgress.completed.toLocaleString('en')} / {bootProgress.total.toLocaleString('en')} · {bootSeconds}s</Text>
+    <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: bootProgress.total, now: bootProgress.completed }} style={{ width: '100%', height: 7, borderRadius: 4, backgroundColor: c.line }}><View style={{ width: `${Math.min(100, bootProgress.completed / Math.max(1, bootProgress.total) * 100)}%`, height: 7, borderRadius: 4, backgroundColor: c.teal }} /></View>
+    {(!!bootError || bootSeconds >= 30) && <><Text style={ui.small}>Taking longer than expected? Share these startup details to help identify the slow step.</Text><Button title="Share startup details" secondary onPress={() => Share.share({ message: diagnostics() }).catch(e => setMessage(e.message))} /></>}
+  </View>;
   else if (route.name === 'today') screen = <TodayScreen {...props} startNew={startNew} startDue={startDue} />;
   else if (route.name === 'words') screen = <WordsScreen {...props} />;
   else if (route.name === 'word') screen = <WordDetail key={key} {...props} route={route} onNext={session.current.length ? next : undefined} />;
