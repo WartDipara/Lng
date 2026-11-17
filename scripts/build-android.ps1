@@ -2,6 +2,7 @@
 param([switch]$Offline, [ValidateRange(1, 16)][int]$Workers = 4, [switch]$EmulatorTest)
 
 $ErrorActionPreference = 'Stop'
+$releaseContract = Get-Content -Raw (Join-Path $PSScriptRoot '../config/release.json') | ConvertFrom-Json
 $root = Split-Path $PSScriptRoot -Parent
 Set-Location -LiteralPath $root
 $lock = $null
@@ -27,9 +28,8 @@ try {
     $transcribing = $true
     $nodeVersion = & node.exe --version
     if ($LASTEXITCODE -ne 0 -or [int]($nodeVersion.TrimStart('v').Split('.')[0]) -lt 24) { throw 'Node.js 24 or newer is required.' }
-    # Prefer explicit environment settings, then the project-local SDK and known local JDK.
+    # Prefer explicit environment settings, then the project-local SDK.
     if (!$env:ANDROID_HOME) { $env:ANDROID_HOME = Join-Path $root '.local/android-sdk' }
-    if (!$env:JAVA_HOME -and (Test-Path 'E:/JDK/jdk-17.0.12/bin/java.exe')) { $env:JAVA_HOME = 'E:/JDK/jdk-17.0.12' }
     if (!$env:JAVA_HOME -or !(Test-Path "$env:JAVA_HOME/bin/java.exe")) { throw 'Set JAVA_HOME to an installed JDK 17 directory.' }
     $sdk = $env:ANDROID_HOME
     foreach ($path in @('platforms/android-37.0/android.jar', 'build-tools/37.0.0/apksigner.bat', 'ndk/27.1.12297006', 'cmake/3.30.5')) {
@@ -83,12 +83,12 @@ try {
 
     $certificate = & "$sdk/build-tools/37.0.0/apksigner.bat" verify --print-certs $apk
     if ($LASTEXITCODE -ne 0) { throw 'Could not read APK signing certificate.' }
-    $expectedCertificate = 'fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c'
+    $expectedCertificate = $releaseContract.signingCertificateSha256
     if (!(($certificate -join "`n").ToLowerInvariant().Contains($expectedCertificate))) {
         throw 'Signing identity changed. This APK cannot safely update existing installations.'
     }
     $appConfig = (Get-Content -Raw app.json | ConvertFrom-Json).expo
-    if ($appConfig.android.package -ne 'com.engdictionary.practice') { throw 'Application ID changed; existing data would not be retained.' }
+    if ($appConfig.android.package -ne $releaseContract.androidApplicationId) { throw 'Application ID changed; existing data would not be retained.' }
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $archive = [IO.Compression.ZipFile]::OpenRead($apk)

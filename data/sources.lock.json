@@ -338,6 +338,42 @@
       "localFile": "oewn-WNDB_License.txt",
       "sha256": "df30ec18fbabcdaf031b79ea026d3e6b959010cffe6dd7be9ac137822175b904",
       "bytes": 1740
+    },
+    {
+      "id": "wordlist:1028201792864ec8",
+      "provider": "wordlist",
+      "repository": "jeremy-rifkin/Wordlist",
+      "revision": "df67e6e28bc9c8771816846a962500ec20fa5cfd",
+      "path": "master.txt",
+      "url": "https://raw.githubusercontent.com/jeremy-rifkin/Wordlist/df67e6e28bc9c8771816846a962500ec20fa5cfd/master.txt",
+      "localFile": "1028201792864ec8.txt",
+      "retrievedAt": "2026-11-17T06:59:09.976109+00:00",
+      "sha256": "6c8671cfe9528415fb69cd011f770242157ee9a2da5b4104bd8cfae3cfa1f365",
+      "bytes": 3136513
+    },
+    {
+      "id": "wordlist:498680b483da1c94",
+      "provider": "wordlist",
+      "repository": "jeremy-rifkin/Wordlist",
+      "revision": "df67e6e28bc9c8771816846a962500ec20fa5cfd",
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/jeremy-rifkin/Wordlist/df67e6e28bc9c8771816846a962500ec20fa5cfd/README.md",
+      "localFile": "498680b483da1c94.md",
+      "retrievedAt": "2026-11-17T06:59:09.976109+00:00",
+      "sha256": "c78f5517090abf0515882b4e7ed9ec6eb5e6afdc354d0573c74202f1219ecc34",
+      "bytes": 1277
+    },
+    {
+      "id": "wordlist:4dd976816590905e",
+      "provider": "wordlist",
+      "repository": "jeremy-rifkin/Wordlist",
+      "revision": "df67e6e28bc9c8771816846a962500ec20fa5cfd",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/jeremy-rifkin/Wordlist/df67e6e28bc9c8771816846a962500ec20fa5cfd/LICENSE",
+      "localFile": "4dd976816590905e",
+      "retrievedAt": "2026-11-17T06:59:09.976109+00:00",
+      "sha256": "ce6ced0014a581f2891d6a14a8950f5349cbd6653692d436041ed4814378b8de",
+      "bytes": 1061
     }
   ]
 }

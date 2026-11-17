@@ -29,3 +29,9 @@ Keep the existing signing key and `ANDROID_KEYSTORE_BASE64` repository secret.
 
 Content schemas and example JSON packs are in `schemas/` and `examples/`.
 Practice questions are original exercises, not official IELTS past papers.
+
+See [Architecture and maintenance](ARCHITECTURE.md) for module responsibilities,
+configuration ownership, persistence contracts and the focused-test workflow.
+
+See [Vocabulary collection](VOCABULARY.md) for the expanded corpus, source pins,
+English-only conversion rules and rebuild commands.

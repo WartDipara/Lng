@@ -1,21 +1,24 @@
 import { Asset } from 'expo-asset';
-import type { BundleAccess } from '../engine.ts';
-import { libraryAsset, libraryShards, packAssets } from '../assets/registry';
-import { loadIndex } from './index-loader';
+import { bootstrapDescriptor, bootstrapAsset, resourceAssets } from '../assets/registry';
+import { openBundle } from './open-bundle.ts';
 import { io } from './io';
 
-async function readAsset(module: number) {
+async function readAsset(module: number): Promise<Uint8Array> {
   const asset = Asset.fromModule(module);
-  const key = `bundled/${asset.hash ?? asset.uri}`;
-  const saved = await io.read(key);
-  if (saved) return JSON.parse(saved);
+  const key = `bundled-gzip/${asset.hash ?? asset.uri}`;
+  const saved = await io.readBytes!(key);
+  if (saved) return saved;
   const response = await fetch(asset.uri);
   if (!response.ok) throw new Error('Could not open the bundled library.');
-  const text = await response.text();
-  await io.write(key, text);
-  return JSON.parse(text);
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  await io.writeBytes!(key, bytes);
+  return bytes;
 }
-export const bundle: BundleAccess = {
-  index: progress => loadIndex(readAsset, libraryAsset, libraryShards, progress),
-  async pack(file) { return packAssets[file] ? await readAsset(packAssets[file]) : null; },
-};
+export const bundle = openBundle(
+  bootstrapDescriptor,
+  () => readAsset(bootstrapAsset),
+  async (key) => {
+    if (!resourceAssets[key]) throw new Error(`Missing offline resource: ${key}`);
+    return readAsset(resourceAssets[key]);
+  },
+);

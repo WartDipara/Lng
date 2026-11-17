@@ -1,11 +1,17 @@
 {
-  "headwords": 131008,
-  "senses": 184934,
-  "headwordOnly": 3150,
+  "headwords": 901542,
+  "senses": 314237,
+  "headwordOnly": 698631,
   "sensesWithExamples": 61325,
   "sensesWithSynonyms": 122377,
   "readySenses": 0,
-  "bytes": 86678721,
+  "baselineHeadwords": 131008,
+  "expansion": {
+    "updated": 122472,
+    "added": 770534
+  },
+  "archiveBytes": 38210564,
+  "packages": 447,
   "tags": {
     "BUSINESS": 2825,
     "CET4": 5274,
@@ -25,132 +31,32 @@
     "TOEFL": 12289,
     "WORDNET": 127858
   },
-  "sources": [
-    {
-      "sourceId": "kyle:4a63fb31d2d88138",
-      "uniqueHeadwords": 1990,
-      "rejectedRows": 1
+  "sources": {
+    "ecdict": {
+      "rows": 770611,
+      "rejectedRows": 2826,
+      "newHeadwords": 645440,
+      "acceptedRows": 767785,
+      "rowsWithEnglishGloss": 139558
     },
-    {
-      "sourceId": "kyle:a3ea7e02d45f489f",
-      "uniqueHeadwords": 3753,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:a192769676ef6ffd",
-      "uniqueHeadwords": 4543,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:6e0074b1d6f48bc6",
-      "uniqueHeadwords": 3992,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:9d8699ce74a4b84c",
-      "uniqueHeadwords": 5057,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:4e0ead2a2d6c8c2a",
-      "uniqueHeadwords": 10377,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:3b9f57b5b81633e8",
-      "uniqueHeadwords": 4463,
-      "rejectedRows": 1
-    },
-    {
-      "sourceId": "kyle:63f6b16f8619e62a",
-      "uniqueHeadwords": 3312,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:20fc203406443071",
-      "uniqueHeadwords": 9984,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:cdf1dda86b1197b2",
-      "uniqueHeadwords": 12410,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:886d3a9c23b7a10a",
-      "uniqueHeadwords": 4340,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:699d704d753c50ca",
-      "uniqueHeadwords": 2825,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "kyle:f11187b12555e7e2",
-      "uniqueHeadwords": 5275,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "mahavivo:d5b4be67cde86bc8",
-      "uniqueHeadwords": 4539,
-      "rejectedRows": 7
-    },
-    {
-      "sourceId": "mahavivo:953b86cb7a87c7b1",
-      "uniqueHeadwords": 2264,
-      "rejectedRows": 7
-    },
-    {
-      "sourceId": "mahavivo:19948d07b10c0f2f",
-      "uniqueHeadwords": 8013,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "mahavivo:11189dc1ebc6398f",
-      "uniqueHeadwords": 17640,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "mahavivo:9d004e16d4fdf622",
-      "uniqueHeadwords": 7726,
-      "rejectedRows": 3
-    },
-    {
-      "sourceId": "mahavivo:86f59ad0b32e2ca2",
-      "uniqueHeadwords": 5391,
-      "rejectedRows": 3
-    },
-    {
-      "sourceId": "mahavivo:70ac6539d8d2dd8e",
-      "uniqueHeadwords": 4510,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "mahavivo:5d57c4da0735ff48",
-      "uniqueHeadwords": 5552,
-      "rejectedRows": 132
-    },
-    {
-      "sourceId": "mahavivo:12925c6bae80de53",
-      "uniqueHeadwords": 12579,
-      "rejectedRows": 235
-    },
-    {
-      "sourceId": "ecdict:fa68e64d87e0384b",
-      "uniqueHeadwords": 26504,
-      "rejectedRows": 0
-    },
-    {
-      "sourceId": "oewn:2025",
-      "uniqueHeadwords": 127858
+    "wordlist": {
+      "rows": 308472,
+      "caseAlignedRows": 295025,
+      "newHeadwords": 125094,
+      "acceptedRows": 307869,
+      "rowsWithEnglishGloss": 0,
+      "rejectedRows": 603
     }
-  ],
+  },
+  "sourceRevisions": {
+    "ecdict": "39cfb9672c0906b63569e0453c2e6abfb9ab182a",
+    "wordlist": "df67e6e28bc9c8771816846a962500ec20fa5cfd"
+  },
   "limitations": [
-    "WordNet glosses and examples are reference material, not reviewed simple-English learning cards.",
-    "Exam tags reflect community lists, not official exam guarantees or CEFR levels.",
-    "Case-sensitive headwords are kept distinct to avoid merging US/us or Polish/polish.",
-    "ECDICT contributes tagged entries and metadata for existing headwords; its full technical dictionary is not imported.",
-    "Raw source bytes are locked and checksummed; unlicensed third-party prose is not copied into the corpus."
+    "Only structured English ECDICT glosses are imported; Chinese translations and unstructured prose are excluded.",
+    "Existing WordNet meanings are preserved instead of replaced by ECDICT glosses.",
+    "Wordlist capitalizes all entries; spellings align to known words or lowercase lexical candidates.",
+    "Headword-only entries are searchable, not reviewed learning cards.",
+    "Community lists include proper names, technical terms and rare forms; tags are not official exam guarantees."
   ]
 }

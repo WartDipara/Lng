@@ -13,30 +13,49 @@ export function completeAnswer(question: Question, answer: unknown): boolean {
   if (i.kind === 'choice') return Array.isArray(answer) && answer.length > 0;
   if (i.kind === 'ordering') return Array.isArray(answer) && answer.length === i.items.length;
   const fields = answer as Record<string, unknown>;
-  return (i.kind === 'text' ? i.fields : i.prompts).every(f => hasAnswer(fields[f.id]));
+  return (i.kind === 'text' ? i.fields : i.prompts).every((f) => hasAnswer(fields[f.id]));
 }
 export function itemStatus(item: PracticeItem): 'correct' | 'incorrect' | 'unanswered' {
-  return !hasAnswer(item.answer) ? 'unanswered' : item.score === item.maxScore && item.score !== undefined ? 'correct' : 'incorrect';
+  return !hasAnswer(item.answer)
+    ? 'unanswered'
+    : item.score === item.maxScore && item.score !== undefined
+      ? 'correct'
+      : 'incorrect';
 }
 export function sessionSummary(session: PracticeSession) {
   const total = session.items.length;
-  const correct = session.items.filter(i => itemStatus(i) === 'correct').length;
-  const unanswered = session.items.filter(i => !hasAnswer(i.answer)).length;
-  return { total, correct, incorrect: total - correct - unanswered, unanswered, accuracy: Math.round(correct / total * 100) };
+  const correct = session.items.filter((i) => itemStatus(i) === 'correct').length;
+  const unanswered = session.items.filter((i) => !hasAnswer(i.answer)).length;
+  return {
+    total,
+    correct,
+    incorrect: total - correct - unanswered,
+    unanswered,
+    accuracy: Math.round((correct / total) * 100),
+  };
 }
 export function submitPractice(state: UserState, sessionId: string, now: string): UserState {
-  const session = state.practiceSessions?.find(s => s.id === sessionId);
+  const session = state.practiceSessions?.find((s) => s.id === sessionId);
   invariant(session, 'Practice session not found.');
   if (session.submittedAt) return state;
   let next = state;
   const items = session.items.map((item, index) => {
     if (!hasAnswer(item.answer)) return item;
     const attemptId = `${session.id}-q${index + 1}`;
-    const result = recordQuestionTest(next, item.question, { id: attemptId, answer: item.answer, createdAt: now });
+    const result = recordQuestionTest(next, item.question, {
+      id: attemptId,
+      answer: item.answer,
+      createdAt: now,
+    });
     next = result.state;
     return { ...item, attemptId, score: result.score, maxScore: result.maxScore };
   });
-  return { ...next, practiceSessions: next.practiceSessions!.map(s => s.id === sessionId ? { ...s, submittedAt: now, items } : s) };
+  return {
+    ...next,
+    practiceSessions: next.practiceSessions!.map((s) =>
+      s.id === sessionId ? { ...s, submittedAt: now, items } : s,
+    ),
+  };
 }
 
 export function localDateKey(date: Date): string {

@@ -12,6 +12,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SOURCE_RULES = json.loads((ROOT / "config/source-rules.json").read_text(encoding="utf-8"))
 
 
 def normalize(word):
@@ -41,12 +42,7 @@ def decode(data):
 
 
 def tags_for(path):
-    pairs = [("四级", "CET4"), ("六级", "CET6"), ("CET4", "CET4"), ("CET6", "CET6"),
-             ("CET_4+6", "CET4+CET6"), ("考研", "NPEE"), ("NPEE", "NPEE"), ("托福", "TOEFL"),
-             ("TOEFL", "TOEFL"), ("雅思", "IELTS"), ("GRE", "GRE"), ("GMAT", "GMAT"),
-             ("SAT", "SAT"), ("专四", "TEM4"), ("专八", "TEM8"), ("四八级", "TEM4+TEM8"),
-             ("COCA", "COCA20000"), ("高中", "HIGH-SCHOOL"), ("初中", "MIDDLE-SCHOOL"), ("商务", "BUSINESS")]
-    return sorted({tag for fragment, tag in pairs if fragment in path})
+    return sorted({tag for fragment, tag in SOURCE_RULES["tagAliases"] if fragment in path})
 
 
 def build():
@@ -70,6 +66,8 @@ def build():
         return entry
 
     for record in lock["files"]:
+        if record["provider"] == "wordlist":
+            continue
         data = (raw / record["localFile"]).read_bytes()
         if hashlib.sha256(data).hexdigest() != record["sha256"]:
             raise ValueError("Source checksum mismatch: " + record["id"])

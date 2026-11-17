@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
+$releaseContract = Get-Content -Raw (Join-Path $PSScriptRoot '../config/release.json') | ConvertFrom-Json
 $app = (Get-Content -Raw app.json | ConvertFrom-Json).expo
-if ($app.android.package -ne 'com.engdictionary.practice') { throw 'Keep the existing Android application ID for updates.' }
+if ($app.android.package -ne $releaseContract.androidApplicationId) { throw 'Keep the existing Android application ID for updates.' }
 if (!$env:GITHUB_REPOSITORY) { throw 'GITHUB_REPOSITORY is required.' }
 $headers = @{ Accept = 'application/vnd.github+json'; Authorization = "Bearer $env:GH_TOKEN" }
 try {

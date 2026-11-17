@@ -1,4 +1,5 @@
 """Checks real collection output, not synthetic data volume claims."""
+import gzip
 import hashlib
 import json
 import unittest
@@ -18,11 +19,12 @@ class CollectionTests(unittest.TestCase):
         self.assertFalse(valid("word [phonetic]"))
 
     def test_source_encoding(self):
-        self.assertEqual(decode("word 中文".encode("gb18030")), "word 中文")
-        self.assertEqual(decode("word 中文".encode("utf-16")), "word 中文")
+        self.assertEqual(decode("word \u4e2d\u6587".encode("gb18030")), "word \u4e2d\u6587")
+        self.assertEqual(decode("word \u4e2d\u6587".encode("utf-16")), "word \u4e2d\u6587")
 
     def test_real_dataset_integrity(self):
-        pack = json.loads((ROOT / "data/vocabulary.json").read_text(encoding="utf-8"))
+        with gzip.open(ROOT / "data/vocabulary.json.gz", "rt", encoding="utf-8") as source:
+            pack = json.load(source)
         words = pack["vocabulary"]
         self.assertGreater(len(words), 100000)
         self.assertEqual(len({w["id"] for w in words}), len(words))
@@ -39,8 +41,63 @@ class CollectionTests(unittest.TestCase):
         self.assertNotIn("confused adj", index)
         self.assertTrue(any(s["synonyms"] for s in index["happy"]["senses"]))
         report = json.loads((ROOT / "data/collection-report.json").read_text())
-        self.assertEqual(report["headwords"], len(words))
-        self.assertEqual(report["senses"], len(senses))
+        self.assertEqual(report["baselineHeadwords"], len(words))
+
+    def test_expansion_integrity_and_historical_compatibility(self):
+        with gzip.open(ROOT / "data/vocabulary.json.gz", "rt", encoding="utf-8") as source:
+            baseline = json.load(source)
+        originals = {word["id"]: word for word in baseline["vocabulary"]}
+        source_ids = {source["id"] for source in baseline["sources"]}
+        count = len(originals)
+        senses = sum(len(word["senses"]) for word in originals.values())
+        headword_only = sum(not word["senses"] for word in originals.values())
+        visited = set()
+        packages = []
+        added = updated = 0
+        inventory = json.loads((ROOT / "data/vocabulary-expansion.manifest.json").read_text())
+        archive = ROOT / "data" / inventory["archive"]
+        with archive.open("rb") as source:
+            self.assertEqual(hashlib.file_digest(source, "sha256").hexdigest(), inventory["sha256"])
+        with gzip.open(archive, "rt", encoding="utf-8") as source:
+            for line in source:
+                pack = json.loads(line)
+                self.assertEqual(pack["packVersion"], 1)
+                expected_dependency = packages[-1] if packages else baseline["packId"]
+                self.assertEqual(pack["requires"], [{"packId": expected_dependency, "minVersion": 1}])
+                packages.append(pack["packId"])
+                source_ids.update(source["id"] for source in pack["sources"])
+                for word in pack["vocabulary"]:
+                    self.assertNotIn(word["id"], visited)
+                    visited.add(word["id"])
+                    self.assertTrue(valid(word["headword"]))
+                    self.assertEqual(word["id"], word_id(word["headword"]))
+                    self.assertTrue(set(word["sourceIds"]) <= source_ids)
+                    previous = originals.get(word["id"])
+                    if previous:
+                        updated += 1
+                        self.assertEqual(word["revision"], previous["revision"] + 1)
+                        if previous["senses"]:
+                            self.assertEqual(word["senses"], previous["senses"])
+                        senses -= len(previous["senses"])
+                        headword_only -= not previous["senses"]
+                    else:
+                        added += 1
+                        count += 1
+                        self.assertEqual(word["revision"], 1)
+                    senses += len(word["senses"])
+                    headword_only += not word["senses"]
+                    for sense in word["senses"]:
+                        self.assertEqual(sense["status"], "reference")
+                        self.assertIsNone(sense["simpleDefinition"])
+                        self.assertTrue(set(sense["sourceIds"]) <= source_ids)
+                        self.assertNotRegex(sense["definition"] or "", r"[\u3400-\u9fff]")
+        report = json.loads((ROOT / "data/collection-report.json").read_text())
+        self.assertEqual(packages, [pack["packId"] for pack in inventory["packs"]])
+        self.assertEqual(report["headwords"], count)
+        self.assertEqual(report["senses"], senses)
+        self.assertEqual(report["headwordOnly"], headword_only)
+        self.assertEqual(report["expansion"], {"updated": updated, "added": added})
+        self.assertGreater(added, 700000)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 """Download pinned public source snapshots; no scraping or dictionary prose copying."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -8,12 +9,14 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
+SOURCE_RULES = json.loads((ROOT / "config/source-rules.json").read_text(encoding="utf-8"))
 RAW = ROOT / "data/raw"
 LOCK = ROOT / "data/sources.lock.json"
 REPOS = {
     "kyle": ("KyleBing/english-vocabulary", "master"),
     "mahavivo": ("mahavivo/english-wordlists", "master"),
     "ecdict": ("skywind3000/ECDICT", "master"),
+    "wordlist": ("jeremy-rifkin/Wordlist", "master"),
 }
 
 
@@ -35,9 +38,11 @@ def main():
             paths = [entry["path"] for entry in tree["tree"] if entry["type"] == "blob"]
             if name == "kyle":
                 selected = [p for p in paths if p.endswith(".txt") and "/" not in p]
-                selected += [p for p in paths if p.startswith("full_line_tsv/simple/正序/") and p.endswith(".txt") and any(t in p for t in ["雅思", "GRE", "GMAT", "专四", "专八", "商务英语"])]
+                selected += [p for p in paths if p.startswith(SOURCE_RULES["kyle"]["simpleDirectory"]) and p.endswith(".txt") and any(t in p for t in SOURCE_RULES["kyle"]["topics"])]
             elif name == "mahavivo":
-                selected = [p for p in paths if p in ["CET4_edited.txt", "CET6_edited.txt", "CET_4+6_edited.txt", "COCA_20000.txt", "GRE_8000_Words.txt", "NPEE_Wordlist.txt", "TOEFL.txt", "英语专业四八级词汇表.txt", "台灣高中英文參考詞彙表.txt"]]
+                selected = [p for p in paths if p in SOURCE_RULES["mahavivo"]["files"]]
+            elif name == "wordlist":
+                selected = ["master.txt"]
             else:
                 selected = ["ecdict.csv"]
             selected += [p for p in paths if p in ["LICENSE", "LICENSE.md", "README.md"]]
@@ -63,6 +68,24 @@ def main():
         manifest["files"].append({"id": "oewn:princeton-license", "provider": "oewn", "revision": "9b6aca775ae10ad3d2dc9956e8ad42a4ce1e076b",
             "path": "WNDB_License.txt", "url": "https://raw.githubusercontent.com/globalwordnet/english-wordnet/9b6aca775ae10ad3d2dc9956e8ad42a4ce1e076b/WNDB_License.txt", "localFile": "oewn-WNDB_License.txt"})
 
+    # Extend a pinned inventory without refreshing or replacing existing snapshots.
+    if not any(record["provider"] == "wordlist" for record in manifest["files"]):
+        repository, branch = REPOS["wordlist"]
+        tree = json.loads(get(f"https://api.github.com/repos/{repository}/git/trees/{branch}?recursive=1"))
+        revision = tree["sha"]
+        retrieved_at = datetime.now(timezone.utc).isoformat()
+        for name in ["master.txt", "README.md", "LICENSE"]:
+            key = hashlib.sha256(("wordlist/" + name).encode()).hexdigest()[:16]
+            manifest["files"].append({"id": "wordlist:" + key, "provider": "wordlist",
+                "repository": repository, "revision": revision, "path": name,
+                "url": f"https://raw.githubusercontent.com/{repository}/{revision}/{name}",
+                "localFile": key + Path(name).suffix, "retrievedAt": retrieved_at})
+        LOCK.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--provider", action="append", choices=[*REPOS, "oewn"], help="Download only selected providers; retain other locked records.")
+    options = parser.parse_args()
+
     def download(record):
         path = RAW / record["localFile"]
         data = path.read_bytes() if path.exists() else get(record["url"])
@@ -75,8 +98,11 @@ def main():
             temporary.replace(path)
         return dict(record, sha256=digest, bytes=len(data))
 
-    completed = list(ThreadPoolExecutor(max_workers=5).map(download, manifest["files"]))
-    manifest["files"] = completed
+    selected = [record for record in manifest["files"] if not options.provider or record["provider"] in options.provider]
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        completed = list(pool.map(download, selected))
+    by_id = {record["id"]: record for record in completed}
+    manifest["files"] = [by_id.get(record["id"], record) for record in manifest["files"]]
     LOCK.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"files": len(completed), "bytes": sum(r["bytes"] for r in completed)}))
 
