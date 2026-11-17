@@ -100,6 +100,24 @@ pools grow substantially, page their selection indexes as well.
 
 ## Verification workflow
 
+### CI build performance
+
+The Android workflow restores Gradle dependencies and cacheable task outputs
+through `gradle/actions/setup-gradle` and enables `--build-cache`. It uses one
+explicit Gradle home shared by the action and build script. Signing keys and
+the generated native project are not included in this cache.
+
+Run the workflow manually on `main` once to populate the shared cache. GitHub
+allows release tags to read default-branch caches, but separate tags cannot
+reuse each other's caches. Main builds may rebuild the current published version
+without publishing another release; new release tags still require an increased
+Android version code. Refresh the main cache after native dependency changes.
+
+Each build writes `output/build-timings.json` and a phase timing table in the
+Actions summary. Compare a warm-cache run with the same source and runner before
+claiming a speedup. Cache misses remain valid full builds, and existing tests,
+signing checks and offline asset verification still run.
+
 Use Node.js 24 or newer. During development, run the smallest relevant test file
 or named test for the changed behavior. Do not run the entire suite after every
 edit. Once the changes are complete, run the full checks once:

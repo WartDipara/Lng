@@ -24,6 +24,7 @@ jobs:
     env:
       CI: '1'
       EXPO_NO_TELEMETRY: '1'
+      GRADLE_USER_HOME: ${{ github.workspace }}/.local/gradle-home
 
     steps:
       - name: Check out source
@@ -75,6 +76,13 @@ jobs:
           cmdline-tools-version: '15859902'
           packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0 ndk;27.1.12297006 cmake;3.30.5 cmake;3.22.1'
 
+      - name: Restore Gradle dependencies and build cache
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-provider: basic
+          # Main builds seed a cache that subsequent release tags can read.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
       - name: Restore existing signing identity
         env:
           SIGNING_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -98,6 +106,7 @@ jobs:
           path: |
             output/English-in-Practice.apk
             output/android-build-verification.json
+            output/build-timings.json
           if-no-files-found: error
           compression-level: 0
           retention-days: 30

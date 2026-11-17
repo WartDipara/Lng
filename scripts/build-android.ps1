@@ -7,6 +7,7 @@ $root = Split-Path $PSScriptRoot -Parent
 Set-Location -LiteralPath $root
 $lock = $null
 $transcribing = $false
+$stepTimings = [System.Collections.Generic.List[object]]::new()
 $abis = if ($EmulatorTest) { @('x86_64') } else { @('arm64-v8a', 'armeabi-v7a') }
 $outputName = if ($EmulatorTest) { 'English-in-Practice-emulator.apk' } else { 'English-in-Practice.apk' }
 function Get-Sha256([string]$Path) {
@@ -17,8 +18,15 @@ function Get-Sha256([string]$Path) {
 }
 function Invoke-Step([string]$Label, [string]$Executable, [string[]]$Arguments) {
     Write-Host "`n>>> $Label" -ForegroundColor Cyan
-    & $Executable @Arguments
-    if ($LASTEXITCODE -ne 0) { throw "$Label failed (exit $LASTEXITCODE). See the build log." }
+    $timer = [Diagnostics.Stopwatch]::StartNew()
+    try {
+        & $Executable @Arguments
+        if ($LASTEXITCODE -ne 0) { throw "$Label failed (exit $LASTEXITCODE). See the build log." }
+    } finally {
+        $timer.Stop()
+        $stepTimings.Add([ordered]@{ step = $Label; seconds = [Math]::Round($timer.Elapsed.TotalSeconds, 2) })
+        Write-Host "Duration: $($timer.Elapsed.TotalSeconds.ToString('F2')) seconds"
+    }
 }
 try {
     New-Item -ItemType Directory -Force '.local', 'output/builds', '.local/tmp' | Out-Null
@@ -75,7 +83,7 @@ try {
         $gradle = $gradle.Replace($marker, "$marker`n        externalNativeBuild { cmake { arguments `"-DCMAKE_OBJECT_PATH_MAX=240`" } }")
         [IO.File]::WriteAllText($gradlePath, $gradle)
     }
-    $gradleArgs = @('-p', 'android', 'assembleRelease', '--no-daemon', "-PreactNativeArchitectures=$($abis -join ',')", '-Pandroid.enableMinifyInReleaseBuilds=true', '-Pandroid.enableShrinkResourcesInReleaseBuilds=true', '-Pexpo.useLegacyPackaging=true', "--max-workers=$Workers", '--console=plain')
+    $gradleArgs = @('-p', 'android', 'assembleRelease', '--no-daemon', '--build-cache', "-PreactNativeArchitectures=$($abis -join ',')", '-Pandroid.enableMinifyInReleaseBuilds=true', '-Pandroid.enableShrinkResourcesInReleaseBuilds=true', '-Pexpo.useLegacyPackaging=true', "--max-workers=$Workers", '--console=plain')
     if ($Offline) { $gradleArgs += '--offline' }
     Invoke-Step 'Build self-contained release APK' '.\android\gradlew.bat' $gradleArgs
     $apk = Join-Path $root 'android/app/build/outputs/apk/release/app-release.apk'
@@ -142,6 +150,15 @@ try {
     Write-Host "`nBUILD FAILED: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 } finally {
+    if (Test-Path -LiteralPath 'output') {
+        ConvertTo-Json -InputObject @($stepTimings.ToArray()) -Depth 3 | Set-Content 'output/build-timings.json' -Encoding UTF8
+        if ($env:GITHUB_STEP_SUMMARY) {
+            @('## Build phase timings', '', '| Phase | Seconds |', '| --- | ---: |') | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+            foreach ($timing in $stepTimings) {
+                "| $($timing.step) | $($timing.seconds) |" | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+            }
+        }
+    }
     if ($transcribing) { Stop-Transcript | Out-Null }
     if ($lock) { $lock.Dispose(); Remove-Item -LiteralPath (Join-Path $root '.local/android-build.lock') }
 }

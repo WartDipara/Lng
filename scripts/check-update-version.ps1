@@ -14,7 +14,8 @@ $asset = $latest.assets | Where-Object name -eq 'android-build-verification.json
 if (!$asset) { throw 'Latest release is missing its version verification report.' }
 $previous = Invoke-RestMethod -Uri $asset.browser_download_url
 # Allow a retry of an already-published tag, but never publish a new tag with an old code.
-$retry = $env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -eq $latest.tag_name
+$retry = ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -eq $latest.tag_name) -or
+    ($env:GITHUB_REF_TYPE -ne 'tag' -and "v$($app.version)" -eq $latest.tag_name -and $app.android.versionCode -eq $previous.versionCode)
 if (!$retry -and $app.android.versionCode -le $previous.versionCode) {
     throw "Increase android.versionCode above $($previous.versionCode) so existing installs can update."
 }
