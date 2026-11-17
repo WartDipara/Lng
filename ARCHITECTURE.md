@@ -200,3 +200,23 @@ explanations are available in the end-of-round review; reading passages open sep
 Design references: [Duolingo's immediate feedback](https://www.duolingo.com/nojs/splash)
 and [Quizlet's mixed question practice](https://quizlet.com/features/study-modes).
 Learner-controlled slide navigation is our product decision, not a claim about either service.
+
+## Android app updates
+
+`src/app-update.ts` validates the latest stable GitHub release and the build verification
+report from the configured repository. Android versionCode determines upgrade eligibility;
+matching asset URLs, size, SHA-256 and the pinned signing certificate are required.
+Checking only retrieves metadata. `AppUpdatesScreen` asks for consent with Update now /
+Not now before invoking the download adapter. Declining leaves the update available.
+
+The local Expo module in `modules/app-updater` streams to a private cache file using a
+64 KiB buffer. It bounds download size, restricts HTTPS redirect hosts, checks the APK hash,
+package name, installed signing identity and increasing versionCode, and rechecks before
+opening Android's installer. Partial downloads are removed on failure/cancel; the last
+verified APK can be reused. Android's install-source permission and installation confirmation
+remain system-controlled. No learning files are removed or replaced by the updater.
+
+The module autolinks during native builds. Browser previews and Expo Go cannot install APKs;
+the updates page explains this. Builds before this feature require a manual APK update once.
+Use a device with the existing signing identity to validate permission denial, installer
+cancellation, and an actual upgrade with retained learning data before release.

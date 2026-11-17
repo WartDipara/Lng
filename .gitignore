@@ -14,8 +14,8 @@ playwright-report/
 test-results/
 docs/
 output/
-android/
-ios/
+/android/
+/ios/
 mobile/assets/
 data/vocabulary.json
 data/mobile-packs/
@@ -30,3 +30,6 @@ scripts/verify_library.ts
 .env.*
 !.env.example
 assets/icon-prompt.txt
+
+modules/**/android/build/
+modules/**/android/.gradle/

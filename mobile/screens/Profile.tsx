@@ -1,8 +1,6 @@
 import { MenuRow } from '../components/MenuRow';
-import release from '../../config/release.json';
 import { useState } from 'react';
-import { Linking, ScrollView, Text, View } from 'react-native';
-import Constants from 'expo-constants';
+import { ScrollView, Text, View } from 'react-native';
 import { Button, Card, Heading, useUI } from '../components/UI';
 import { useTheme } from '../theme';
 import { activityDays, localDateKey, sessionSummary } from '../../src/practice-session.ts';
@@ -11,9 +9,8 @@ import type { ScreenProps } from '../routes';
 export function ProfileScreen({
   engine,
   navigate,
-  notify,
   section = 'profile',
-}: ScreenProps & { section?: 'profile' | 'progress' | 'practice-history' | 'updates' }) {
+}: ScreenProps & { section?: 'profile' | 'progress' | 'practice-history' }) {
   const ui = useUI();
   const { colors: c } = useTheme();
   const sessions = (engine.user.practiceSessions ?? [])
@@ -206,35 +203,6 @@ export function ProfileScreen({
           {shown < sessions.length && (
             <Button title="Show older sets" secondary onPress={() => setShown(shown + 10)} />
           )}
-        </>
-      )}
-      {section === 'updates' && (
-        <>
-          <Heading title="App updates" />
-          <Card>
-            <Text style={ui.h2}>App updates</Text>
-            <Text style={ui.small}>
-              Installed version: {Constants.expoConfig?.version ?? 'unknown'}
-            </Text>
-            <Text style={ui.body}>
-              Download the newer APK from our GitHub Releases and install it over this app. Keep the
-              current app installed. If Android rejects the update, keep your data and export a
-              backup; do not uninstall to work around the error.
-            </Text>
-            <Text style={ui.small}>
-              Clearing app storage or uninstalling removes local records. Restore an exported backup
-              to recover them. Opening GitHub needs internet; learning does not.
-            </Text>
-            <Button
-              title="Open GitHub Releases"
-              secondary
-              onPress={() => {
-                Linking.openURL(`https://github.com/${release.repository}/releases/latest`).catch(
-                  (e) => notify(e.message),
-                );
-              }}
-            />
-          </Card>
         </>
       )}
     </ScrollView>

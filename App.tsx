@@ -1,4 +1,5 @@
 import { PracticeSessionScreen } from './mobile/screens/PracticeSession';
+import { AppUpdatesScreen } from './mobile/screens/AppUpdates';
 import { ProfileScreen } from './mobile/screens/Profile';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -229,10 +230,10 @@ function StudyApp() {
   else if (
     route.name === 'profile' ||
     route.name === 'progress' ||
-    route.name === 'practice-history' ||
-    route.name === 'updates'
+    route.name === 'practice-history'
   )
     screen = <ProfileScreen key={route.name} {...props} section={route.name} />;
+  else if (route.name === 'updates') screen = <AppUpdatesScreen />;
   else if (route.name === 'notebook') screen = <NotebookScreen {...props} />;
   else if (route.name === 'note')
     screen = (

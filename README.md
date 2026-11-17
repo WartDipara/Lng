@@ -8,7 +8,10 @@ and incremental JSON content imports. No account required.
 
 Download **English-in-Practice.apk** from [GitHub Releases](https://github.com/WartDipara/Lng/releases).
 Install newer versions over the existing app **without uninstalling or clearing data**.
-Use **Profile → Library & backups** to export your records before changing phones.
+In builds with in-app updates, use **Profile → App updates → Check for update**.
+A newer release prompts you before downloading; Android confirms installation.
+Older builds need one manual APK update to gain this feature.
+Use **Profile → Library & settings → Content & backups** to export your records before changing phones.
 
 ## Build & release
 
