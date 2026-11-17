@@ -1,6 +1,6 @@
 import type { MainTab, Route } from './routes.ts';
 
-export type NavigationAction = { type: 'go'; route: Route } | { type: 'back' };
+export type NavigationAction = { type: 'go'; route: Route; replace?: boolean } | { type: 'back' };
 export interface NavigationState {
   route: Route;
   tab: MainTab;
@@ -22,6 +22,11 @@ export function navigate(state: NavigationState, action: NavigationAction): Navi
   return {
     route,
     tab: isMainTab(route) ? route.name : state.tab,
-    history: action.type === 'go' ? [...state.history, state.route] : state.history.slice(0, -1),
+    history:
+      action.type === 'go'
+        ? action.replace
+          ? state.history
+          : [...state.history, state.route]
+        : state.history.slice(0, -1),
   };
 }

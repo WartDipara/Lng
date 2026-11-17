@@ -270,8 +270,8 @@ export function validateUserState(input: unknown): asserts input is UserState {
       if (item.attemptId) {
         const attempt = attempts.get(item.attemptId);
         invariant(
-          session.submittedAt &&
-            attempt &&
+          attempt &&
+            attempt.kind === 'question' &&
             attempt.target.id === item.question.id &&
             attempt.target.revision === item.question.revision &&
             attempt.score === item.score &&

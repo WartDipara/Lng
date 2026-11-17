@@ -13,6 +13,8 @@ import {
 } from '../mobile/storage/compressed-resources.ts';
 import { createPagedBundle } from '../mobile/storage/paged-bundle.ts';
 import { StudyEngine } from '../mobile/engine.ts';
+import { learningProgress, meaningOf } from '../src/word-learning.ts';
+import { newStudyTargets } from '../mobile/study-selection.ts';
 import type { JsonIO } from '../mobile/storage/snapshot-store.ts';
 
 async function setup() {
@@ -86,6 +88,31 @@ async function setup() {
     second,
   };
 }
+
+test('an unfinished lazy word survives restart and backup without a review or mistake', async () => {
+  const { engine, io, bundle, vocabulary } = await setup();
+  const word = vocabulary.vocabulary![0];
+  const sense = word.senses[0];
+  const target = { kind: 'sense' as const, id: sense.id, revision: word.revision };
+  await engine.learningStep({
+    id: 'learning:durable',
+    target,
+    stage: 'choice',
+    response: meaningOf(sense),
+    createdAt: new Date().toISOString(),
+  });
+  assert.equal(engine.user.reviews.length, 0);
+  assert.equal(engine.user.mistakes.length, 0);
+  const restarted = new StudyEngine(io, bundle);
+  await restarted.initialize();
+  assert.equal(learningProgress(restarted.user, target), 'recognize');
+  assert.ok(restarted.targetExists(target));
+  assert.deepEqual(newStudyTargets(restarted), [target]);
+  const restored = new StudyEngine({ read: async () => null, write: async () => {} }, bundle);
+  await restored.initialize();
+  await restored.restore(await restarted.backup());
+  assert.equal(learningProgress(restored.user, target), 'recognize');
+});
 
 test('cold start reads summaries only; Use of English, passages and words load on demand', async () => {
   const { engine, resources, reads, first, second, vocabulary, practice } = await setup();

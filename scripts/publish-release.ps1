@@ -29,15 +29,14 @@ Offline English study for Android. Download and install **English-in-Practice.ap
 - Build: https://github.com/$($env:GH_REPO)/actions/runs/$($env:GITHUB_RUN_ID)
 
 Included in this release:
-- Expanded English-only reference vocabulary with ECDICT and Wordlist sources.
-- On-demand gzip blocks for vocabulary, search indexes, Use of English questions and passages.
-- Bounded resource caching and virtualized review lists reduce unnecessary loading.
-- Refactored content, practice and persistence modules with historical revision compatibility.
-- ARM64 and ARM32 offline APK with verified bundled content.
-- Existing identity, progress, notes and imported content stay in place during updates.
+- Mobile-first navigation with focused learning screens.
+- Progressive vocabulary practice with saved recall and spelling stages.
+- Clear answer feedback; tap Next or swipe left when ready.
+- Single-question practice rounds with durable progress and answer review.
+- Existing offline resources, notes and learning history stay available.
 
 To update, install this APK over the existing app. Do not uninstall or clear app storage.
-Export a backup from Profile / Library before changing devices.
+Export a backup from Profile / Library & settings / Content & backups before changing devices.
 
 Includes the build verification report and SHA256SUMS.txt. This build checks compilation,
 tests, signing and bundled content; it does not run device tests.

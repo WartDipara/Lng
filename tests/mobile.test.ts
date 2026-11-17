@@ -628,3 +628,40 @@ test('large meaning indexes yield between batches and report actual completed co
     true,
   );
 });
+
+test('single-question feedback is durable, locked, and not graded twice at round completion', async () => {
+  const { value, io, bundled } = await engine();
+  const sessionId = await value.startPractice(
+    2,
+    value.questions.map((q) => q.id),
+  );
+  const interaction = value.user.practiceSessions![0].items[0].question.interaction;
+  const answer =
+    interaction.kind === 'choice'
+      ? interaction.correctIds
+      : interaction.kind === 'ordering'
+        ? interaction.correctOrder
+        : interaction.kind === 'text'
+          ? Object.fromEntries(interaction.fields.map((f) => [f.id, f.accepted[0]]))
+          : Object.fromEntries(interaction.pairs.map((p) => [p.promptId, p.optionId]));
+  await assert.rejects(value.checkPracticeItem(sessionId, 0), /Finish your answer/);
+  await value.savePracticeAnswer(sessionId, 0, answer);
+  const before = structuredClone(value.user);
+  io.failNextWrite = true;
+  await assert.rejects(value.checkPracticeItem(sessionId, 0), /disk full/);
+  assert.deepEqual(value.user, before);
+  await value.checkPracticeItem(sessionId, 0);
+  assert.equal(value.user.attempts.length, 1);
+  assert.equal(value.user.practiceSessions![0].submittedAt, undefined);
+  const restarted = (await engine(io, bundled)).value;
+  assert.deepEqual(restarted.user, value.user);
+  await restarted.checkPracticeItem(sessionId, 0);
+  await assert.rejects(restarted.savePracticeAnswer(sessionId, 0, []), /cannot be edited/);
+  const restored = (await engine()).value;
+  await restored.restore(await restarted.backup());
+  assert.deepEqual(restored.user, restarted.user);
+  const attempt = structuredClone(restarted.user.attempts[0]);
+  await restarted.submitPractice(sessionId);
+  assert.equal(restarted.user.attempts.length, 1);
+  assert.deepEqual(restarted.user.attempts[0], attempt);
+});

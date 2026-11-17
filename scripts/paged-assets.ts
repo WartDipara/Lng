@@ -1,4 +1,4 @@
-import { emptyCatalog, kinds, latest } from '../src/catalog.ts';
+import { emptyCatalog, kinds } from '../src/catalog.ts';
 import type { BundleIndex, WordRow } from '../src/library-index.ts';
 import {
   bucketFor,

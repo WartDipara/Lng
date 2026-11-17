@@ -150,3 +150,53 @@ acceptance. Before release, exercise startup and retry, theme persistence,
 unsaved-note back navigation, practice draft recovery, imports, backup/restore
 and offline cold starts on a device. APK signing and upgrades require the
 existing signing key and Android toolchain.
+
+## Mobile learning navigation
+
+Main tabs are small decision screens. Word reference, learning preferences, practice setup,
+statistics, history, appearance, backups, and source information use
+separate child routes. Only main routes display the tab bar. Back returns to the parent;
+advancing learning cards replaces the current route instead of growing the back stack.
+Long passages and real content lists remain scrollable, including with large system fonts.
+
+Vocabulary study follows our own progressive workflow, inspired by contextual learning
+and repeated recall rather than a copy of another app's UI or proprietary scheduler:
+
+1. An unseen meaning starts with four English meaning choices.
+2. A correct choice unlocks recognition without choices.
+3. Recognition unlocks recalling the word from its English meaning.
+4. Recall unlocks spelling from memory. Successful spelling completes the cycle.
+
+Wrong answers, unknown responses, revealing the answer, and corrected self-assessments
+return the meaning to the first stage. Words are interleaved within the selected session.
+Every stage is saved as a versioned attempt before feedback; unfinished targets survive
+restart and backup restore without consuming another daily-new-word allowance.
+A completed cycle schedules a review; intermediate steps never prematurely extend it.
+This is practice completion, not a claim of permanent mastery.
+
+Choices use distinct English definitions and avoid known synonyms; semantic ambiguity
+still requires editorial review. Only eligible learning content enters automatic sessions.
+The large reference dictionary remains a separate, paged lookup resource.
+
+### Single-window practice
+
+Practice starts a system-selected round without a searchable question catalogue or a
+question-number picker. The session shows only its current question. Single-choice
+answers are checked immediately; text, multiple-choice and matching interactions use
+an explicit check action so incomplete input is never submitted automatically.
+
+A checked item records its attempt, score, mistake and review together before feedback
+appears. Checked answers are immutable. Resuming selects the first unchecked item;
+finishing a round reuses the existing attempts rather than grading them again. Older
+unfinished drafts and completed sets remain readable.
+
+`LearningWindow` keeps explicit correct/incorrect feedback visible until the learner
+presses Next or swipes left. No timer advances a question. Horizontal gestures only
+activate after feedback and do not capture vertical reading gestures. Repeated presses
+are locked during transitions; errors keep feedback visible for retry. Reduced-motion
+preferences are respected. Long content scrolls inside the question viewport. Detailed
+explanations are available in the end-of-round review; reading passages open separately.
+
+Design references: [Duolingo's immediate feedback](https://www.duolingo.com/nojs/splash)
+and [Quizlet's mixed question practice](https://quizlet.com/features/study-modes).
+Learner-controlled slide navigation is our product decision, not a claim about either service.

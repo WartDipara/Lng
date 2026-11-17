@@ -70,7 +70,11 @@ export function savePracticeAnswer(
 ): UserState {
   const session = state.practiceSessions?.find((existing) => existing.id === sessionId);
   invariant(
-    session && !session.submittedAt && Number.isInteger(index) && session.items[index],
+    session &&
+      !session.submittedAt &&
+      Number.isInteger(index) &&
+      session.items[index] &&
+      !session.items[index].attemptId,
     'This practice cannot be edited.',
   );
   const items = session.items.map((item, position) =>

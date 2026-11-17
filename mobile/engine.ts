@@ -1,4 +1,9 @@
 import { encodeResource, decodeResource } from './storage/compressed-resources.ts';
+import {
+  recordLearningStep,
+  meaningChoices,
+  unfinishedLearningTargets,
+} from '../src/word-learning.ts';
 import type { CompressedResource } from '../src/paged-library.ts';
 import { targetKey } from '../src/target.ts';
 import { compareWords } from '../src/library-index.ts';
@@ -21,7 +26,7 @@ import {
   type BundleAccess,
   type LibraryOverlay,
 } from '../src/library-index.ts';
-import { submitPractice } from '../src/practice-session.ts';
+import { checkPracticeItem, submitPractice } from '../src/practice-session.ts';
 import { recordQuestionTest } from '../src/question-progress.ts';
 import { recordWordTest } from '../src/word-progress.ts';
 import { emptyCatalog, hash, kinds, latest, planImport } from '../src/catalog.ts';
@@ -33,8 +38,6 @@ import type {
   ContentPack,
   ContentEntity,
   Word,
-  Question,
-  Passage,
   Target,
   Note,
   Attempt,
@@ -245,6 +248,7 @@ export class StudyEngine {
   private async pinnedTargets(user: UserState, force = false) {
     const result = new Map<string, { exists: boolean; tags: string[] }>();
     const targets = [
+      ...unfinishedLearningTargets(user),
       ...user.reviews.map((r) => r.target),
       ...user.mistakes.map((m) => m.target),
       ...user.notes.flatMap((n) => (n.target ? [n.target] : [])),
@@ -409,6 +413,28 @@ export class StudyEngine {
   async updateUser(update: (user: UserState) => UserState) {
     return this.queue.run(() => this.commitUser(update));
   }
+  async learningChoices(word: Word, senseId: string) {
+    const sense = word.senses.find((item) => item.id === senseId);
+    invariant(sense, 'Meaning is unavailable.');
+    const candidates: Word[] = [];
+    for (const row of this.words
+      .filter((item) => item.ready.length && item.id !== word.id)
+      .slice(0, 32)) {
+      const candidate = await this.word(row.id);
+      if (candidate) candidates.push(candidate);
+      try {
+        return meaningChoices(word, sense, candidates);
+      } catch {
+        /* Try the next bounded candidate. */
+      }
+    }
+    return meaningChoices(word, sense, candidates);
+  }
+  async learningStep(input: Parameters<typeof recordLearningStep>[1]) {
+    const found = await this.sense(input.target.id, input.target.revision);
+    invariant(found, 'Meaning is unavailable.');
+    await this.updateUser((user) => recordLearningStep(user, input, found.word, found.sense));
+  }
   private async commitUser(update: (user: UserState) => UserState) {
     const next = update(this.user);
     validateUserState(next);
@@ -451,6 +477,11 @@ export class StudyEngine {
   }
   async savePracticeAnswer(sessionId: string, index: number, answer: unknown) {
     await this.updateUser((user) => savePracticeAnswer(user, sessionId, index, answer));
+  }
+  async checkPracticeItem(sessionId: string, index: number) {
+    await this.updateUser((user) =>
+      checkPracticeItem(user, sessionId, index, new Date().toISOString()),
+    );
   }
   async submitPractice(sessionId: string) {
     await this.updateUser((user) => submitPractice(user, sessionId, new Date().toISOString()));

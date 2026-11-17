@@ -1,8 +1,13 @@
+import { MenuRow } from '../components/MenuRow';
+import { newStudyTargets, dueStudyTargets } from '../study-selection.ts';
+import { newSensesToday } from '../../src/learning.ts';
+import { Ionicons } from '@expo/vector-icons';
 import { libraryPolicy } from '../../src/policy.ts';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import {
   Button,
+  Card,
   Chip,
   Disclosure,
   Empty,
@@ -19,9 +24,19 @@ import type { Word, Sense, Target } from '../../src/types.ts';
 import { checkSpelling } from '../../src/notebook.ts';
 import { id } from '../engine';
 
-export function WordsScreen({ engine, navigate }: ScreenProps) {
+export function WordsScreen({
+  engine,
+  navigate,
+  startLearning,
+  reference = false,
+}: ScreenProps & { startLearning: (targets: Target[]) => void; reference?: boolean }) {
   const ui = useUI();
   const { colors: c } = useTheme();
+  const browsing = reference;
+  const fresh = newStudyTargets(engine);
+  const due = dueStudyTargets(engine).filter((target) => target.kind === 'sense');
+  const completed = newSensesToday(engine.user);
+  const goal = engine.user.settings.dailyNewLimit;
   const tags = engine.wordTags;
   const [query, setQuery] = useState('');
   const [delayed, setDelayed] = useState('');
@@ -35,6 +50,7 @@ export function WordsScreen({ engine, navigate }: ScreenProps) {
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState('');
   useEffect(() => {
+    if (!browsing) return;
     const controller = new AbortController();
     setSearching(true);
     setSearchError('');
@@ -51,7 +67,96 @@ export function WordsScreen({ engine, navigate }: ScreenProps) {
         if (!controller.signal.aborted) setSearching(false);
       });
     return () => controller.abort();
-  }, [engine, engine.words, delayed, tag, ready]);
+  }, [engine, engine.words, delayed, tag, ready, browsing]);
+  if (!browsing)
+    return (
+      <ScrollView contentContainerStyle={[ui.page, { gap: 20 }]}>
+        <Heading
+          title="Make words yours."
+          subtitle="A small daily habit. Words that stay with you."
+        />
+        <View style={{ backgroundColor: c.hero, borderRadius: 24, padding: 22, gap: 18 }}>
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            <Text style={{ color: c.heroText, fontSize: 12, letterSpacing: 2, fontWeight: '700' }}>
+              YOUR DAILY SESSION
+            </Text>
+            <Ionicons name="leaf-outline" size={26} color={c.heroText} />
+          </View>
+          <Text style={{ color: c.heroText, fontSize: 25, lineHeight: 32, fontWeight: '600' }}>
+            {due.length
+              ? 'Bring familiar words back.'
+              : fresh.length
+                ? 'Learn a little. Remember more.'
+                : 'You have earned a pause.'}
+          </Text>
+          <Text style={{ color: c.heroText, fontSize: 15, lineHeight: 24 }}>
+            {due.length
+              ? `${due.length} meanings are ready to review.`
+              : fresh.length
+                ? `${fresh.length} meanings to practise, one step at a time.`
+                : 'Your current learning plan is complete. Come back for your next review.'}
+          </Text>
+          <Button
+            title={due.length ? 'Start review' : 'Start learning'}
+            disabled={!due.length && !fresh.length}
+            onPress={() => startLearning(due.length ? due : fresh)}
+          />
+        </View>
+        <View style={{ gap: 12 }}>
+          <View style={{ gap: 4 }}>
+            <Text style={ui.h2}>Today’s rhythm</Text>
+            <Text style={ui.small}>
+              {completed} / {goal} new meanings introduced
+            </Text>
+          </View>
+          <View
+            accessibilityRole="progressbar"
+            accessibilityValue={{
+              min: 0,
+              max: Math.max(1, goal),
+              now: Math.min(completed, Math.max(1, goal)),
+            }}
+            style={{ height: 6, borderRadius: 3, backgroundColor: c.line, overflow: 'hidden' }}
+          >
+            <View
+              style={{
+                height: 6,
+                width: `${goal ? Math.min(100, (completed / goal) * 100) : 0}%`,
+                backgroundColor: c.teal,
+              }}
+            />
+          </View>
+          <View style={{ flexDirection: 'row', gap: 14 }}>
+            <Card style={{ flex: 1 }}>
+              <Text style={{ ...ui.title, fontFamily: undefined }}>{fresh.length}</Text>
+              <Text style={ui.small}>To practise</Text>
+            </Card>
+            <Card style={{ flex: 1 }}>
+              <Text style={{ ...ui.title, fontFamily: undefined }}>{due.length}</Text>
+              <Text style={ui.small}>Ready to review</Text>
+            </Card>
+          </View>
+        </View>
+        {!!due.length && !!fresh.length && (
+          <Button title="Learn new words instead" secondary onPress={() => startLearning(fresh)} />
+        )}
+        <View>
+          <MenuRow
+            title="Learning plan"
+            detail={`${goal} new meanings a day`}
+            icon="options-outline"
+            onPress={() => navigate({ name: 'learning-plan' })}
+          />
+          <MenuRow
+            title="Word reference"
+            icon="search-outline"
+            onPress={() => navigate({ name: 'word-reference' })}
+          />
+        </View>
+      </ScrollView>
+    );
   return (
     <FlatList
       data={rows}
@@ -60,7 +165,10 @@ export function WordsScreen({ engine, navigate }: ScreenProps) {
       keyboardShouldPersistTaps="handled"
       ListHeaderComponent={
         <View style={{ gap: 14, marginBottom: 4 }}>
-          <Heading title="Words in context" subtitle="A word makes sense in a sentence." />
+          <Heading
+            title="Word reference"
+            subtitle="Find a meaning, then return to your learning."
+          />
           {searching && <Text style={ui.small}>Searching offline blocks…</Text>}
           {!!searchError && <Text style={ui.small}>{searchError}</Text>}
           <Field
@@ -102,10 +210,12 @@ export function WordsScreen({ engine, navigate }: ScreenProps) {
         </View>
       }
       ListEmptyComponent={
-        <Empty
-          title="No matching words"
-          text="Try a shorter spelling or remove a vocabulary filter."
-        />
+        !searching && !searchError ? (
+          <Empty
+            title="No matching words"
+            text="Try a shorter spelling or remove a vocabulary filter."
+          />
+        ) : undefined
       }
       renderItem={({ item }) => (
         <Pressable

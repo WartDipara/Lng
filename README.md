@@ -12,6 +12,20 @@ Use **Profile → Library & backups** to export your records before changing pho
 
 ## Build & release
 
+For live layout development, use Node.js 24+ and run:
+
+```sh
+npm ci
+npm run prepare:mobile
+npm run dev
+```
+
+Open `http://localhost:8081` for the React Native Web preview. Saved component
+changes refresh immediately without an APK build. Prepare assets again only when
+content or its generator changes. Use browser responsive mode for phone layouts;
+web preview data is separate from the installed Android app. Native safe areas,
+keyboard behavior and system font scaling still need device checks.
+
 ```sh
 npm ci
 npm run build

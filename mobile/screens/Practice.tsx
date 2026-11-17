@@ -1,9 +1,8 @@
+import { MenuRow } from '../components/MenuRow';
 import { practicePolicy } from '../../src/policy.ts';
-import { sessionSummary } from '../../src/practice-session.ts';
-import { latest } from '../../src/catalog.ts';
-import React, { useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Button, Card, Chip, Empty, Field, Heading, useUI } from '../components/UI';
+import { useEffect, useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, Card, Field, Heading, useUI } from '../components/UI';
 import { QuestionPanel } from '../components/QuestionPanel';
 import type { ScreenProps, Route } from '../routes';
 import type { Passage, Question, Target } from '../../src/types.ts';
@@ -11,179 +10,90 @@ import { questionFeedback, type QuestionOutcome } from '../../src/question-progr
 import { id } from '../engine';
 import { useTheme } from '../theme';
 
-export function PracticeScreen({ engine, navigate, refresh, notify }: ScreenProps) {
+export function PracticeScreen({
+  engine,
+  navigate,
+  refresh,
+  notify,
+  section = 'practice',
+}: ScreenProps & { section?: 'practice' | 'practice-setup' }) {
   const ui = useUI();
-  const { colors: c } = useTheme();
-  const styles = useMemo(() => createStyles(c), [c]);
   const [count, setCount] = useState(
     String(engine.user.practiceSize ?? practicePolicy.defaultSize),
   );
   const [starting, setStarting] = useState(false);
-  const totalResults = (engine.user.practiceSessions ?? [])
-    .filter((s) => s.submittedAt)
-    .reduce(
-      (total, session) => {
-        const r = sessionSummary(session);
-        return { correct: total.correct + r.correct, total: total.total + r.total };
-      },
-      { correct: 0, total: 0 },
-    );
-  const unfinished = engine.user.practiceSessions?.find((s) => !s.submittedAt);
-  const [query, setQuery] = useState('');
-  const [type, setType] = useState('');
-  const types = [...new Set(engine.questions.map((q) => q.type))];
-  const rows = engine.questions.filter(
-    (q) =>
-      (!type || q.type === type) &&
-      `${q.title} ${q.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase()),
-  );
-  const attempts = new Map(
-    engine.user.attempts
-      .filter((a) => a.kind === 'question')
-      .map((a) => [`${a.target.id}@${a.target.revision}`, a]),
-  );
+  const unfinished = engine.user.practiceSessions?.find((session) => !session.submittedAt);
+  async function start() {
+    if (starting) return;
+    if (unfinished) {
+      navigate({ name: 'practice-session', id: unfinished.id });
+      return;
+    }
+    setStarting(true);
+    try {
+      const sessionId = await engine.startPractice(
+        Number(count),
+        engine.questions.map((q) => q.id),
+      );
+      refresh();
+      navigate({ name: 'practice-session', id: sessionId });
+    } catch (error) {
+      notify((error as Error).message);
+    } finally {
+      setStarting(false);
+    }
+  }
   return (
-    <FlatList
-      data={rows}
-      contentContainerStyle={ui.page}
-      keyExtractor={(q) => q.id}
-      keyboardShouldPersistTaps="handled"
-      ListHeaderComponent={
-        <View style={styles.header}>
-          <Heading title="Use of English" />
-          <Card>
-            <Text style={ui.h2}>Practice in sets</Text>
-            <Text style={ui.body}>
-              {engine.questions.length} available ·{' '}
-              {
-                new Set(
-                  engine.user.attempts
-                    .filter(
-                      (a) =>
-                        a.kind === 'question' &&
-                        latest(engine.catalog.entities.questions[a.target.id])?.revision ===
-                          a.target.revision,
-                    )
-                    .map((a) => a.target.id),
-                ).size
-              }{' '}
-              attempted
-            </Text>
-            <Text style={ui.small}>
-              Set accuracy:{' '}
-              {totalResults.total
-                ? `${Math.round((totalResults.correct / totalResults.total) * 100)}% (${totalResults.correct}/${totalResults.total})`
-                : 'No submitted sets yet'}
-            </Text>
-            {unfinished ? (
-              <Button
-                title={`Resume ${unfinished.items.length}-question set`}
-                onPress={() => navigate({ name: 'practice-session', id: unfinished.id })}
-              />
-            ) : (
-              <>
-                <Field
-                  label="Questions per set"
-                  value={count}
-                  onChangeText={setCount}
-                  keyboardType="number-pad"
-                />
-                <Text style={ui.small}>
-                  Choose 1–{Math.min(practicePolicy.maxSize, rows.length)} from the current filter (
-                  {rows.length} available). Results appear after submitting the entire set.
-                </Text>
-                <Button
-                  title="Start practice set"
-                  busy={starting}
-                  disabled={!rows.length}
-                  onPress={async () => {
-                    setStarting(true);
-                    try {
-                      const id = await engine.startPractice(
-                        Number(count),
-                        rows.map((q) => q.id),
-                      );
-                      refresh();
-                      navigate({ name: 'practice-session', id });
-                    } catch (e) {
-                      notify((e as Error).message);
-                    } finally {
-                      setStarting(false);
-                    }
-                  }}
-                />
-              </>
-            )}
-            <Button
-              title="My progress and accuracy"
-              secondary
-              onPress={() => navigate({ name: 'profile' })}
-            />
-          </Card>
-          <Field
-            label="Find a practice task"
-            value={query}
-            onChangeText={setQuery}
-            placeholder="Search topic or title"
-          />
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filters}
-          >
-            <Chip label="All types" selected={!type} onPress={() => setType('')} />
-            {types.map((t) => (
-              <Chip
-                key={t}
-                label={t.replaceAll('-', ' ')}
-                selected={type === t}
-                onPress={() => setType(type === t ? '' : t)}
-              />
-            ))}
-          </ScrollView>
-          <View style={styles.listCaption}>
-            <Text style={ui.small}>{rows.length} tasks available offline</Text>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Open mistake notebook"
-              onPress={() => navigate({ name: 'mistakes' })}
-              style={({ pressed }) => [styles.notebookLink, pressed && styles.pressed]}
-            >
-              <Text style={styles.linkText}>Mistakes</Text>
-            </Pressable>
-          </View>
-        </View>
-      }
-      ListEmptyComponent={
-        <Empty
-          title="No tasks here yet"
-          text="Choose another filter or import a content pack from Library."
+    <ScrollView contentContainerStyle={[ui.page, { gap: 24 }]}>
+      <Heading
+        title={section === 'practice' ? 'A little practice.' : 'Your pace'}
+        subtitle={
+          section === 'practice'
+            ? 'One question at a time.'
+            : 'Choose how much to practise in one round.'
+        }
+      />
+      {section === 'practice-setup' ? (
+        <Field
+          label="Questions per round"
+          keyboardType="number-pad"
+          value={count}
+          onChangeText={setCount}
         />
-      }
-      renderItem={({ item }) => {
-        const attempt = attempts.get(
-          `${item.id}@${latest(engine.catalog.entities.questions[item.id])?.revision}`,
-        );
-        return (
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => navigate({ name: 'question', id: item.id })}
-            style={({ pressed }) => [styles.taskRow, pressed && styles.taskPressed]}
-          >
-            <Text style={ui.small}>{item.type.replaceAll('-', ' ')}</Text>
-            <Text style={ui.h2}>{item.title}</Text>
-            {attempt && (
-              <Text
-                style={[
-                  ui.small,
-                  attempt.score === attempt.maxScore ? styles.success : styles.review,
-                ]}
-              >{`Last attempt ${attempt.score}/${attempt.maxScore}`}</Text>
-            )}
-          </Pressable>
-        );
-      }}
-    />
+      ) : (
+        <Card>
+          <Text style={ui.h2}>{unfinished ? 'Ready to pick up again?' : 'Find your focus.'}</Text>
+          <Text style={ui.body}>
+            Read, answer, and move forward. We will take care of what comes next.
+          </Text>
+        </Card>
+      )}
+      <Button
+        title={unfinished ? 'Resume practice' : 'Start practice'}
+        onPress={start}
+        busy={starting}
+        disabled={!engine.questions.length}
+      />
+      {section === 'practice' && (
+        <View>
+          <MenuRow
+            title="Round length"
+            icon="options-outline"
+            onPress={() => navigate({ name: 'practice-setup' })}
+          />
+          <MenuRow
+            title="Mistake notebook"
+            icon="refresh-outline"
+            onPress={() => navigate({ name: 'mistakes' })}
+          />
+          <MenuRow
+            title="Practice history"
+            icon="time-outline"
+            onPress={() => navigate({ name: 'practice-history' })}
+          />
+        </View>
+      )}
+    </ScrollView>
   );
 }
 
@@ -278,32 +188,5 @@ export function QuestionScreen({
 
 const createStyles = (c: ReturnType<typeof useTheme>['colors']) =>
   StyleSheet.create({
-    header: { gap: 18, marginBottom: 0 },
-    filters: { gap: 8 },
-    listCaption: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: 12,
-    },
-    notebookLink: {
-      minHeight: 48,
-      paddingHorizontal: 8,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    linkText: { color: c.teal, fontSize: 14, fontWeight: '600' },
-    taskRow: {
-      paddingVertical: 24,
-      paddingHorizontal: 4,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: c.line,
-      gap: 8,
-      minHeight: 88,
-    },
-    taskPressed: { backgroundColor: c.blue, opacity: 0.8 },
-    pressed: { opacity: 0.65 },
-    success: { color: c.teal },
-    review: { color: c.red },
     footnote: { color: c.muted, fontSize: 12, lineHeight: 19, paddingBottom: 8 },
   });

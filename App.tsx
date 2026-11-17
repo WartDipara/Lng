@@ -21,6 +21,7 @@ import { bundle } from './mobile/storage/bundle';
 import type { MainTab, Route, ScreenProps } from './mobile/routes';
 import { TodayScreen, ReviewsScreen } from './mobile/screens/Today';
 import { WordsScreen, WordDetail } from './mobile/screens/Words';
+import { WordLearning } from './mobile/screens/WordLearning';
 import { PracticeScreen, QuestionScreen } from './mobile/screens/Practice';
 import { NotebookScreen, NoteEditor, MistakesScreen } from './mobile/screens/Notebook';
 import { LibraryScreen } from './mobile/screens/Library';
@@ -74,15 +75,16 @@ function StudyApp() {
   useEffect(() => {
     if (isMainTab(route)) session.current = [];
   }, [route]);
-  async function openTarget(target: Target) {
+  async function openTarget(target: Target, replace = false) {
+    const show = replace ? navigation.replace : go;
     try {
       if (target.kind === 'question')
-        go({ name: 'question', id: target.id, revision: target.revision });
+        show({ name: 'question', id: target.id, revision: target.revision });
       else {
         const found = await engine.sense(target.id, target.revision);
         if (!found)
           throw new Error('This meaning is unavailable. Import its original content pack.');
-        go({
+        show({
           name: 'word',
           id: found.word.id,
           revision: found.word.revision,
@@ -110,9 +112,10 @@ function StudyApp() {
   function startDue() {
     void start(dueStudyTargets(engine));
   }
-  async function next() {
+  async function next(repeat = false) {
+    if (repeat && session.current[0]) session.current.push(session.current[0]);
     session.current = session.current.slice(1);
-    if (session.current.length) await openTarget(session.current[0]);
+    if (session.current.length) await openTarget(session.current[0], true);
     else {
       go({ name: 'today' });
       setMessage('Session complete. Your progress is saved.');
@@ -183,9 +186,24 @@ function StudyApp() {
     );
   else if (route.name === 'today')
     screen = <TodayScreen {...props} startNew={startNew} startDue={startDue} />;
-  else if (route.name === 'words') screen = <WordsScreen {...props} />;
-  else if (route.name === 'word')
+  else if (route.name === 'words' || route.name === 'word-reference')
     screen = (
+      <WordsScreen
+        key={route.name}
+        {...props}
+        reference={route.name === 'word-reference'}
+        startLearning={(targets) => void start(targets)}
+      />
+    );
+  else if (route.name === 'word')
+    screen = route.study ? (
+      <WordLearning
+        key={key}
+        {...props}
+        route={route}
+        onNext={session.current.length ? next : undefined}
+      />
+    ) : (
       <WordDetail
         key={key}
         {...props}
@@ -193,7 +211,8 @@ function StudyApp() {
         onNext={session.current.length ? next : undefined}
       />
     );
-  else if (route.name === 'practice') screen = <PracticeScreen {...props} />;
+  else if (route.name === 'practice' || route.name === 'practice-setup')
+    screen = <PracticeScreen key={route.name} {...props} section={route.name} />;
   else if (route.name === 'question')
     screen = (
       <QuestionScreen
@@ -207,7 +226,13 @@ function StudyApp() {
     screen = (
       <PracticeSessionScreen key={key} {...props} sessionId={route.id} onDirtyChange={setDirty} />
     );
-  else if (route.name === 'profile') screen = <ProfileScreen {...props} />;
+  else if (
+    route.name === 'profile' ||
+    route.name === 'progress' ||
+    route.name === 'practice-history' ||
+    route.name === 'updates'
+  )
+    screen = <ProfileScreen key={route.name} {...props} section={route.name} />;
   else if (route.name === 'notebook') screen = <NotebookScreen {...props} />;
   else if (route.name === 'note')
     screen = (
@@ -224,7 +249,14 @@ function StudyApp() {
     );
   else if (route.name === 'mistakes') screen = <MistakesScreen {...props} />;
   else if (route.name === 'reviews') screen = <ReviewsScreen {...props} />;
-  else screen = <LibraryScreen {...props} />;
+  else if (
+    route.name === 'library' ||
+    route.name === 'learning-plan' ||
+    route.name === 'appearance' ||
+    route.name === 'backups' ||
+    route.name === 'sources'
+  )
+    screen = <LibraryScreen key={route.name} {...props} section={route.name} />;
   const isMain = tabs.some((t) => t.name === route.name);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.background }}>
@@ -265,7 +297,7 @@ function StudyApp() {
       >
         {screen}
       </KeyboardAvoidingView>
-      {loaded && (
+      {loaded && isMain && (
         <View style={styles.tabs}>
           {tabs.map((t) => (
             <Pressable
@@ -326,7 +358,7 @@ function StudyApp() {
 const createStyles = (c: Colors) =>
   StyleSheet.create({
     header: {
-      minHeight: 60,
+      minHeight: 52,
       paddingHorizontal: 20,
       flexDirection: 'row',
       alignItems: 'center',

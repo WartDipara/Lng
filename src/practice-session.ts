@@ -34,13 +34,48 @@ export function sessionSummary(session: PracticeSession) {
     accuracy: Math.round((correct / total) * 100),
   };
 }
+/** Grade one item atomically. An attempt ID also locks the answer across restarts. */
+export function checkPracticeItem(
+  state: UserState,
+  sessionId: string,
+  index: number,
+  now: string,
+): UserState {
+  const session = state.practiceSessions?.find((s) => s.id === sessionId);
+  invariant(session && Number.isInteger(index) && session.items[index], 'Practice item not found.');
+  const item = session.items[index];
+  if (session.submittedAt || item.attemptId) return state;
+  invariant(completeAnswer(item.question, item.answer), 'Finish your answer first.');
+  const attemptId = `${session.id}-q${index + 1}`;
+  const result = recordQuestionTest(state, item.question, {
+    id: attemptId,
+    answer: item.answer,
+    createdAt: now,
+  });
+  return {
+    ...result.state,
+    practiceSessions: result.state.practiceSessions!.map((s) =>
+      s.id === sessionId
+        ? {
+            ...s,
+            items: s.items.map((entry, position) =>
+              position === index
+                ? { ...entry, attemptId, score: result.score, maxScore: result.maxScore }
+                : entry,
+            ),
+          }
+        : s,
+    ),
+  };
+}
+
 export function submitPractice(state: UserState, sessionId: string, now: string): UserState {
   const session = state.practiceSessions?.find((s) => s.id === sessionId);
   invariant(session, 'Practice session not found.');
   if (session.submittedAt) return state;
   let next = state;
   const items = session.items.map((item, index) => {
-    if (!hasAnswer(item.answer)) return item;
+    if (item.attemptId || !hasAnswer(item.answer)) return item;
     const attemptId = `${session.id}-q${index + 1}`;
     const result = recordQuestionTest(next, item.question, {
       id: attemptId,

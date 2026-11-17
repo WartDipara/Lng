@@ -2,7 +2,22 @@ import type { Note, Target } from '../src/types.ts';
 import type { StudyEngine } from './engine.ts';
 export type MainTab = 'today' | 'words' | 'practice' | 'notebook' | 'profile';
 export type Route =
-  | { name: MainTab | 'library' | 'mistakes' | 'reviews' }
+  | {
+      name:
+        | MainTab
+        | 'library'
+        | 'mistakes'
+        | 'reviews'
+        | 'word-reference'
+        | 'learning-plan'
+        | 'appearance'
+        | 'backups'
+        | 'sources'
+        | 'progress'
+        | 'practice-history'
+        | 'updates'
+        | 'practice-setup';
+    }
   | { name: 'word'; id: string; revision?: number; senseId?: string; study?: boolean }
   | { name: 'question'; id: string; revision?: number }
   | { name: 'practice-session'; id: string }

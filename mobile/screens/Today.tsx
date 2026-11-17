@@ -1,6 +1,7 @@
+import { MenuRow } from '../components/MenuRow';
 import { inScope, dueStudyTargets } from '../study-selection.ts';
 import React from 'react';
-import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
+import { FlatList, ScrollView, Text, View } from 'react-native';
 import { Button, Card, Heading, Empty, useUI } from '../components/UI';
 import { useTheme } from '../theme';
 import { studiedToday, sameLocalDay } from '../../src/learning.ts';
@@ -27,7 +28,7 @@ export function TodayScreen({
         title="A little English, every day."
         subtitle={now.toLocaleDateString('en', { weekday: 'long', month: 'long', day: 'numeric' })}
       />
-      <View style={{ paddingVertical: 10, gap: 18 }}>
+      <View style={{ padding: 22, borderRadius: 24, backgroundColor: c.paper, gap: 22 }}>
         <Text style={{ ...ui.body, fontSize: 18, lineHeight: 28 }}>
           {due.length
             ? 'Pick up where your memory needs you.'
@@ -56,33 +57,24 @@ export function TodayScreen({
             : `Your daily plan: ${engine.user.settings.dailyNewLimit} new meanings.`}
         </Text>
       </View>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
-        <Action
+      <View>
+        <MenuRow
           title="Use of English"
-          text="Read. Think. Apply."
+          icon="reader-outline"
           onPress={() => navigate({ name: 'practice' })}
         />
-        <Action
+        <MenuRow
           title="Mistake notebook"
-          text={
-            mistakes
-              ? `${mistakes} ${mistakes === 1 ? 'item' : 'items'} to revisit.`
-              : 'Learn from each attempt.'
-          }
+          detail={mistakes ? `${mistakes} items to revisit` : undefined}
+          icon="refresh-outline"
           onPress={() => navigate({ name: 'mistakes' })}
         />
-        <Action
-          title="New words"
-          text={`${engine.user.settings.dailyNewLimit} meanings a day.`}
-          onPress={startNew}
-        />
-        <Action
+        <MenuRow
           title="Review schedule"
-          text="See what comes next."
+          icon="calendar-outline"
           onPress={() => navigate({ name: 'reviews' })}
         />
       </View>
-      <Text style={{ ...ui.small, textAlign: 'center' }}>Offline, and at your pace.</Text>
     </ScrollView>
   );
 }
@@ -94,39 +86,6 @@ function Metric({ value, label }: { value: number; label: string }) {
       <Text style={{ color: c.ink, fontSize: 28, lineHeight: 34, fontWeight: '500' }}>{value}</Text>
       <Text style={ui.small}>{label}</Text>
     </View>
-  );
-}
-function Action({ title, text, onPress }: { title: string; text: string; onPress: () => void }) {
-  const ui = useUI();
-  const { colors: c } = useTheme();
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={title}
-      onPress={onPress}
-      style={({ pressed }) => ({
-        flexBasis: '46%',
-        flexGrow: 1,
-        minWidth: 120,
-        minHeight: 122,
-        padding: 16,
-        borderRadius: 18,
-        backgroundColor: c.paper,
-        borderColor: c.line,
-        borderWidth: 1,
-        justifyContent: 'space-between',
-        gap: 12,
-        opacity: pressed ? 0.55 : 1,
-      })}
-    >
-      <Text style={{ ...ui.h2, fontSize: 17, lineHeight: 24 }}>{title}</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-        <Text style={[ui.small, { flex: 1 }]}>{text}</Text>
-        <Text style={{ ...ui.body, color: c.teal }} accessibilityElementsHidden>
-          ›
-        </Text>
-      </View>
-    </Pressable>
   );
 }
 export function ReviewsScreen({ engine, openTarget }: ScreenProps) {

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../theme';
-import type { Interaction, Passage, Question } from '../../src/types.ts';
+import type { Passage, Question } from '../../src/types.ts';
 
 export interface QuestionPanelProps {
   question: Question;
@@ -23,6 +23,7 @@ export interface QuestionPanelProps {
   result?: { score: number; maxScore: number };
   feedback?: string;
   deferred?: boolean;
+  focused?: boolean;
   onSubmit: () => void | Promise<void>;
   onNext?: () => void;
   onNote: () => void;
@@ -562,24 +563,28 @@ export function QuestionPanel(props: QuestionPanelProps) {
   const successful = result && result.score === result.maxScore;
   return (
     <View style={styles.root} onLayout={(event) => setPanelWidth(event.nativeEvent.layout.width)}>
-      <View style={styles.topline}>
-        <Text style={styles.typeLabel}>{readableType(question.type)}</Text>
-        <Text style={styles.originLabel}>
-          {question.origin === 'original'
-            ? 'Original practice'
-            : question.origin === 'past-paper'
-              ? 'Past paper'
-              : 'Official sample'}
-        </Text>
-      </View>
-      <Text accessibilityRole="header" style={styles.title}>
-        {question.title}
-      </Text>
-      {question.exam && (
-        <Text style={styles.hint}>
-          {question.exam.name}
-          {question.exam.year ? ` (${question.exam.year})` : ''}: {question.exam.reference}
-        </Text>
+      {!props.focused && (
+        <>
+          <View style={styles.topline}>
+            <Text style={styles.typeLabel}>{readableType(question.type)}</Text>
+            <Text style={styles.originLabel}>
+              {question.origin === 'original'
+                ? 'Original practice'
+                : question.origin === 'past-paper'
+                  ? 'Past paper'
+                  : 'Official sample'}
+            </Text>
+          </View>
+          <Text accessibilityRole="header" style={styles.title}>
+            {question.title}
+          </Text>
+          {question.exam && (
+            <Text style={styles.hint}>
+              {question.exam.name}
+              {question.exam.year ? ` (${question.exam.year})` : ''}: {question.exam.reference}
+            </Text>
+          )}
+        </>
       )}
       {passage ? (
         <>
@@ -723,7 +728,7 @@ export function QuestionPanel(props: QuestionPanelProps) {
           {submitError}
         </Text>
       ) : null}
-      {submitted ? (
+      {submitted && props.focused ? null : submitted ? (
         <View
           style={[styles.result, successful ? styles.correctOption : styles.resultNeutral]}
           accessibilityLiveRegion="polite"
@@ -809,28 +814,30 @@ export function QuestionPanel(props: QuestionPanelProps) {
           </Text>
         </Pressable>
       )}
-      <View style={styles.actions}>
-        <Pressable
-          accessibilityRole="button"
-          onPress={onNote}
-          style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}
-        >
-          <Text style={styles.linkText}>Add a note</Text>
-        </Pressable>
-        {submitted && onNext && (
+      {!props.focused && (
+        <View style={styles.actions}>
           <Pressable
             accessibilityRole="button"
-            onPress={onNext}
-            style={({ pressed }) => [
-              styles.primaryButton,
-              styles.nextButton,
-              pressed && styles.pressed,
-            ]}
+            onPress={onNote}
+            style={({ pressed }) => [styles.secondaryButton, pressed && styles.pressed]}
           >
-            <Text style={styles.primaryButtonText}>Next question</Text>
+            <Text style={styles.linkText}>Add a note</Text>
           </Pressable>
-        )}
-      </View>
+          {submitted && onNext && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={onNext}
+              style={({ pressed }) => [
+                styles.primaryButton,
+                styles.nextButton,
+                pressed && styles.pressed,
+              ]}
+            >
+              <Text style={styles.primaryButtonText}>Next question</Text>
+            </Pressable>
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -838,7 +845,7 @@ export function QuestionPanel(props: QuestionPanelProps) {
 const createStyles = (c: ThemeColors) => {
   const color = panelColors(c);
   return StyleSheet.create({
-    root: { gap: 18, paddingBottom: 28, width: '100%' },
+    root: { gap: 24, paddingBottom: 28, width: '100%' },
     flex: { flex: 1, minWidth: 0 },
     stack: { gap: 12 },
     topline: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'space-between' },
@@ -918,11 +925,11 @@ const createStyles = (c: ThemeColors) => {
       alignItems: 'flex-start',
       gap: 12,
       backgroundColor: color.white,
-      padding: 15,
+      padding: 20,
       borderWidth: 1,
       borderColor: color.border,
-      borderRadius: 10,
-      minHeight: 56,
+      borderRadius: 18,
+      minHeight: 72,
     },
     selectedOption: { borderColor: color.teal, backgroundColor: color.correct },
     correctOption: { borderColor: color.teal, backgroundColor: color.correct },
@@ -939,7 +946,7 @@ const createStyles = (c: ThemeColors) => {
     selectedMarker: { backgroundColor: color.teal, borderColor: color.teal },
     optionLetter: { color: color.muted, fontSize: 13, fontWeight: '700' },
     selectedLetter: { color: color.onAccent },
-    optionText: { color: color.body, fontSize: 16, lineHeight: 25 },
+    optionText: { color: color.body, fontSize: 17, lineHeight: 28 },
     optionExplanation: { color: color.muted, fontSize: 14, lineHeight: 23 },
     explanationItem: {
       gap: 7,

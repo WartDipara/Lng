@@ -31,6 +31,7 @@ export function useNavigation() {
     pending,
     back,
     go: (route: Route, forced = false) => dispatch({ type: 'go', route }, forced),
+    replace: (route: Route) => dispatch({ type: 'go', route, replace: true }),
     setDirty: (value: boolean) => {
       dirty.current = value;
     },

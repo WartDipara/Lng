@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, Pressable, ScrollView, Text, View } from 'react-native';
 import { Button, Card, Chip, Empty, Field, Heading, useUI } from '../components/UI';
 import type { ScreenProps, Route } from '../routes';
 import { id } from '../engine';
-import { useTheme } from '../theme';
 
 export function NotebookScreen({ engine, navigate }: ScreenProps) {
   const ui = useUI();
-  const { colors: c } = useTheme();
   const [query, setQuery] = useState('');
   const notes = [...engine.user.notes]
     .filter((n) =>
@@ -84,7 +82,6 @@ export function NoteEditor({
   onSaved: () => void;
 }) {
   const ui = useUI();
-  const { colors: c } = useTheme();
   const [title, setTitle] = useState(route.note?.title ?? '');
   const [body, setBody] = useState(route.note?.body ?? '');
   const [tags, setTags] = useState(route.note?.tags.join(', ') ?? '');
@@ -201,7 +198,6 @@ export function NoteEditor({
 
 export function MistakesScreen({ engine, openTarget, notify, refresh }: ScreenProps) {
   const ui = useUI();
-  const { colors: c } = useTheme();
   const [showMastered, setShowMastered] = useState(false);
   const [kind, setKind] = useState('all');
   const rows = [...engine.user.mistakes]
@@ -270,7 +266,6 @@ function MistakeCard({
   mark: () => void;
 }) {
   const ui = useUI();
-  const { colors: c } = useTheme();
   const [title, setTitle] = useState('Opening saved content…');
   const attempts = engine.user.attempts.filter((a) => item.attemptIds.includes(a.id));
   useEffect(() => {

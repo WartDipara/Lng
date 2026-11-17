@@ -1,4 +1,5 @@
 import { latest } from '../src/catalog.ts';
+import { unfinishedLearningTargets } from '../src/word-learning.ts';
 import { dueReviews, newSensesToday } from '../src/learning.ts';
 import type { Catalog, Target, UserState } from '../src/types.ts';
 import type { WordRow, QuestionRow } from '../src/library-index.ts';
@@ -37,7 +38,10 @@ export function newStudyTargets(library: StudyLibrary, now = new Date()): Target
     0,
     library.user.settings.dailyNewLimit - newSensesToday(library.user, now),
   );
-  const targets: Target[] = [];
+  const targets = unfinishedLearningTargets(library.user).filter(
+    (target) => library.targetExists(target) && inScope(library, target),
+  );
+  const limit = targets.length + allowance;
   if (!allowance) return targets;
   for (const word of library.words) {
     if (
@@ -50,7 +54,7 @@ export function newStudyTargets(library: StudyLibrary, now = new Date()): Target
     for (const senseId of word.ready) {
       if (seen.has(senseId)) continue;
       targets.push({ kind: 'sense', id: senseId, revision: entry.revision });
-      if (targets.length >= allowance) return targets;
+      if (targets.length >= limit) return targets;
     }
   }
   return targets;
